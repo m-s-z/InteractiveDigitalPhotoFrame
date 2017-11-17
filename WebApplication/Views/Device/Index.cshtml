@@ -5,15 +5,15 @@
 }
 
 <h2>Devices</h2>
-<ul>
+<ul class="list-group">
     @foreach(var device in Model.Devices)
     {
-        <li>
+        <li  class="list-group-item">
             @device.Name
-            <ul>
+            <ul class="list-group">
                 @foreach(var folder in device.Folders)
                 {
-                    <li>@folder.Name</li>
+                    <li  class="list-group-item">@folder.Name</li>
                 }
             </ul>
         </li>
