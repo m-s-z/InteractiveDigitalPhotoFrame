@@ -1,6 +1,8 @@
 ﻿@model WebApplication.ViewModels.FolderViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Folder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 @{ 
     string className = Model.Folders.Count > 5 ? "multipleFolders" : null;

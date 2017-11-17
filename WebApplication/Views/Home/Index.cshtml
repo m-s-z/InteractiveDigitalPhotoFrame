@@ -6,7 +6,7 @@
     <div class="col-md-4">
         <h2>Folders</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index", "Folder", new { area = "" }, null)</p>
     </div>
     <div class="col-md-4">
         <h2>Clouds</h2>
@@ -16,6 +16,6 @@
     <div class="col-md-4">
         <h2>Devices</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. </p>
-        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index","Folder", new { area = "" }, null)</p>
+        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index","Device", new { area = "" }, null)</p>
     </div>
 </div>

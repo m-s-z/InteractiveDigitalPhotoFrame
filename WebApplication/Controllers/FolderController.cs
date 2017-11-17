@@ -15,11 +15,11 @@ namespace WebApplication.Controllers
         {
             var folder = new Folder("summer", 1, 1);
             var folder2 = new Folder("winter", 2, 1);
-            var device = new Device(1, "grandmas tablet");
-            var viewResult = new ViewResult();
             List<Folder> folders = new List<Folder>();
             folders.Add(folder);
             folders.Add(folder2);
+            var device = new Device(1, "grandmas tablet", folders);
+
             FolderViewModel viewModel = new FolderViewModel(device,folders);
 
             return View(viewModel);

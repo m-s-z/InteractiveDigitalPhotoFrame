@@ -21,8 +21,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Folder", "Index", "Folder", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Devices", "Index", "Device", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Folders", "Index", "Folder", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Clouds", "Index", "Folder", new { area = "" }, null)</li>
                 </ul>
             </div>
         </div>
@@ -31,7 +32,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - DPF</p>
         </footer>
     </div>
 
