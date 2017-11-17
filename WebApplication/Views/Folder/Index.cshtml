@@ -1,7 +1,21 @@
-﻿@model WebApplication.Models.Folder
+﻿@model WebApplication.ViewModels.FolderViewModel
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>@Model.Name</h2>
-
+@{ 
+    string className = Model.Folders.Count > 5 ? "multipleFolders" : null;
+}
+<h2 class="@className">@Model.Device.Name</h2>
+@if (Model.Folders.Count == 0)
+{
+    <text>No folders connected </text>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var folder in Model.Folders)
+        {
+            <li class="list-group-item">@folder.Name</li>
+        }
+    </ul>
+}

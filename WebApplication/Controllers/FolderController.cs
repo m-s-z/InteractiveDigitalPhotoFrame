@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Models;
+using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
@@ -12,8 +13,16 @@ namespace WebApplication.Controllers
         // GET: Folder
         public ActionResult Index()
         {
-            var folder = new Folder("summer", 1,1);
-            return View(folder);
+            var folder = new Folder("summer", 1, 1);
+            var folder2 = new Folder("winter", 2, 1);
+            var device = new Device(1, "grandmas tablet");
+            var viewResult = new ViewResult();
+            List<Folder> folders = new List<Folder>();
+            folders.Add(folder);
+            folders.Add(folder2);
+            FolderViewModel viewModel = new FolderViewModel(device,folders);
+
+            return View(viewModel);
         }
 
         public ActionResult AddFolder(int DeviceId)
