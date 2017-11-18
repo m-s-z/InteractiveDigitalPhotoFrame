@@ -10,6 +10,10 @@ namespace WebApplication.Models
         public int DeviceId { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
+        public Device()
+        {
+
+        }
         public Device(int id, string name)
         {
             DeviceId = id;
@@ -23,6 +27,13 @@ namespace WebApplication.Models
 
         public Device(string name, ICollection<Account> accounts)
         {
+            Name = name;
+            Accounts = accounts;
+        }
+
+        public Device(int deviceId, string name, ICollection<Account> accounts)
+        {
+            DeviceId = deviceId;
             Name = name;
             Accounts = accounts;
         }

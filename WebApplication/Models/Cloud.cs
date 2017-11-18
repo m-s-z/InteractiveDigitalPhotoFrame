@@ -11,7 +11,10 @@ namespace WebApplication.Models
     }
     public class Cloud
     {
-        
+        public Cloud()
+        {
+
+        }
         public Cloud(ProviderType provider, string login)
         {
             Provider = provider;
@@ -20,6 +23,15 @@ namespace WebApplication.Models
 
         public Cloud(string password, ProviderType provider, string login, int id)
         {
+            Password = password;
+            Provider = provider;
+            Login = login;
+            Id = id;
+        }
+
+        public Cloud(int cloudId, string password, ProviderType provider, string login, int id)
+        {
+            CloudId = cloudId;
             Password = password;
             Provider = provider;
             Login = login;

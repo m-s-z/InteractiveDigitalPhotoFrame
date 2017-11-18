@@ -210,6 +210,10 @@
     <Compile Include="ViewModels\FolderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\WebApplication.Data.ApplicationContext.mdf" />
+    <Content Include="App_Data\WebApplication.Data.ApplicationContext_log.ldf">
+      <DependentUpon>WebApplication.Data.ApplicationContext.mdf</DependentUpon>
+    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-readable.css" />
     <Content Include="Content\bootstrap.css" />
@@ -266,9 +270,7 @@
     <Content Include="Views\Cloud\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>

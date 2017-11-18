@@ -7,6 +7,10 @@ namespace WebApplication.Models
 {
     public class Account
     {
+        public Account()
+        {
+
+        }
         public Account(string accountName, string password = "")
         {
             Login = accountName;
@@ -22,6 +26,14 @@ namespace WebApplication.Models
 
         public Account(string login, string password, ICollection<Device> devices)
         {
+            Login = login;
+            Password = password;
+            Devices = devices;
+        }
+
+        public Account(int id, string login, string password, ICollection<Device> devices)
+        {
+            Id = id;
             Login = login;
             Password = password;
             Devices = devices;

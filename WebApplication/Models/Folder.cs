@@ -13,7 +13,10 @@ namespace WebApplication.Models
         public Device Device { get; set; }
         public int CloudId { get; set; }
         public Cloud Cloud { get; set; }
-       
+        public Folder()
+        {
+
+        }
 
         public Folder(string name, int deviceId, int cloudId)
         {

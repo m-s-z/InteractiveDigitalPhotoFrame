@@ -12,19 +12,19 @@ namespace WebApplication.Data
         {
             List<Device> devices1 = new List<Device>()
             {
-                new Device("Grandma's tablet"),
-                new Device("Mati's tablet")
+                new Device(1,"Grandma's tablet"),
+                new Device(3,"Mati's tablet")
             };
             List<Device> devices2 = new List<Device>()
             {
-                new Device("Grandma's tablet"),
-                new Device("Mik's phone")
+                new Device(1,"Grandma's tablet"),
+                new Device(2,"Mik's phone")
             };
             
             List<Account> accounts = new List<Account>()
             {
-                new Account("Mati","aaa",devices1),
-                new Account("Mik", "qqq",devices2)
+                new Account(1,"Mati","aaa",devices1),
+                new Account(2,"Mik", "qqq",devices2)
             };
             return accounts;
         }
@@ -32,22 +32,22 @@ namespace WebApplication.Data
         {
             List<Account> accounts1 = new List<Account>()
             {
-                new Account("Mati","aaa"),
-                new Account("Mik", "qqq")
+                new Account(1,"Mati","aaa"),
+                new Account(2,"Mik", "qqq")
             };
             List<Account> accounts2 = new List<Account>()
             {
-                new Account("Mik", "qqq")
+                new Account(2,"Mik", "qqq")
             };
             List<Account> accounts3 = new List<Account>()
             {
-                new Account("Mati", "aaa")
+                new Account(1,"Mati","aaa"),
             };
             List<Device> devices = new List<Device>()
             {
-                new Device("Grandma's tablet", accounts1),
-                new Device("Mik's phone", accounts2),
-                new Device("Mati's tablet", accounts3)
+                new Device(1,"Grandma's tablet", accounts1),
+                new Device(2,"Mik's phone", accounts2),
+                new Device(3,"Mati's tablet", accounts3)
             };
             return devices;
         }
@@ -55,9 +55,9 @@ namespace WebApplication.Data
         {
             List<Cloud> clouds = new List<Cloud>()
             {
-                new Cloud("aa",ProviderType.DropBox,"mik",context.Accounts.First( p => p.Login == "mik").Id),
-                new Cloud("aa",ProviderType.Flicker,"mik",context.Accounts.First( p => p.Login == "mikflick").Id),
-                new Cloud("aa",ProviderType.DropBox,"mati",context.Accounts.First( p => p.Login == "mati").Id),
+                new Cloud(1,"aa",ProviderType.DropBox,"mik",context.Accounts.First( p => p.Login == "Mik").Id),
+                new Cloud(2,"aa",ProviderType.Flicker,"mikflick",context.Accounts.First( p => p.Login == "Mik").Id),
+                new Cloud(3,"aa",ProviderType.DropBox,"mati",context.Accounts.First( p => p.Login == "Mati").Id),
             };
             return clouds;
         }
