@@ -21,13 +21,13 @@ namespace WebApplication.Controllers
             folders.Add(folder);
             folders.Add(folder2);
             folders2.Add(folder);
-            var device = new Device(1,"Grandmas Tablet", folders);
-            var device2 = new Device(1, "My Tablet", folders2);
+            var device = new Device(1,"Grandmas Tablet");
+            var device2 = new Device(1, "My Tablet");
             List<Device> devices = new List<Device>();
             devices.Add(device);
             devices.Add(device2);
 
-            DeviceViewModel deviceModel = new DeviceViewModel(devices);
+            DeviceViewModel deviceModel = new DeviceViewModel(devices,folders);
 
             return View(deviceModel);
         }

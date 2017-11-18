@@ -18,7 +18,7 @@ namespace WebApplication.Controllers
             List<Folder> folders = new List<Folder>();
             folders.Add(folder);
             folders.Add(folder2);
-            var device = new Device(1, "grandmas tablet", folders);
+            var device = new Device(1, "grandmas tablet");
 
             FolderViewModel viewModel = new FolderViewModel(device,folders);
 

@@ -8,11 +8,14 @@ namespace WebApplication.ViewModels
 {
     public class DeviceViewModel
     {
-        public DeviceViewModel(List<Device> devices)
+        //we should group folders to appropriate devices
+        public DeviceViewModel(List<Device> devices, List<Folder> folders)
         {
             Devices = devices;
+            Folders = folders;
         }
 
         public List<Device> Devices { get; set; }
+        public List<Folder> Folders { get; set; }
     }
 }

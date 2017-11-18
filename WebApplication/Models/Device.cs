@@ -7,16 +7,24 @@ namespace WebApplication.Models
 {
     public class Device
     {
-        public int Id { get; set; }
+        public int DeviceId { get; set; }
         public string Name { get; set; }
-
-        public List<Folder> Folders { get; set; }
-        
-        public Device(int id, string name, List<Folder> folders)
+        public virtual ICollection<Account> Accounts { get; set; }
+        public Device(int id, string name)
         {
-            Id = id;
+            DeviceId = id;
             Name = name;
-            Folders = folders;
+        }
+
+        public Device(string name)
+        {
+            Name = name;
+        }
+
+        public Device(string name, ICollection<Account> accounts)
+        {
+            Name = name;
+            Accounts = accounts;
         }
     }
 }

@@ -7,15 +7,19 @@ namespace WebApplication.Models
 {
     public class Folder
     {
-        public int Id { get; set; }
+        public int FolderId { get; set; }
         public string Name { get; set; }
         public int DeviceId { get; set; }
+        public Device Device { get; set; }
+        public int CloudId { get; set; }
+        public Cloud Cloud { get; set; }
+       
 
-        public Folder(string Name, int Id, int Device)
+        public Folder(string name, int deviceId, int cloudId)
         {
-            this.Id = Id;
-            this.Name = Name;
-            this.DeviceId = Device;
+            Name = name;
+            DeviceId = deviceId;
+            CloudId = cloudId;
         }
     }
 }

@@ -9,11 +9,27 @@ namespace WebApplication.Models
     {
         public Account(string accountName, string password = "")
         {
-            AccountName = accountName;
+            Login = accountName;
             Password = password;
         }
 
-        public String AccountName { get; set; }
+        public Account(int id, string login, string password)
+        {
+            Id = id;
+            Login = login;
+            Password = password;
+        }
+
+        public Account(string login, string password, ICollection<Device> devices)
+        {
+            Login = login;
+            Password = password;
+            Devices = devices;
+        }
+
+        public int Id { get; set; }
+        public String Login { get; set; }
         public String Password { get; set; }
-    }
+        public virtual ICollection<Device> Devices { get; set; }
+    }   
 }

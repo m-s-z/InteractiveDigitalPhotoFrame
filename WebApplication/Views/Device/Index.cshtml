@@ -11,7 +11,7 @@
         <li  class="list-group-item">
             @device.Name
             <ul class="list-group">
-                @foreach(var folder in device.Folders)
+                @foreach(var folder in Model.Folders)
                 {
                     <li  class="list-group-item">@folder.Name</li>
                 }
