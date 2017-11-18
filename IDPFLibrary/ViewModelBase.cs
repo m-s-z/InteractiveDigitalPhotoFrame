@@ -22,7 +22,7 @@ namespace IDPFLibrary
         #region methods
 
         /// <summary>
-        /// Upadates value of the "storage" argument with value given by the second argument.
+        /// Updates value of the "storage" argument with value given by the second argument.
         /// Notifies the application about update of the property which has executed this method.
         /// </summary>
         /// <typeparam name="T">Property type.</typeparam>

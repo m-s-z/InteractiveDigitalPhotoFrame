@@ -1,0 +1,18 @@
+﻿@model WebApplication.ViewModels.CloudViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cloud Accounts</h2>
+<ul class="list-group">
+    @foreach (var cloud in Model.Clouds)
+    {
+        <li class="list-group-item">
+            <span>@cloud.Provider.ToString()</span>
+            <span>@cloud.Login</span>
+            <button class="btn-info">Manage</button>
+        </li>
+    }
+</ul>
+

@@ -1,0 +1,22 @@
+﻿@model WebApplication.ViewModels.DeviceViewModel
+@{
+    ViewBag.Title = "Device";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Devices</h2>
+<ul class="list-group">
+    @foreach(var device in Model.Devices)
+    {
+        <li  class="list-group-item">
+            @device.Name
+            <ul class="list-group">
+                @foreach(var folder in Model.Folders)
+                {
+                    <li  class="list-group-item">@folder.Name</li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
+
