@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms"
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          x:Class="AAA.Controls.ViewCellExtension"
+          x:Name="Root">
+
+    <ViewCell.View>
+        <Grid BindingContext="{x:Reference Name=Root}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Image HorizontalOptions="Start"
+                       Margin="16, 16, 16, 16"
+                       Source="{Binding MainImageSource}" />
+                <Image HorizontalOptions="Start" 
+                       Margin="40, 40, 8, 8"
+                       Source="{Binding SubimageSource}" />
+                <Label FontSize="25"
+                       HorizontalTextAlignment="Start"
+                       Margin="80, 16, 0, 8"
+                       VerticalTextAlignment="Start"
+                       Text="{Binding MainText}"
+                       TextColor="Black">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Subtext}"
+                                     Value=""
+                                     TargetType="Label">
+                            <Setter Property="VerticalTextAlignment"
+                                    Value="Center" />
+                            <Setter Property="Margin"
+                                    Value="80, 0, 0, 0" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label FontSize="15"
+                       HorizontalTextAlignment="Start"
+                       Margin="80, 0, 0, 16"
+                       VerticalTextAlignment="End"
+                       Text="{Binding Subtext}"
+                       TextColor="Black"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding MainCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Image Grid.Column="1"
+                   HorizontalOptions="Center"
+                   Margin="16, 16, 16, 16"
+                   Source="{Binding AdditionalImageSource}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AdditionalCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>

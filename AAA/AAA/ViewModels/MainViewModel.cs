@@ -1,4 +1,8 @@
-﻿namespace AAA.ViewModels
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using AAA.Utils;
+
+namespace AAA.ViewModels
 {
     /// <summary>
     /// MainViewModel class.
@@ -22,6 +26,8 @@
         /// Backing field for TestNumberTwo property.
         /// </summary>
         private bool _testNumberTwo;
+
+        private ObservableCollection<ListItem> _testList;
 
         #endregion
 
@@ -47,9 +53,25 @@
             set => SetProperty(ref _testNumberTwo, value);
         }
 
-        #endregion
+        public ObservableCollection<ListItem> TestList
+        {
+            get => _testList;
 
-        #region methods
+            set => SetProperty(ref _testList, value);
+        }   
+
+    #endregion
+
+    #region methods
+
+        public MainViewModel()
+        {
+            TestNumberOne = "Hello!!!";
+            TestList = new ObservableCollection<ListItem>();
+            TestList.Add(new ListItem("First"));
+            TestList.Add(new ListItem("First"));
+            TestList.Add(new ListItem("First"));
+        }
 
         /// <summary>
         /// TestMethod method.
