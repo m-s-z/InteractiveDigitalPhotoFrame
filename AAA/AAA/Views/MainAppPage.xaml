@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:controls="clr-namespace:AAA.Controls"
+             xmlns:viewModel="clr-namespace:AAA.ViewModels;"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AAA.Views.MainAppPage"
+             Title="Title">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Test Item"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <viewModel:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding TestList}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension MainText="{Binding S1}" Subtext="Test text"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace AAA
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace AAA.Views
 {
-    public partial class MainPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class AddDevicePage : ContentPage
     {
-        public MainPage()
+        public AddDevicePage()
         {
             InitializeComponent();
         }

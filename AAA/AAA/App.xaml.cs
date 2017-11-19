@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using AAA.ViewModels;
+using AAA.Views;
 using Xamarin.Forms;
 
 namespace AAA
@@ -11,8 +9,7 @@ namespace AAA
         public App()
         {
             InitializeComponent();
-
-            MainPage = new AAA.MainPage();
+            MainPage = new MainAppPage();
         }
 
         protected override void OnStart()
