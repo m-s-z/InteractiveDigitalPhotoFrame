@@ -47,12 +47,12 @@ namespace AAA.Utils
 
         private void ExecuteCommand1()
         {
-            System.Diagnostics.Debug.WriteLine("--------------------------Command1 executed");
+            Application.Current.MainPage.DisplayAlert("Command1", "Command1 was executed", "OK");
         }
 
         private void ExecuteCommand2()
         {
-            System.Diagnostics.Debug.WriteLine("++++++++++++++++++++++++++Command2 executed");
+            Application.Current.MainPage.DisplayAlert("Command2", "Command2 was executed", "OK");
         }
     }
 }
