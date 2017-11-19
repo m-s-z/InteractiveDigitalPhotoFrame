@@ -25,6 +25,12 @@ namespace AAA.Controls
             BindableProperty.Create("AdditionalCommandParameter", typeof(object), typeof(ViewCellExtension));
 
         /// <summary>
+        /// Bindable property for AdditionalImageSource.
+        /// </summary>
+        public static readonly BindableProperty AdditionalImageSourceProperty =
+            BindableProperty.Create("AdditionalImageSource", typeof(string), typeof(ViewCellExtension));
+
+        /// <summary>
         /// Bindable property for MainCommand.
         /// </summary>
         public static readonly BindableProperty MainCommandProperty =
@@ -37,10 +43,22 @@ namespace AAA.Controls
             BindableProperty.Create("MainCommandParameter", typeof(object), typeof(ViewCellExtension));
 
         /// <summary>
+        /// Bindable property for MainImageSource.
+        /// </summary>
+        public static readonly BindableProperty MainImageSourceProperty =
+            BindableProperty.Create("MainImageSource", typeof(string), typeof(ViewCellExtension));
+
+        /// <summary>
         /// Bindable property for MainText.
         /// </summary>
         public static readonly BindableProperty MainTextProperty =
             BindableProperty.Create("MainText", typeof(string), typeof(ViewCellExtension));
+
+        /// <summary>
+        /// Bindable property for SubimageSource.
+        /// </summary>
+        public static readonly BindableProperty SubimageSourceProperty =
+            BindableProperty.Create("SubimageSource", typeof(string), typeof(ViewCellExtension));
 
         /// <summary>
         /// Bindable property for Subtext.
@@ -67,6 +85,15 @@ namespace AAA.Controls
         }
 
         /// <summary>
+        /// Source to additional image displayed on the cell.
+        /// </summary>
+        public string AdditionalImageSource
+        {
+            get => (string)GetValue(AdditionalImageSourceProperty);
+            set => SetValue(AdditionalImageSourceProperty, value);
+        }
+
+        /// <summary>
         /// Main command to execute on item tap.
         /// </summary>
         public ICommand MainCommand
@@ -85,12 +112,30 @@ namespace AAA.Controls
         }
 
         /// <summary>
+        /// Source to main image displayed on the cell.
+        /// </summary>
+        public string MainImageSource
+        {
+            get => (string)GetValue(MainImageSourceProperty);
+            set => SetValue(MainImageSourceProperty, value);
+        }
+
+        /// <summary>
         /// Main text displayed on the cell.
         /// </summary>
         public string MainText
         {
             get => (string)GetValue(MainTextProperty);
             set => SetValue(MainTextProperty, value);
+        }
+
+        /// <summary>
+        /// Source to subimage displayed on the cell.
+        /// </summary>
+        public string SubimageSource
+        {
+            get => (string)GetValue(SubimageSourceProperty);
+            set => SetValue(SubimageSourceProperty, value);
         }
 
         /// <summary>
@@ -106,18 +151,13 @@ namespace AAA.Controls
 
         #region methods
 
+        /// <summary>
+        /// ViewCellExtension class constructor.
+        /// </summary>
         public ViewCellExtension()
         {
             InitializeComponent();
             Subtext = "";
-        }
-
-        /// <summary>
-        /// Executes the ViewCellExtension MainCommand property.
-        /// </summary>
-        protected override void OnTapped()
-        {
-            MainCommand?.Execute(MainCommandParameter);
         }
 
         #endregion

@@ -4,11 +4,7 @@
              xmlns:viewModel="clr-namespace:AAA.ViewModels;"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AAA.Views.MainAppPage"
-             Title="Title">
-    
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Test Item"/>
-    </ContentPage.ToolbarItems>
+             Title="AAA">
 
     <ContentPage.BindingContext>
         <viewModel:MainViewModel />
@@ -20,7 +16,13 @@
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension MainText="{Binding S1}" Subtext="Test text"/>
+                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
+                                                    AdditionalImageSource="bottle.jpg"
+                                                    MainCommand="{Binding Command1}"
+                                                    MainImageSource="icon.png"
+                                                    MainText="{Binding S1}"
+                                                    SubimageSource="{Binding S2, Converter={StaticResource CloudTypeToImageSourceConverter}}"
+                                                    Subtext="Test text" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
