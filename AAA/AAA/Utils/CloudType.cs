@@ -12,9 +12,9 @@
         Dropbox,
 
         /// <summary>
-        /// Flirck cloud provider.
+        /// Flickr cloud provider.
         /// </summary>
-        Flirck,
+        Flickr,
 
         /// <summary>
         /// Google cloud provider.
@@ -24,6 +24,11 @@
         /// <summary>
         /// Microsoft cloud provider.
         /// </summary>
-        Microsoft
+        Microsoft,
+
+        /// <summary>
+        /// Cloud provider is not specified.
+        /// </summary>
+        None
     }
 }

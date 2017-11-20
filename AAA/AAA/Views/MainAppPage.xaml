@@ -4,25 +4,29 @@
              xmlns:viewModel="clr-namespace:AAA.ViewModels;"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AAA.Views.MainAppPage"
-             Title="AAA">
+             Title="Home"
+             x:Name="Root">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="user_96px.png"
+                     Order="Primary" />
+    </ContentPage.ToolbarItems>
+        
     <ContentPage.BindingContext>
         <viewModel:MainViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding TestList}"
-                      RowHeight="80">
+            <ListView ItemsSource="{Binding TestList2}"
+                      BackgroundColor="DarkGray"
+                      RowHeight="185">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
-                                                    AdditionalImageSource="bottle.jpg"
-                                                    MainCommand="{Binding Command1}"
-                                                    MainImageSource="icon.png"
-                                                    MainText="{Binding S1}"
-                                                    SubimageSource="{Binding S2, Converter={StaticResource CloudTypeToImageSourceConverter}}"
-                                                    Subtext="Test text" />
+                        <controls:ViewCellCard Command="{Binding Command1}"
+                                               CardImageSource="{Binding S3}"
+                                               CardSubtext="{Binding S2}"
+                                               CardTitle="{Binding S1}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

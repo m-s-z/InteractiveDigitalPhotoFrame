@@ -38,14 +38,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Card.xaml.cs">
-      <DependentUpon>Card.xaml</DependentUpon>
+    <Compile Include="Controls\ViewCellCard.xaml.cs">
+      <DependentUpon>ViewCellCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ViewCellExtension.xaml.cs">
       <DependentUpon>ViewCellExtension.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CloudTypeToImageSourceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\CardItem.cs" />
     <Compile Include="Utils\CloudImageSourceDictionary.cs" />
     <Compile Include="Utils\CloudType.cs" />
     <Compile Include="Utils\ListItem.cs" />
@@ -183,12 +184,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\Card.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Controls\ViewCellExtension.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -196,6 +191,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainAppPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\ViewCellCard.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
