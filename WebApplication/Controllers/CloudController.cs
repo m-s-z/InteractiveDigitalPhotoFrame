@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.ViewModels;
 
@@ -10,6 +12,8 @@ namespace WebApplication.Controllers
 {
     public class CloudController : Controller
     {
+        private ApplicationContext db = new ApplicationContext();
+
         // GET: Cloud
         public ActionResult Index()
         {
@@ -23,6 +27,17 @@ namespace WebApplication.Controllers
             CloudViewModel model = new CloudViewModel(clouds);
 
             return View(model);
+        }
+        public async Task<ActionResult> Delete(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            if (cloud != null)
+            {
+                db.Clouds.Remove(cloud);
+
+            }
+            await db.SaveChangesAsync();
+            return Redirect("Index");
         }
     }
 }

@@ -3,20 +3,26 @@
     ViewBag.Title = "Device";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Scripts.Render("~/Scripts/Device/device.js")
 
 <h2>Devices</h2>
 <ul class="list-group">
+    @{int i = 0;}
     @foreach(var device in Model.Devices)
     {
-        <li  class="list-group-item">
+        <li  class="list-group-item" data-toggle="collapse" data-target=".collapsable-device-@(i)">
             @device.Name
-            <ul class="list-group">
+            <ul class="list-group collapsable-device-@(i) collapse in">
                 @foreach(var folder in Model.Folders)
                 {
                     <li  class="list-group-item">@folder.Name</li>
                 }
             </ul>
         </li>
+        i++;
     }
+    <p class="btn btn-default">@Html.ActionLink("New Folder", "NewFolder", "Device", new { area = "" }, null)</p>
+    <p class="btn btn-default">@Html.ActionLink("New Device", "NewDevice", "Device", new { area = "" }, null)</p>
+
 </ul>
 

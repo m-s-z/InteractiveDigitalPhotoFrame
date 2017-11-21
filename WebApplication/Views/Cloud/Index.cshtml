@@ -11,8 +11,10 @@
         <li class="list-group-item">
             <span>@cloud.Provider.ToString()</span>
             <span>@cloud.Login</span>
-            <button class="btn-info">Manage</button>
+            <p class="btn btn-default">@Html.ActionLink("Delete","Delete", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
         </li>
     }
 </ul>
+<p class="btn btn-default">@Html.ActionLink("New Cloud", "NewCloud", "Cloud", new { area = "" }, null)</p>
+
 

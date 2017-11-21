@@ -35,6 +35,14 @@ namespace WebApplication.Controllers
 
             return View(deviceModel);
         }
+        public ActionResult NewFolder()
+        {
+            return View();
+        }
+        public ActionResult NewDevice()
+        {
+            return View();
+        }
         public async Task<ActionResult> GetUserAllDevices(int? user)
         {
             if (user == null)
