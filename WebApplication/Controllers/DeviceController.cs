@@ -17,28 +17,18 @@ namespace WebApplication.Controllers
         // GET: Device
         public ActionResult Index()
         {
-            var folder = new Folder("summer", 1, 1);
-            var folder2 = new Folder("winter", 2, 1);
-            List<Folder> folders = new List<Folder>();
-            List<Folder> folders2 = new List<Folder>();
-
-            folders.Add(folder);
-            folders.Add(folder2);
-            folders2.Add(folder);
+           
             var device = new Device(1,"Grandmas Tablet");
             var device2 = new Device(1, "My Tablet");
             List<Device> devices = new List<Device>();
             devices.Add(device);
             devices.Add(device2);
 
-            DeviceViewModel deviceModel = new DeviceViewModel(devices,folders);
+            DeviceViewModel deviceViewModel = new DeviceViewModel(devices);
 
-            return View(deviceModel);
+            return View(deviceViewModel);
         }
-        public ActionResult NewFolder()
-        {
-            return View();
-        }
+        
         public ActionResult NewDevice()
         {
             return View();

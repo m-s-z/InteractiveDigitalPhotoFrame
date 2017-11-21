@@ -16,13 +16,20 @@ namespace WebApplication.Controllers
             var folder = new Folder("summer", 1, 1);
             var folder2 = new Folder("winter", 2, 1);
             List<Folder> folders = new List<Folder>();
+            List<Folder> folders2 = new List<Folder>();
+
             folders.Add(folder);
             folders.Add(folder2);
-            var device = new Device(1, "grandmas tablet");
+            folders2.Add(folder);
+            var device = new Device(1, "Grandmas Tablet");
+            var device2 = new Device(1, "My Tablet");
+            List<Device> devices = new List<Device>();
+            devices.Add(device);
+            devices.Add(device2);
 
-            FolderViewModel viewModel = new FolderViewModel(device,folders);
+            FolderViewModel deviceModel = new FolderViewModel(devices, folders);
 
-            return View(viewModel);
+            return View(deviceModel);
         }
 
         public ActionResult AddFolder(int DeviceId)
@@ -44,6 +51,10 @@ namespace WebApplication.Controllers
         public ActionResult BindDevice(int FolderId, int DeviceId)
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
+        }
+        public ActionResult NewFolder()
+        {
+            return View();
         }
     }
 }

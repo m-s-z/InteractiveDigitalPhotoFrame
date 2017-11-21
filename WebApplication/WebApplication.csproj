@@ -275,7 +275,7 @@
     <Content Include="Views\Cloud\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Device\NewFolder.cshtml" />
+    <Content Include="Views\Folder\NewFolder.cshtml" />
     <Content Include="Views\Device\NewDevice.cshtml" />
     <Content Include="Views\Cloud\NewCloud.cshtml" />
   </ItemGroup>
