@@ -1,0 +1,6 @@
+﻿body{
+    background : green;
+}
+.collapsing-content .link-goto {
+    cursor: pointer;
+}
