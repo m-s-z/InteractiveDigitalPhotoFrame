@@ -4,5 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Hello </h2>
-<button class="btn">Change Password</button>
+<h2>Hello @Model.Account.Login </h2>
+@using (Html.BeginForm("ChangeLogin", "Account", FormMethod.Post))
+{
+    @Html.EditorFor(model => model.Account.Login, new { id = Model.Account.Id })
+    <input type="hidden" name="id" value="@(Model.Account.Id)"></input>
+    <input type="submit"  value="change login"/>
+
+}
