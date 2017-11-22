@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         {
            
             var device = new Device(1,"Grandmas Tablet");
-            var device2 = new Device(1, "My Tablet");
+            var device2 = new Device(2, "My Tablet");
             List<Device> devices = new List<Device>();
             devices.Add(device);
             devices.Add(device2);

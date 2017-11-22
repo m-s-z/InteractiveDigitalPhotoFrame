@@ -8,12 +8,24 @@
 }
 <h2 class="@className">Folders</h2>
 <ul class="list-group">
-    @{int i = 0;}
+    @{
+        int i = 0;
+        String collapse = "";
+     }
+
     @foreach (var device in Model.Devices)
     {
         <li class="list-group-item" >
             <span class="collapsing-content" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.Name</span>
-            <ul class="list-group collapsable-device-@(i) collapse in">
+            @if (Model.IndexOfOpenDevice == i)
+            {
+                collapse = "in";
+            }
+            else
+            {
+                collapse = "";
+            }
+            <ul class="list-group collapsable-device-@(i) collapse @(collapse)">
             @foreach (var folder in Model.Folders)
             {
                 <li class="list-group-item">
@@ -27,6 +39,7 @@
         i++;
     }
 </ul>
-@Styles.Render("~/Content/css");
+
+
 
 

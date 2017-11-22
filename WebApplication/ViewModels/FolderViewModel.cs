@@ -15,7 +15,15 @@ namespace WebApplication.ViewModels
             Folders = folders;
         }
 
+        public FolderViewModel(List<Device> devices, List<Folder> folders, int indexOfOpenDevice)
+        {
+            Devices = devices;
+            Folders = folders;
+            IndexOfOpenDevice = indexOfOpenDevice;
+        }
+
         public List<Device> Devices { get; set; }
         public List<Folder> Folders { get; set; }
+        public int IndexOfOpenDevice { get; set; }
     }
 }
