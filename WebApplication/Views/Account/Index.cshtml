@@ -9,6 +9,6 @@
 {
     @Html.EditorFor(model => model.Account.Login, new { id = Model.Account.Id })
     <input type="hidden" name="id" value="@(Model.Account.Id)"></input>
-    <input type="submit"  value="change login"/>
+    <input type="submit" class="btn-primary" value="change login"/>
 
 }

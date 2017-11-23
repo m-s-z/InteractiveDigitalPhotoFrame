@@ -30,7 +30,7 @@
             {
                 <li class="list-group-item">
                     <span >@folder.Name</span>
-                    <p class="btn btn-default">@Html.ActionLink("Delete", "Delete", "Cloud", new { cloudId = -1 }, null)</p>
+                    <p class="btn btn-default">@Html.ActionLink("Delete", "DeleteFolder", "Folder", new { folderId = folder.FolderId}, null)</p>
                 </li>
             }
             </ul>

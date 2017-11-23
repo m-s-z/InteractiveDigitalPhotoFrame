@@ -64,5 +64,14 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+        public ActionResult DeleteFolder(int folderId)
+        {
+            ConfirmDeleteFolderViewModel view = new ConfirmDeleteFolderViewModel(folderId);
+            return View(view);
+        }
+        public ActionResult ConfirmDeleteFolder(int folderId)
+        {
+            return Redirect("Index");
+        }
     }
 }

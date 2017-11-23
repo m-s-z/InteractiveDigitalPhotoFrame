@@ -209,6 +209,7 @@
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\CloudViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmDeleteFolderViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +280,7 @@
     <Content Include="Views\Folder\NewFolder.cshtml" />
     <Content Include="Views\Device\NewDevice.cshtml" />
     <Content Include="Views\Cloud\NewCloud.cshtml" />
+    <Content Include="Views\Folder\DeleteFolder.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
