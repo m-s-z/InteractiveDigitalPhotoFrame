@@ -9,12 +9,12 @@
     @foreach (var cloud in Model.Clouds)
     {
         <li class="list-group-item">
-            <span>@cloud.Provider.ToString()</span>
-            <span>@cloud.Login</span>
-            <p class="btn btn-default">@Html.ActionLink("Delete","DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
+            <span class="provider">@cloud.Provider.ToString()</span>
+            <span class="provider">@cloud.Login</span>
+            <p class="btn btn-default remove-button">@Html.ActionLink("Remove","DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
         </li>
     }
 </ul>
-<p class="btn btn-default">@Html.ActionLink("New Cloud", "NewCloud", "Cloud", new { area = "" }, null)</p>
+<p class="btn btn-default center-block">@Html.ActionLink("New Cloud", "NewCloud", "Cloud", new { area = "" }, null)</p>
 
 

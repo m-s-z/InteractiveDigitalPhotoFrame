@@ -17,5 +17,38 @@ select,
 textarea {
     max-width: 280px;
 }
+.change-login-class {
+    margin-top: 1em;
+}
+.remove-button{
+    margin-left: 1em;
+}
 
+.provider {
+    border: 0.05em solid black;
+    border-radius: 6px;
+    background: #c7d5ed;
+    padding: 0.3em;
+    margin-left: 0.5em;
+    font-size: 1.8rem;
+    color: #333;
+}
+.folder-name {
+    border: 0.05em solid black;
+    border-radius: 6px;
+    background: #c7d5ed;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    font-size: 1.8rem;
+    text-decoration: inherit;
+    color: #333;
+}
+.remove-link {
+    color: #333;
+    text-decoration: none;
+}
+    .remove-link:hover {
+        color: #333;
+        text-decoration: none;
+    }
 

@@ -12,6 +12,13 @@ namespace WebApplication.ViewModels
             FolderId = folderId;
         }
 
+        public ConfirmDeleteFolderViewModel(int folderId, string name)
+        {
+            FolderId = folderId;
+            Name = name;
+        }
+
         public int FolderId { get; set; }
+        public String Name { get; set; }
     }
 }

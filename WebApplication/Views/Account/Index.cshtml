@@ -3,12 +3,18 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Hello @Model.Account.Login </h2>
+<div>
+    <h2 class="text-center">Hello @Model.Account.Login </h2>
+</div>
 @using (Html.BeginForm("ChangeLogin", "Account", FormMethod.Post))
 {
-    @Html.EditorFor(model => model.Account.Login, new { id = Model.Account.Id })
+    <div>
+        <div class="text-center">
+            @Html.EditorFor(model => model.Account.Login, new { id = Model.Account.Id })
+        </div>
+    </div>
     <input type="hidden" name="id" value="@(Model.Account.Id)"></input>
-    <input type="submit" class="btn-primary" value="change login"/>
-
+    <div>
+        <input type="submit" class="btn btn-primary center-block change-login-class" value="change login" />
+    </div>
 }
