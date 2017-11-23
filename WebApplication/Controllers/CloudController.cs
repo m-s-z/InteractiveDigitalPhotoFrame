@@ -30,13 +30,15 @@ namespace WebApplication.Controllers
         }
         public async Task<ActionResult> ConfirmDeleteCloud(int cloudId)
         {
+            //next part maybe use services?
+            /*
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             if (cloud != null)
             {
                 db.Clouds.Remove(cloud);
 
             }
-            await db.SaveChangesAsync();
+            await db.SaveChangesAsync();*/
             return Redirect("Index");
         }
 

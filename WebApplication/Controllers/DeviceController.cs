@@ -54,5 +54,15 @@ namespace WebApplication.Controllers
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult DeleteDevice(int deviceId, String deviceName)
+        {
+            ConfirmDeleteDeviceViewModel view = new ConfirmDeleteDeviceViewModel(deviceId, deviceName);
+            return View(view);
+        }
+        public ActionResult ConfirmDeleteDevice(int deviceId)
+        {
+            return Redirect("Index");
+        }
     }
 }

@@ -12,7 +12,7 @@
         <li class="list-group-item">
             <span class="link-goto folder-name">@Html.ActionLink(@device.Name, "Index", "Folder", new { IdOfOpenDevice = device.DeviceId }, new {@class = "remove-link" })</span>
             
-            <p class="btn btn-default remove-button">@Html.ActionLink("Unpair Device", "Delete", "Cloud", new { cloudId = -1 }, null)</p>
+            <p class="btn btn-default remove-button">@Html.ActionLink("Unpair Device", "DeleteDevice", "Device", new { deviceId = device.DeviceId, deviceName = device.Name}, null)</p>
         </li>
     }
 </ul>
