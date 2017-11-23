@@ -1,21 +1,21 @@
 ﻿<div class="jumbotron">
     <h1>Digital Photo Frame</h1>
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. Phasellus facilisis non turpis a sagittis. Cras massa purus, iaculis ut purus sed, placerat tempor tortor. Aliquam auctor mauris sit amet rutrum dignissim. Suspendisse rhoncus, urna sit amet laoreet ultricies, magna nisi mattis ex, ac bibendum enim odio vitae lectus. Praesent at magna risus.</p>
+    <p class="lead">Digital photo app an all in one integrated system for photo sharing via digital photo frames. We are very happy you have choosen us. Here, on this website, you can manage all your digital photo frame needs</p>
 </div>
 <div class="row">
     <div class="col-md-4">
+        <h2>Devices</h2>
+        <p>Connect to any device that has our Digital Photo Frame app installed. Here you can manage pairings and view folders assigned to your device. Its a great place to start if you are new to our system.</p>
+        <p>@Html.ActionLink("Go >>", "Index", "Device", new { area = "" }, new { @class = "btn btn-default center-block" })</p>
+    </div>
+    <div class="col-md-4">
         <h2>Folders</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. </p>
-        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index", "Folder", new { area = "" }, null)</p>
+        <p>Assign folders to your connected devices so your close ones can see them. Folders are segregated by your device. Click the name of a device to expand all folders assigned to it. You can assign a single folder to multiple devices. Once you assign a folder with images to a device your close one's will be able to download them instantaneously. Dont wait and start sharing! </p>
+        <p>@Html.ActionLink("Go >>", "Index", "Folder", new { area = "" }, new { @class = "btn btn-default center-block" })</p>
     </div>
     <div class="col-md-4">
         <h2>Clouds</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. Phasellus facilisis non turpis a sagittis. Cras massa purus, iaculis ut purus sed, placerat tempor tortor. Aliquam auctor mauris sit amet rutrum dignissim. Suspendisse rhoncus, urna sit amet laoreet ultricies, magna nisi mattis ex, ac bibendum enim odio vitae lectus. Praesent at magna risus.</p>
-        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index", "Cloud", new { area = "" }, null)</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Devices</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel elit eu justo elementum pharetra. Suspendisse pharetra sit amet ante vel tristique. </p>
-        <p class="btn btn-default">@Html.ActionLink("Go >>", "Index","Device", new { area = "" }, null)</p>
+        <p>Connect to cloud providers where you keep your photos. We support Microsoft's One Drive, Google Drive, Flicker and Dropbox. This is the place to manage all things connected to your cloud provider.</p>
+        <p>@Html.ActionLink("Go >>", "Index", "Cloud", new { area = "" }, new { @class = "btn btn-default center-block" })</p>
     </div>
 </div>

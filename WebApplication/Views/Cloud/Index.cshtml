@@ -11,10 +11,10 @@
         <li class="list-group-item">
             <span class="provider">@cloud.Provider.ToString()</span>
             <span class="provider">@cloud.Login</span>
-            <p class="btn btn-default remove-button">@Html.ActionLink("Remove","DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
+            <p class="btn btn-default remove-button">@Html.ActionLink("Disconnect","DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
         </li>
     }
 </ul>
-<p class="btn btn-default center-block">@Html.ActionLink("New Cloud", "NewCloud", "Cloud", new { area = "" }, null)</p>
+<p class="btn btn-default center-block">@Html.ActionLink("Connect to a New Cloud", "NewCloud", "Cloud", new { area = "" }, null)</p>
 
 
