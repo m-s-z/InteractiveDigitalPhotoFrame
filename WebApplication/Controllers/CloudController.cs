@@ -28,7 +28,7 @@ namespace WebApplication.Controllers
 
             return View(model);
         }
-        public async Task<ActionResult> Delete(int cloudId)
+        public async Task<ActionResult> ConfirmDeleteCloud(int cloudId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             if (cloud != null)
@@ -38,6 +38,18 @@ namespace WebApplication.Controllers
             }
             await db.SaveChangesAsync();
             return Redirect("Index");
+        }
+
+        public ActionResult DeleteCloud(int cloudId)
+        {
+            ConfirmDeleteCloudViewModel view = new ConfirmDeleteCloudViewModel(cloudId);
+
+            return View(view);
+        }
+
+        public ActionResult NewCloud()
+        {
+            return View();
         }
     }
 }
