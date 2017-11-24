@@ -189,7 +189,6 @@
     <Compile Include="Controllers\FolderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\ApplicationContext.cs" />
     <Compile Include="Data\DummyData.cs" />
     <Compile Include="Global.asax.cs">
