@@ -3,12 +3,14 @@
     ViewBag.Title = "DeleteFolder";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="background-transparent">
 
-<h2>Delete Folder "@(Model.Name)"</h2>
-<p>Are you sure you want unassign this folder?</p>
-@using (Html.BeginForm("ConfirmDeleteFolder", "Folder", FormMethod.Post))
-{
-    <input type="hidden" name="folderId" value="@(Model.FolderId)"></input>
-    <input class="btn btn-warning" type="submit" value="Delete Model" />
+    <h2>Delete Folder "@(Model.Name)"</h2>
+    <p>Are you sure you want unassign this folder?</p>
+    @using (Html.BeginForm("ConfirmDeleteFolder", "Folder", FormMethod.Post))
+    {
+        <input type="hidden" name="folderId" value="@(Model.FolderId)"></input>
+        <input class="btn btn-warning" type="submit" value="Delete Model" />
 
-}
+    }
+</div>

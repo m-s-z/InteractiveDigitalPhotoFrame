@@ -6,40 +6,41 @@
 @{ 
        string className = Model.Folders.Count > 5 ? "multipleFolders" : null;
 }
-<h2 class="@className">Folders</h2>
-<ul class="list-group">
-    @{
-        int i = 0;
-        String collapse = "";
-     }
+<div class="background-transparent">
+    <h2 class="@className text-center">Folders</h2>
+    <ul class="list-group">
+        @{
+            int i = 0;
+            String collapse = "";
+        }
 
-    @foreach (var device in Model.Devices)
-    {
-        <li class="list-group-item" >
-            <span class="collapsing-content folder-name" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.Name</span>
-            @if (Model.IndexOfOpenDevice == i)
-            {
-                collapse = "in";
-            }
-            else
-            {
-                collapse = "";
-            }
-            <ul class="list-group collapsable-device-@(i) collapse @(collapse)">
-            @foreach (var folder in Model.Folders)
-            {
-                <li class="list-group-item">
-                    <span >@folder.Name</span>
-                    @Html.ActionLink("Unassign", "DeleteFolder", "Folder", new { folderId = folder.FolderId, folderName=folder.Name}, new {@class = "btn btn-default remove-button" })
-                </li>
-            }
-            </ul>
-            <p class="btn btn-default center-block">@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { area = "" }, null)</p>
-        </li>
-        i++;
-    }
-</ul>
-
+        @foreach (var device in Model.Devices)
+        {
+            <li class="list-group-item">
+                <span class="collapsing-content folder-name" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.Name</span>
+                @if (Model.IndexOfOpenDevice == i)
+                {
+                    collapse = "in";
+                }
+                else
+                {
+                    collapse = "";
+                }
+                <ul class="list-group collapsable-device-@(i) collapse @(collapse)">
+                    @foreach (var folder in Model.Folders)
+                    {
+                        <li class="list-group-item">
+                            <span class="single-folder">@folder.Name</span>
+                            @Html.ActionLink("Unassign", "DeleteFolder", "Folder", new { folderId = folder.FolderId, folderName = folder.Name }, new { @class = "btn btn-default remove-button" })
+                        </li>
+                    }
+                </ul>
+                <p class="btn btn-default center-block">@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { area = "" }, null)</p>
+            </li>
+            i++;
+        }
+    </ul>
+</div>
 
 
 

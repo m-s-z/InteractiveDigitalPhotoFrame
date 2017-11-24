@@ -1,7 +1,13 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #ffc34d;
+    background-image: url('../Images/websitephoto2-1999x1045.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
+
 .link-goto, .collapsing-content {
     cursor: pointer;
 }
@@ -51,4 +57,32 @@ textarea {
     color: #333;
     text-decoration: none;
 }
-
+.background-transparent {
+    margin-top: 2em;
+    padding-top: 0.5em;
+    margin-bottom: 2em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 6px !important;
+    opacity: 0.9;
+    background: white;
+}
+.background-solid {
+    background: #ffc34d;
+}
+.background-footer {
+    opacity: 0.8;
+    background: #802b00;
+    color : white;
+}
+.single-folder{
+    font-size: 1.5em;
+}
+.front-page-tile{
+    font-size: 1.3em;
+}
+.padding-welcome-page {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}

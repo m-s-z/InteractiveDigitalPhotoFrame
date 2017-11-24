@@ -4,18 +4,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Scripts.Render("~/Scripts/Device/device.js")
+<div class="background-transparent">
+    <h2 class="text-center">Devices</h2>
+    <ul class="list-group">
+        @foreach (var device in Model.Devices)
+        {
+            <li class="list-group-item">
+                <span class="link-goto folder-name">@Html.ActionLink(@device.Name, "Index", "Folder", new { IdOfOpenDevice = device.DeviceId }, new { @class = "remove-link" })</span>
 
-<h2>Devices</h2>
-<ul class="list-group">
-    @foreach (var device in Model.Devices)
-    {
-        <li class="list-group-item">
-            <span class="link-goto folder-name">@Html.ActionLink(@device.Name, "Index", "Folder", new { IdOfOpenDevice = device.DeviceId }, new {@class = "remove-link" })</span>
-            
-            @Html.ActionLink("Unpair Device", "DeleteDevice", "Device", new { deviceId = device.DeviceId, deviceName = device.Name}, new { @class = "btn btn-default remove-button" })
-        </li>
-    }
-</ul>
-<p>@Html.ActionLink("Pair With New Device", "NewDevice", "Device", new { area = "" }, new { @class = "btn btn-default remove-button center-block" })</p>
-
+                @Html.ActionLink("Unpair Device", "DeleteDevice", "Device", new { deviceId = device.DeviceId, deviceName = device.Name }, new { @class = "btn btn-default remove-button" })
+            </li>
+        }
+    </ul>
+    <p>@Html.ActionLink("Pair With New Device", "NewDevice", "Device", new { area = "" }, new { @class = "btn btn-default remove-button center-block" })</p>
+</div>
 
