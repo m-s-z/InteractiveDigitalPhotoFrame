@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:DPF.ViewModels;assembly=DPF"
+             x:Class="DPF.Views.MainAppPage"
+             NavigationPage.HasNavigationBar="false"
+             BackgroundColor="Black">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainDPFViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid>
+            <Image Source="{Binding PhotoPath}" VerticalOptions="CenterAndExpand" />
+            <!--<BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />-->
+            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" />
+            <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PreviousPhotoCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            
+            <Image Source="back_96px.png" Rotation="-90" HorizontalOptions="End" VerticalOptions="End" Margin="0, 0, 60, 25" HeightRequest="50">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NextPhotoCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="resume_96px.png" HorizontalOptions="Center" VerticalOptions="End" Margin="0, 0, 0, 25" HeightRequest="50" />
+            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
