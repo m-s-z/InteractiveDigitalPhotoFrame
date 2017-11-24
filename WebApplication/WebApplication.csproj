@@ -189,7 +189,6 @@
     <Compile Include="Controllers\FolderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\ApplicationContext.cs" />
     <Compile Include="Data\DummyData.cs" />
     <Compile Include="Global.asax.cs">
@@ -208,8 +207,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\CloudViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmDeleteCloudViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmDeleteDeviceViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmDeleteFolderViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
+    <Compile Include="ViewModels\PairDeviceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\WebApplication.Data.ApplicationContext.mdf" />
@@ -220,6 +223,9 @@
     <Content Include="Content\bootstrap-readable.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Images\dpf_code.png" />
+    <Content Include="Images\websitephoto2-1999x1045.jpg" />
+    <Content Include="Styles\folder.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -248,6 +254,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Device\Device.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -274,6 +281,13 @@
     <Content Include="Views\Cloud\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Folder\NewFolder.cshtml" />
+    <Content Include="Views\Device\NewDevice.cshtml" />
+    <Content Include="Views\Cloud\NewCloud.cshtml" />
+    <Content Include="Views\Folder\DeleteFolder.cshtml" />
+    <Content Include="Views\Cloud\DeleteCloud.cshtml" />
+    <Content Include="Views\Device\DeleteDevice.cshtml" />
+    <Content Include="Views\Device\PairDevice.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

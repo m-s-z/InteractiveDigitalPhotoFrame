@@ -8,13 +8,22 @@ namespace WebApplication.ViewModels
 {
     public class FolderViewModel
     {
-        public FolderViewModel(Device device, List<Folder> folders)
+        //we should group folders to appropriate devices
+        public FolderViewModel(List<Device> devices, List<Folder> folders)
         {
-            Device = device;
+            Devices = devices;
             Folders = folders;
         }
 
-        public Device Device { get; set; }
+        public FolderViewModel(List<Device> devices, List<Folder> folders, int indexOfOpenDevice)
+        {
+            Devices = devices;
+            Folders = folders;
+            IndexOfOpenDevice = indexOfOpenDevice;
+        }
+
+        public List<Device> Devices { get; set; }
         public List<Folder> Folders { get; set; }
+        public int IndexOfOpenDevice { get; set; }
     }
 }

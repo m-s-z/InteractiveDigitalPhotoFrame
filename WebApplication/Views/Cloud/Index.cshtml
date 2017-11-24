@@ -3,16 +3,18 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Cloud Accounts</h2>
-<ul class="list-group">
-    @foreach (var cloud in Model.Clouds)
-    {
-        <li class="list-group-item">
-            <span>@cloud.Provider.ToString()</span>
-            <span>@cloud.Login</span>
-            <button class="btn-info">Manage</button>
-        </li>
-    }
-</ul>
+<div class="background-transparent">
+    <h2 class="text-center">Cloud Accounts</h2>
+    <ul class="list-group">
+        @foreach (var cloud in Model.Clouds)
+        {
+            <li class="list-group-item">
+                <span class="provider">@cloud.Provider.ToString()</span>
+                <span class="provider">@cloud.Login</span>
+                <p class="btn btn-default remove-button">@Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
+            </li>
+        }
+    </ul>
+    <p class="">@Html.ActionLink("Connect to a New Cloud", "NewCloud", "Cloud", new { area = "" }, new {@class = "btn btn-default center-block remove-link" })</p>
+</div>
 

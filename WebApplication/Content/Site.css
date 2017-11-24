@@ -1,8 +1,16 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #ffc34d;
+    background-image: url('../Images/websitephoto2-1999x1045.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
+.link-goto, .collapsing-content {
+    cursor: pointer;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -14,4 +22,73 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+.change-login-class {
+    margin-top: 1em;
+}
+.remove-button{
+    margin-left: 1em;
+}
+
+.provider {
+    border: 0.04em solid black;
+    border-radius: 6px;
+    background: #c7d5ed;
+    padding: 0.3em;
+    margin-left: 0.5em;
+    font-size: 1.8rem;
+    color: #333;
+}
+.folder-name {
+    border: 0.04em solid black;
+    border-radius: 6px;
+    /*background: #c7d5ed;*/
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    font-size: 1.8rem;
+    text-decoration: inherit;
+    color: #333;
+}
+.remove-link {
+    color: #333;
+    text-decoration: none;
+}
+.remove-link:hover {
+    color: #333;
+    text-decoration: none;
+}
+.background-transparent {
+    margin-top: 2em;
+    padding-top: 0.5em;
+    margin-bottom: 2em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 6px !important;
+    opacity: 0.9;
+    background: white;
+}
+.background-solid {
+    background: #ffc34d;
+}
+.background-footer {
+    opacity: 0.8;
+    background: #802b00;
+    color : white;
+}
+.single-folder{
+    font-size: 1.5em;
+}
+.front-page-tile{
+    font-size: 1.3em;
+}
+.padding-welcome-page {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+.pair-code {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 13em;
+    font-size: 2em;
 }

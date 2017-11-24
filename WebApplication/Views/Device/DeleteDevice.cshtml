@@ -1,0 +1,18 @@
+﻿@model WebApplication.ViewModels.ConfirmDeleteDeviceViewModel
+@{
+    ViewBag.Title = "DeleteView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="background-transparent">
+
+    <h2>Unpair Device "@Model.Name"</h2>
+    <p>Are you sure you want to this device from your account?</p>
+    <p>All assigned folders will be unsigned but you can always re-pair to this device</p>
+
+    @using (Html.BeginForm("ConfirmDeleteDevice", "Device", FormMethod.Post))
+    {
+        <input type="hidden" name="deviceId" value="@(Model.Id)"></input>
+        <input class="btn btn-warning center-block" type="submit" value="Unpair Device" />
+
+    }
+</div>

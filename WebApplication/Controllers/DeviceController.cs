@@ -17,25 +17,23 @@ namespace WebApplication.Controllers
         // GET: Device
         public ActionResult Index()
         {
-            var folder = new Folder("summer", 1, 1);
-            var folder2 = new Folder("winter", 2, 1);
-            List<Folder> folders = new List<Folder>();
-            List<Folder> folders2 = new List<Folder>();
-
-            folders.Add(folder);
-            folders.Add(folder2);
-            folders2.Add(folder);
+           
             var device = new Device(1,"Grandmas Tablet");
-            var device2 = new Device(1, "My Tablet");
+            var device2 = new Device(2, "My Tablet");
             List<Device> devices = new List<Device>();
             devices.Add(device);
             devices.Add(device2);
 
-            DeviceViewModel deviceModel = new DeviceViewModel(devices,folders);
+            DeviceViewModel deviceViewModel = new DeviceViewModel(devices);
 
-            return View(deviceModel);
+            return View(deviceViewModel);
         }
-        public async Task<ActionResult> GetUserAllDevices(int? user)
+        
+        public ActionResult NewDevice()
+        {
+            return View();
+        }
+        /*public async Task<ActionResult> GetUserAllDevices(int? user)
         {
             if (user == null)
             {
@@ -55,6 +53,22 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
+        }*/
+
+        public ActionResult DeleteDevice(int deviceId, String deviceName)
+        {
+            ConfirmDeleteDeviceViewModel view = new ConfirmDeleteDeviceViewModel(deviceId, deviceName);
+            return View(view);
+        }
+        public ActionResult ConfirmDeleteDevice(int deviceId)
+        {
+            return Redirect("Index");
+        }
+
+        public async Task<ActionResult> PairDevice(String pairCode)
+        {
+            PairDeviceViewModel view = new PairDeviceViewModel("Success");
+            return View(view);
         }
     }
 }

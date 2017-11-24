@@ -1,0 +1,17 @@
+﻿@model WebApplication.ViewModels.ConfirmDeleteCloudViewModel
+@{
+    ViewBag.Title = "DeleteCloud";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="background-transparent">
+
+    <h2>Delete Cloud</h2>
+    <p>Are you sure you want to delete this cloud provider account?</p>
+    @using (Html.BeginForm("ConfirmDeleteFolder", "Folder", FormMethod.Post))
+    {
+        <input type="hidden" name="folderId" value="@(Model.CloudId)"></input>
+        <input class="btn btn-warning" type="submit" value="Remove Cloud Account" />
+
+    }
+</div>
+

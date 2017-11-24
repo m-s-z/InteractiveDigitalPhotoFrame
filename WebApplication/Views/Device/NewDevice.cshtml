@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "NewDevice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="background-transparent center-block">
+    <h2 class="text-center">Pair Device</h2>
+    <img class="center-block" width="300em" src="~/Images/dpf_code.png" />
+    @using (Html.BeginForm("PairDevice", "Device", FormMethod.Post))
+    {
+        <input class="center-block pair-code" type="text" name="pairCode"/>
+        <input class="btn btn-primary center-block" type="submit" value="Pair Device" />
+
+    }
+</div>

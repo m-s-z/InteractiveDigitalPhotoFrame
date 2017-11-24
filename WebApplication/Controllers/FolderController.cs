@@ -11,39 +11,54 @@ namespace WebApplication.Controllers
     public class FolderController : Controller
     {
         // GET: Folder
-        public ActionResult Index()
+        public ActionResult Index(int? IdOfOpenDevice)
         {
+            int index;
             var folder = new Folder("summer", 1, 1);
             var folder2 = new Folder("winter", 2, 1);
             List<Folder> folders = new List<Folder>();
+            List<Folder> folders2 = new List<Folder>();
+
             folders.Add(folder);
             folders.Add(folder2);
-            var device = new Device(1, "grandmas tablet");
-
-            FolderViewModel viewModel = new FolderViewModel(device,folders);
-
-            return View(viewModel);
-        }
-
-        public ActionResult AddFolder(int DeviceId)
-        {
-            return Content(DeviceId.ToString());
-        }
-
-        //string is nullable so parameter is not necessary
-        public ActionResult Folders(string sortBy)
-        {
-            if(String.IsNullOrWhiteSpace(sortBy))
+            folders2.Add(folder);
+            var device = new Device(1, "Grandmas Tablet");
+            var device2 = new Device(2, "My Tablet");
+            List<Device> devices = new List<Device>();
+            devices.Add(device);
+            devices.Add(device2);
+            if (IdOfOpenDevice != null)
             {
-                sortBy = "decreasing";
+                index = devices.FindIndex(d => d.DeviceId == IdOfOpenDevice);
             }
-            return Content(String.Format("sort by = {0}", sortBy));
+            else
+            {
+                index = -1; 
+            }
+            FolderViewModel deviceModel = new FolderViewModel(devices, folders, index);
+
+            return View(deviceModel);
         }
 
-        [Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
+        
+
+        /*[Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
         public ActionResult BindDevice(int FolderId, int DeviceId)
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
+        }*/
+        public ActionResult NewFolder()
+        {
+            return View();
+        }
+        public ActionResult DeleteFolder(int folderId, String folderName)
+        {
+            ConfirmDeleteFolderViewModel view = new ConfirmDeleteFolderViewModel(folderId, folderName);
+            return View(view);
+        }
+        public ActionResult ConfirmDeleteFolder(int folderId)
+        {
+            return Redirect("Index");
         }
     }
 }

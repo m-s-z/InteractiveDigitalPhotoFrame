@@ -2,22 +2,45 @@
 @{
     ViewBag.Title = "Folder";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 @{ 
-    string className = Model.Folders.Count > 5 ? "multipleFolders" : null;
+       string className = Model.Folders.Count > 5 ? "multipleFolders" : null;
 }
-<h2 class="@className">@Model.Device.Name</h2>
-@if (Model.Folders.Count == 0)
-{
-    <text>No folders connected </text>
-}
-else
-{
+<div class="background-transparent">
+    <h2 class="@className text-center">Folders</h2>
     <ul class="list-group">
-        @foreach (var folder in Model.Folders)
+        @{
+            int i = 0;
+            String collapse = "";
+        }
+
+        @foreach (var device in Model.Devices)
         {
-            <li class="list-group-item">@folder.Name</li>
+            <li class="list-group-item">
+                <span class="collapsing-content folder-name" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.Name</span>
+                @if (Model.IndexOfOpenDevice == i)
+                {
+                    collapse = "in";
+                }
+                else
+                {
+                    collapse = "";
+                }
+                <ul class="list-group collapsable-device-@(i) collapse @(collapse)">
+                    @foreach (var folder in Model.Folders)
+                    {
+                        <li class="list-group-item">
+                            <span class="single-folder">@folder.Name</span>
+                            @Html.ActionLink("Unassign", "DeleteFolder", "Folder", new { folderId = folder.FolderId, folderName = folder.Name }, new { @class = "btn btn-default remove-button" })
+                        </li>
+                    }
+                </ul>
+                <p class="btn btn-default center-block">@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { area = "" }, null)</p>
+            </li>
+            i++;
         }
     </ul>
-}
+</div>
+
+
+
