@@ -99,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
+    <Compile Include="Controllers\CloudControllerTests.cs" />
+    <Compile Include="Controllers\DeviceControllerTests.cs" />
+    <Compile Include="Controllers\FolderControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>

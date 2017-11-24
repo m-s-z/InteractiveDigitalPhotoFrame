@@ -42,11 +42,11 @@ namespace WebApplication.Controllers
 
         
 
-        [Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
+        /*[Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
         public ActionResult BindDevice(int FolderId, int DeviceId)
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
-        }
+        }*/
         public ActionResult NewFolder()
         {
             return View();

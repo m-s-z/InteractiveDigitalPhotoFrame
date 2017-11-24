@@ -212,6 +212,7 @@
     <Compile Include="ViewModels\DeviceViewModel.cs" />
     <Compile Include="ViewModels\ConfirmDeleteFolderViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
+    <Compile Include="ViewModels\PairDeviceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\WebApplication.Data.ApplicationContext.mdf" />
@@ -222,6 +223,7 @@
     <Content Include="Content\bootstrap-readable.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Images\dpf_code.png" />
     <Content Include="Images\websitephoto2-1999x1045.jpg" />
     <Content Include="Styles\folder.css" />
     <Content Include="favicon.ico" />
@@ -285,6 +287,7 @@
     <Content Include="Views\Folder\DeleteFolder.cshtml" />
     <Content Include="Views\Cloud\DeleteCloud.cshtml" />
     <Content Include="Views\Device\DeleteDevice.cshtml" />
+    <Content Include="Views\Device\PairDevice.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

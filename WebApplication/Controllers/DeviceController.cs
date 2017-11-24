@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
         {
             return View();
         }
-        public async Task<ActionResult> GetUserAllDevices(int? user)
+        /*public async Task<ActionResult> GetUserAllDevices(int? user)
         {
             if (user == null)
             {
@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
         public ActionResult DeleteDevice(int deviceId, String deviceName)
         {
@@ -63,6 +63,12 @@ namespace WebApplication.Controllers
         public ActionResult ConfirmDeleteDevice(int deviceId)
         {
             return Redirect("Index");
+        }
+
+        public async Task<ActionResult> PairDevice(String pairCode)
+        {
+            PairDeviceViewModel view = new PairDeviceViewModel("Success");
+            return View(view);
         }
     }
 }

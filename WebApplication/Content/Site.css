@@ -86,3 +86,9 @@ textarea {
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
+.pair-code {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 13em;
+    font-size: 2em;
+}

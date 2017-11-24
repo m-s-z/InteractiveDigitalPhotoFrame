@@ -1,0 +1,9 @@
+﻿@model WebApplication.ViewModels.PairDeviceViewModel
+@{
+    ViewBag.Title = "PairView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="background-transparent">
+    <h2 class="text-center">@(Model.Result)</h2>
+    <p>@Html.ActionLink("Go back to Device View", "Index", "Device", new { area = "" }, new { @class = "btn btn-default center-block" })</p>
+</div>
