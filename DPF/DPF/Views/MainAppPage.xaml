@@ -12,22 +12,37 @@
 
     <ContentPage.Content>
         <Grid>
-            <Image Source="{Binding PhotoPath}" VerticalOptions="CenterAndExpand" />
+            <Image Source="{Binding PhotoPath}" VerticalOptions="CenterAndExpand">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapToActiveCommand}"/>
+            </Image.GestureRecognizers>
+            </Image>
             <!--<BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />-->
-            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" />
-            <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50">
+            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" IsVisible="{Binding IsActive}" />
+            <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PreviousPhotoCommand}"/>
                 </Image.GestureRecognizers>
-            </Image>
-            
-            <Image Source="back_96px.png" Rotation="-90" HorizontalOptions="End" VerticalOptions="End" Margin="0, 0, 60, 25" HeightRequest="50">
+            </Image> 
+
+            <Image Source="back_96px.png" Rotation="-90" HorizontalOptions="End" VerticalOptions="End" Margin="0, 0, 60, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding NextPhotoCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <Image Source="resume_96px.png" HorizontalOptions="Center" VerticalOptions="End" Margin="0, 0, 0, 25" HeightRequest="50" />
-            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" />
+            <Image Source="play_96px.png" HorizontalOptions="Center" VerticalOptions="End" Margin="0, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                 Binding="{Binding IsSlideshow}"
+                                 Value="True">
+                        <Setter Property="Source" Value="pause_96px.png" />
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ControlSlideshowCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

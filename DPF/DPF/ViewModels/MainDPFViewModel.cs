@@ -13,11 +13,25 @@ namespace DPF.ViewModels
         private List<String> _listOfImageNames;
         private int _photoCounter;
         private string _photoPath;
-
+        private bool _isActive;
+        private bool _isSlideshow;
+        private int _slideshowCounter;
         public string PhotoPath
         {
             get => _photoPath;
             set => SetProperty(ref _photoPath, value);
+        }
+
+        public bool IsActive
+        {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
+        }
+
+        public bool IsSlideshow
+        {
+            get => _isSlideshow;
+            set => SetProperty(ref _isSlideshow, value);
         }
 
         public List<String> ListOfImageNames
@@ -38,6 +52,19 @@ namespace DPF.ViewModels
             set;
         }
 
+        public Command TapToActiveCommand
+        {
+            get;
+            set;
+        }
+        public Command ControlSlideshowCommand
+        {
+            get;
+            set;
+        }
+
+
+
         public MainDPFViewModel()
         {
             ListOfImageNames = new List<string>()
@@ -48,12 +75,15 @@ namespace DPF.ViewModels
             };
             PhotoPath = ListOfImageNames[0];
             _photoCounter = 0;
+            TapToActiveCommand = new Command(ExecuteTapToActiveCommand);
             PreviousPhotoCommand = new Command(ExecutePreviousPhotoCommand);
             NextPhotoCommand = new Command(ExecuteNextPhotoCommand);
+            ControlSlideshowCommand = new Command(ExecuteControlSlideshowCommand);
         }
 
         private void ExecuteNextPhotoCommand()
         {
+            _slideshowCounter = 0;
             _photoCounter++;
             if (_photoCounter > 2)
             {
@@ -64,6 +94,7 @@ namespace DPF.ViewModels
 
         private void ExecutePreviousPhotoCommand()
         {
+            _slideshowCounter = 0;
             _photoCounter--;
             if (_photoCounter < 0)
             {
@@ -72,6 +103,34 @@ namespace DPF.ViewModels
             PhotoPath = ListOfImageNames[_photoCounter];
         }
 
+        private void ExecuteTapToActiveCommand()
+        {
+            IsActive = !IsActive;
+        }
+
+        private void ExecuteControlSlideshowCommand()
+        {
+            IsSlideshow = !IsSlideshow;
+
+            Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
+            {
+                if (IsSlideshow)
+                {
+                    _slideshowCounter++;
+
+                    if (_slideshowCounter >= 30)
+                    {
+                        ExecuteNextPhotoCommand();
+                    }
+                }
+                else
+                {
+                    _slideshowCounter = 0;
+                }
+
+                return IsSlideshow;
+            });
+        }
 
     }
 }
