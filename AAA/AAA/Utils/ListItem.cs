@@ -54,6 +54,22 @@ namespace AAA.Utils
             Command2 = new Command(ExecuteCommand2);
         }
 
+        public ListItem(string s1,  Command c1, CloudType cT = CloudType.None,  string s2 = "",  Command c2 = null)
+        {
+            S1 = s1;
+            S2 = s2;
+            SImage = cT;
+            Command1 = c1;
+            if (c2 == null)
+            {
+                Command2 = new Command(ExecuteCommand2);
+            }
+            else
+            {
+                Command2 = c2;
+            }
+        }
+
         private void ExecuteCommand1()
         {
             Application.Current.MainPage.DisplayAlert("Command1", "Command1 was executed", "OK");

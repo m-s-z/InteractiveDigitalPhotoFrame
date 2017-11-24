@@ -19,7 +19,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button VerticalOptions="End" Text="ADD NEW FOLDER" TextColor="White"  BackgroundColor="#32CD32"/>
+            <Button VerticalOptions="End" Text="ASSIGN NEW FOLDER" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToChooseProviderPageCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

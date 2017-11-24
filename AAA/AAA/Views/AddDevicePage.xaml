@@ -1,12 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.AddDevicePage">
+             x:Class="AAA.Views.AddDevicePage"
+             Title="Pair device">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Margin="20"
+                   Text="Tutorial how to pair account with a device. &#10; Photo will be changed."
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
+            <BoxView Grid.Row="1" Color="Black"/>
+            <Image Grid.Row="1" Source="dpf_code.png" Margin="10" HorizontalOptions="Center"/>
+            <Entry Margin="20" Grid.Row="2" BackgroundColor="White" Keyboard="Numeric" Placeholder="Pair code" HorizontalTextAlignment="Center"/>
+            <Button Grid.Row="3" VerticalOptions="End" Text="PAIR" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding ReturnCommand}"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

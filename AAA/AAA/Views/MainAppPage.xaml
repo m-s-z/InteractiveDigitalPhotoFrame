@@ -9,7 +9,8 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="user_96px.png"
-                     Order="Primary" />
+                     Order="Primary"
+                     Command="{Binding GoToProfilePageCommand}"/>
     </ContentPage.ToolbarItems>
         
     <ContentPage.BindingContext>
