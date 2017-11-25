@@ -6,6 +6,9 @@
 <!DOCTYPE html>
 
 <html>
+@if(Session["UserId"] != null){
+    Response.Redirect("~/Home");
+}
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
