@@ -1,5 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
+@if (Session["UserId"] == null)
+{
+    Response.Redirect("~/Login");
+}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -24,6 +28,9 @@
                     <li>@Html.ActionLink("Folders", "Index", "Folder", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Clouds", "Index", "Cloud", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Account", "Index", "Account", new { area = "" }, null)</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Log Out", "LogOut", "Login", new { area = "" }, new { @class = "float-right" })</li>
                 </ul>
             </div>
         </div>

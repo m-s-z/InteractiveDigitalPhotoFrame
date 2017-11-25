@@ -33,8 +33,14 @@ namespace WebApplication.Controllers
         {
             return View();
         }
-        /*public async Task<ActionResult> GetUserAllDevices(int? user)
+        [HttpGet]
+        public async Task<ActionResult> GetUserAllDevices(int? user)
         {
+            if(Session["UserId"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+
+            }
             if (user == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"User Id not specified");
@@ -53,7 +59,7 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
-        }*/
+        }
 
         public ActionResult DeleteDevice(int deviceId, String deviceName)
         {
