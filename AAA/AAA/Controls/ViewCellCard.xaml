@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          x:Class="AAA.Controls.ViewCellCard"
+          x:Name="Root">
+
+    <ViewCell.View>
+        <Grid BindingContext="{x:Reference Name=Root}" Margin="0, 0, 0, 4" BackgroundColor="White">
+            <Label Margin="16, 24, 16, 16"
+                   FontSize="25"
+                   HorizontalTextAlignment="Start"
+                   LineBreakMode="WordWrap"
+                   VerticalTextAlignment="Start"
+                   Text="{Binding CardTitle}"
+                   TextColor="Black" />
+            <Label Margin="16, 55, 16, 16"
+                   FontSize="14"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Start"
+                   Text="{Binding CardSubtext}"
+                   TextColor="Black"/>
+            <Image HorizontalOptions="End"
+                   VerticalOptions="Start"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   Margin="16, 16, 16, 16"
+                   Source="{Binding CardImageSource}" />
+            <Button Command="{Binding Command}"
+                    Text="MANAGE"
+                    TextColor="White"
+                    BackgroundColor="#2196F3"
+                    VerticalOptions="End"
+                    HorizontalOptions="Start"
+                    Margin="16, 124, 8, 8"/>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>

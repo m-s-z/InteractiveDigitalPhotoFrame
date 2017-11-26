@@ -38,14 +38,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Card.xaml.cs">
-      <DependentUpon>Card.xaml</DependentUpon>
+    <Compile Include="Controls\ViewCellCard.xaml.cs">
+      <DependentUpon>ViewCellCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ViewCellExtension.xaml.cs">
       <DependentUpon>ViewCellExtension.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CloudTypeToImageSourceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\CardItem.cs" />
     <Compile Include="Utils\CloudImageSourceDictionary.cs" />
     <Compile Include="Utils\CloudType.cs" />
     <Compile Include="Utils\ListItem.cs" />
@@ -59,8 +60,17 @@
     <Compile Include="Views\AddFolderPage.xaml.cs">
       <DependentUpon>AddFolderPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ChangePasswordPage.xaml.cs">
+      <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChooseCloudFolderPage.xaml.cs">
+      <DependentUpon>ChooseCloudFolderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChooseCloudPage.xaml.cs">
       <DependentUpon>ChooseCloudPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChooseDevicePage.xaml.cs">
+      <DependentUpon>ChooseDevicePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CloudsListPage.xaml.cs">
       <DependentUpon>CloudsListPage.xaml</DependentUpon>
@@ -70,6 +80,9 @@
     </Compile>
     <Compile Include="Views\DevicesListPage.xaml.cs">
       <DependentUpon>DevicesListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FolderPage.xaml.cs">
+      <DependentUpon>FolderPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FoldersListPage.xaml.cs">
       <DependentUpon>FoldersListPage.xaml</DependentUpon>
@@ -183,12 +196,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\Card.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Controls\ViewCellExtension.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
@@ -196,6 +203,36 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainAppPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\ViewCellCard.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ChangePasswordPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\FolderPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ChooseCloudFolderPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ChooseDevicePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

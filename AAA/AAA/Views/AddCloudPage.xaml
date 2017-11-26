@@ -4,9 +4,50 @@
              x:Class="AAA.Views.AddCloudPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ScrollView VerticalOptions="FillAndExpand">
+                <Grid BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Margin="20"
+                           Text="Choose cloud provider and connect to the account."
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" />
+                    <Picker Grid.Row="1"
+                            Margin="16, 16, 16, 8"
+                            Title="Select cloud provider">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Dropbox</x:String>
+                                <x:String>Flickr</x:String>
+                                <x:String>Google Drive</x:String>
+                                <x:String>OneDrive</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    <Entry Grid.Row="2"
+                           Margin="16, 8, 16, 8"
+                           FontSize="20"
+                           HorizontalTextAlignment="Start"
+                           IsPassword="True"
+                           Placeholder="Login"
+                           PlaceholderColor="DarkGray" />
+                    <Entry Grid.Row="3"
+                           Margin="16, 8, 16, 8"
+                           FontSize="20"
+                           HorizontalTextAlignment="Start"
+                           IsPassword="True"
+                           Placeholder="Password"
+                           PlaceholderColor="DarkGray" />
+                </Grid>
+            </ScrollView>
+            <Button Command="{Binding ReturnCommand}"
+                    VerticalOptions="End" Text="CONNECT" TextColor="White"  BackgroundColor="#32CD32"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

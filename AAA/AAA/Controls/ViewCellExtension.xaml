@@ -17,7 +17,7 @@
                 <Image HorizontalOptions="Start" 
                        Margin="40, 40, 8, 8"
                        Source="{Binding SubimageSource}" />
-                <Label FontSize="25"
+                <Label FontSize="20"
                        HorizontalTextAlignment="Start"
                        Margin="80, 16, 0, 8"
                        VerticalTextAlignment="Start"

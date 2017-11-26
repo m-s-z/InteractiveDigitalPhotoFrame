@@ -1,12 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.ProfilPage">
+             x:Class="AAA.Views.ProfilPage"
+             Title="Profile">
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="DarkGray">
+            <Grid HeightRequest="144" BackgroundColor="White">
+                <Label Margin="16, 24, 16, 16"
+                       FontSize="25"
+                       HorizontalTextAlignment="Start"
+                       LineBreakMode="WordWrap"
+                       VerticalTextAlignment="Start"
+                       Text="ACCOUNT"
+                       TextColor="Black" />
+                <Label Margin="16, 55, 16, 16"
+                       FontSize="14"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       Text="xxxxx@gmail.com"
+                       TextColor="Black"/>
+                <Image HorizontalOptions="End"
+                       VerticalOptions="Start"
+                       HeightRequest="80"
+                       WidthRequest="80"
+                       Margin="16, 16, 16, 16"
+                       Source="user_profile_96px.png" />
+                <Button Command="{Binding Command}"
+                        Text="LOGOUT"
+                        TextColor="White"
+                        BackgroundColor="Red"
+                        VerticalOptions="End"
+                        HorizontalOptions="Start"
+                        Margin="16, 8, 8, 8"/>
+            </Grid>
+            <Grid HeightRequest="144" BackgroundColor="White">
+                <Label Margin="16, 24, 16, 16"
+                       FontSize="25"
+                       HorizontalTextAlignment="Start"
+                       LineBreakMode="WordWrap"
+                       VerticalTextAlignment="Start"
+                       Text="SECURITY"
+                       TextColor="Black" />
+                <Label Margin="16, 55, 16, 16"
+                       FontSize="14"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       Text="Manage your password"
+                       TextColor="Black"/>
+                <Image HorizontalOptions="End"
+                       VerticalOptions="Start"
+                       HeightRequest="80"
+                       WidthRequest="80"
+                       Margin="16, 16, 16, 16"
+                       Source="lock_96px.png" />
+                <Button Command="{Binding GoToChangePasswordPageCommand}"
+                        Text="CHANGE"
+                        TextColor="White"
+                        BackgroundColor="#2196F3"
+                        VerticalOptions="End"
+                        HorizontalOptions="Start"
+                        Margin="16, 8, 8, 8"/>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

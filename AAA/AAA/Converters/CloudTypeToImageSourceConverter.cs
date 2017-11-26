@@ -23,6 +23,11 @@ namespace AAA.Converters
         /// <returns>Image source of a provider.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return "";
+            }
+
             return CloudImageSourceDictionary.GetImageSource((CloudType)value);
         }
 

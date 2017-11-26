@@ -9,7 +9,11 @@ namespace AAA
         public App()
         {
             InitializeComponent();
-            MainPage = new MainAppPage();
+
+            //MainPage = new MainAppPage();
+            MainPage = new NavigationPage(new MainAppPage());
+
+            //MainPage = new NavigationPage(new FolderPage());
         }
 
         protected override void OnStart()

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             x:Class="AAA.Views.FolderPage"
+             Title="Folder name">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Padding="10,5,10,5" BackgroundColor="White" Orientation="Horizontal">
+                <Image Source="folder_96px.png" HeightRequest="40" />
+                <Label FontSize="15" Text="Devices assigned to this folder: 3" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+            </StackLayout>
+            <ListView ItemsSource="{Binding TestList}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
+                                                    AdditionalImageSource="minus_96px.png"
+                                                    MainImageSource="tablet_96px.png"
+                                                    MainText="{Binding S1}"
+                                                    SubimageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
+                                                    Subtext="{Binding S2}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button VerticalOptions="End" Text="ASSIGN NEW DEVICE" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToChooseDevicePageCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
