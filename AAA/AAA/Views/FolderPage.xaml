@@ -3,24 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
              x:Class="AAA.Views.FolderPage"
-             Title="Folder name">
+             Title="{Binding SelectedFolder.Folder.FolderName}">
 
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Padding="10,5,10,5" BackgroundColor="White" Orientation="Horizontal">
                 <Image Source="folder_96px.png" HeightRequest="40" />
-                <Label FontSize="15" Text="Devices assigned to this folder: 3" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                <Label FontSize="15" Text="{Binding SelectedFolder.Folder.PhotosNumber, StringFormat='Photos in folder: {0}'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
             </StackLayout>
-            <ListView ItemsSource="{Binding TestList}"
+            <ListView ItemsSource="{Binding FolderDevicesCollection}"
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
+                        <controls:ViewCellExtension AdditionalCommand="{Binding AdditionalCommand}"
+                                                    AdditionalCommandParameter="{Binding .}"
                                                     AdditionalImageSource="minus_96px.png"
                                                     MainImageSource="tablet_96px.png"
-                                                    MainText="{Binding S1}"
-                                                    SubimageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
-                                                    Subtext="{Binding S2}" />
+                                                    MainText="{Binding Device.LocalName}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

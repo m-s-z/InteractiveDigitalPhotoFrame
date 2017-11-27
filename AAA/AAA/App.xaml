@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converters="clr-namespace:AAA.Converters"
+             xmlns:convertersControl="clr-namespace:AAA.Converters.Controls;assembly=AAA"
+             xmlns:converters="clr-namespace:AAA.Converters;assembly=AAA"
              x:Class="AAA.App">
 	<Application.Resources>
         <ResourceDictionary>
-            <converters:CloudTypeToImageSourceConverter x:Key="CloudTypeToImageSourceConverter"/>
+            <convertersControl:CardTypeToSecondActionVisibilityConverter x:Key="CardTypeToSecondActionVisibility"/>
+            <convertersControl:CardTypeToSizeConverter x:Key="CardTypeToSize"/>
+            <convertersControl:CloudTypeToImageSourceConverter x:Key="CloudTypeToImageSource"/>
+            <convertersControl:CloudTypeToCloudNameConverter x:Key="CloudTypeToCloudName"/>
+            <converters:StringIntoCloudTypeConverter x:Key="StringIntoCloudType"/>
         </ResourceDictionary>
 
 		<!-- Application resource dictionary -->

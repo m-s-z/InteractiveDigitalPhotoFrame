@@ -4,34 +4,60 @@
           x:Class="AAA.Controls.ViewCellCard"
           x:Name="Root">
 
+    <!--Custom control transforming ViewCell into Card-->
     <ViewCell.View>
-        <Grid BindingContext="{x:Reference Name=Root}" Margin="0, 0, 0, 4" BackgroundColor="White">
-            <Label Margin="16, 24, 16, 16"
-                   FontSize="25"
+        
+        <!--Main container-->
+        <Grid BackgroundColor="White"
+              BindingContext="{x:Reference Name=Root}"
+              Margin="0, 0, 0, 8">
+            
+            <!--Title of the card-->
+            <Label FontSize="25"
                    HorizontalTextAlignment="Start"
+                   Margin="16, 24, 16, 16"
                    LineBreakMode="WordWrap"
                    VerticalTextAlignment="Start"
                    Text="{Binding CardTitle}"
                    TextColor="Black" />
-            <Label Margin="16, 55, 16, 16"
-                   FontSize="14"
+            
+            <!--Subtext of the card-->
+            <Label FontSize="14"
                    HorizontalTextAlignment="Start"
+                   Margin="16, 55, 16, 16"
                    VerticalTextAlignment="Start"
                    Text="{Binding CardSubtext}"
                    TextColor="Black"/>
-            <Image HorizontalOptions="End"
-                   VerticalOptions="Start"
-                   HeightRequest="120"
-                   WidthRequest="120"
+            
+            <!--Image displayed on the card-->
+            <Image HeightRequest="{Binding CardType, Converter={StaticResource CardTypeToSize}}"
+                   HorizontalOptions="End"
                    Margin="16, 16, 16, 16"
-                   Source="{Binding CardImageSource}" />
-            <Button Command="{Binding Command}"
-                    Text="MANAGE"
-                    TextColor="White"
-                    BackgroundColor="#2196F3"
-                    VerticalOptions="End"
-                    HorizontalOptions="Start"
-                    Margin="16, 124, 8, 8"/>
+                   Source="{Binding CardImageSource}"
+                   VerticalOptions="Start"
+                   WidthRequest="{Binding CardType, Converter={StaticResource CardTypeToSize}}" />
+            
+            <!--Container with buttons-->
+            <StackLayout HorizontalOptions="Start"
+                         Margin="16, 8, 8, 8"
+                         Orientation="Horizontal"
+                         VerticalOptions="End">
+                
+                <!--Button with main action-->
+                <Button BackgroundColor="#2196F3"
+                        Command="{Binding CardMainActionCommand}"
+                        Margin="0, 0, 0, 0" 
+                        Text="{Binding CardMainActionName}"
+                        TextColor="White" />
+                
+                <!--Button with second action-->
+                <Button BackgroundColor="Red"
+                        Command="{Binding CardSecondActionCommand}"
+                        IsVisible="{Binding CardType, Converter={StaticResource CardTypeToSecondActionVisibility}}"
+                        Margin="8, 0, 0, 0" 
+                        Text="{Binding CardSecondActionName}"
+                        TextColor="White" />
+            </StackLayout>
         </Grid>
     </ViewCell.View>
 </ViewCell>

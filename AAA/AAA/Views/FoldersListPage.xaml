@@ -2,24 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.FoldersListPage"
              Title="Assigned folders">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding TestList3}"
-                      RowHeight="80">
+            <ListView ItemsSource="{Binding FoldersCollection}"
+                      RowHeight="80"
+                      SelectedItem="{Binding SelectedFolder, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
-                                                    MainCommand="{Binding Command1}"
+                        <controls:ViewCellExtension MainCommand="{Binding MainCommand}"
+                                                    MainCommandParameter="{x:Type views:FolderPage}"
                                                     MainImageSource="folder_96px.png"
-                                                    MainText="{Binding S1}"
-                                                    SubimageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
-                                                    Subtext="{Binding S2}" />
+                                                    MainText="{Binding Folder.FolderName}"
+                                                    SubimageSource="{Binding Folder.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
+                                                    Subtext="{Binding Folder.PhotosNumber, StringFormat='Photos in folder: {0}'}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button VerticalOptions="End" Text="ASSIGN NEW FOLDER" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToChooseProviderPageCommand}"/>
+            <Button BackgroundColor="#32CD32"
+                    Command="{Binding ChangePageCommand}"
+                    CommandParameter="{x:Type views:ChooseCloudPage}"
+                    VerticalOptions="End"
+                    Text="ASSIGN NEW FOLDER"
+                    TextColor="White" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

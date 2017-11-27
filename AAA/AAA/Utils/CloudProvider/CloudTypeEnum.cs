@@ -1,10 +1,9 @@
-﻿namespace AAA.Utils
+﻿namespace AAA.Utils.CloudProvider
 {
     /// <summary>
-    /// CloudType enum.
     /// Contains all supported types of cloud providers.
     /// </summary>
-    public enum CloudType
+    public enum CloudTypeEnum
     {
         /// <summary>
         /// Dropbox cloud provider.
@@ -19,12 +18,12 @@
         /// <summary>
         /// Google cloud provider.
         /// </summary>
-        Google,
+        GoogleDrive,
 
         /// <summary>
         /// Microsoft cloud provider.
         /// </summary>
-        Microsoft,
+        OneDrive,
 
         /// <summary>
         /// Cloud provider is not specified.

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using AAA.Models;
 using AAA.Utils;
+using AAA.Utils.CloudProvider;
+using AAA.Utils.Controls;
 using AAA.Views;
 using Xamarin.Forms;
 
@@ -15,95 +20,188 @@ namespace AAA.ViewModels
         #region fields
 
         /// <summary>
-        /// Path to some files
-        /// </summary>
-        private const string EXAMPLE_OF_CONST = "path/to/some/files";
-
-        /// <summary>
-        /// Backing field for TestNumberOne property.
-        /// </summary>
-        private string _testNumberOne;
-
-        /// <summary>
         /// Backing field for TestNumberTwo property.
         /// </summary>
-        private bool _testNumberTwo;
+        private Account _userAccount;
 
-        private ObservableCollection<ListItem> _testList;
-        private ObservableCollection<CardItem> _testList2;
-        private ObservableCollection<ListItem> _testList3;
-        private ObservableCollection<ListItem> _testList4;
+        private CloudTypeEnum _newCloudType;
+
+        private int _numberOfClouds;
+        private int _numberOfDevices;
+        private int _numberOfFolders;
+
+        private ObservableCollection<VCCardListItem> _cloudsCollection;
+        private ObservableCollection<VCListItem> _cloudChooseCollection;
+        private ObservableCollection<VCListItem> _deviceFoldersCollection;
+        private ObservableCollection<VCListItem> _devicesCollection;
+        private ObservableCollection<VCListItem> _folderDevicesCollection;
+        private ObservableCollection<VCListItem> _foldersCollection;
+
+        private ObservableCollection<CardListItem> _mainPageCards;
+
+        private string _cloudEmail;
+        private string _deviceName;
+        private string _pairCode;
+
+        private VCCardListItem _selectedCloudProvider;
+        private VCListItem _selectedDevice;
+        private VCListItem _selectedFolder;
+
 
         #endregion
 
         #region properties
 
         /// <summary>
-        /// Property indicating some testing value.
+        /// Property indicating current application user.
         /// </summary>
-        public string TestNumberOne
+        public Account UserAccount
         {
-            get => _testNumberOne;
+            get => _userAccount;
 
-            set => SetProperty(ref _testNumberOne, value);
+            set => SetProperty(ref _userAccount, value);
         }
 
-        /// <summary>
-        /// Flag indicating whether is something or not.
-        /// </summary>
-        public bool TestNumberTwo
+        public CloudTypeEnum NewCloudType
         {
-            get => _testNumberTwo;
-
-            set => SetProperty(ref _testNumberTwo, value);
+            get => _newCloudType;
+            set
+            {
+                SetProperty(ref _newCloudType, value);
+                CloudConnectCommand?.ChangeCanExecute();
+            }
         }
-
-        public ObservableCollection<ListItem> TestList
-        {
-            get => _testList;
-
-            set => SetProperty(ref _testList, value);
-        }
-        public ObservableCollection<CardItem> TestList2
-        {
-            get => _testList2;
-
-            set => SetProperty(ref _testList2, value);
-        }
-
-        public ObservableCollection<ListItem> TestList3
-        {
-            get => _testList3;
-
-            set => SetProperty(ref _testList3, value);
-        }
-
-        public ObservableCollection<ListItem> TestList4
-        {
-            get => _testList4;
-
-            set => SetProperty(ref _testList4, value);
-        }
-
-        public Command CommandOne { get; set; }
 
         public Command ChangePageCommand { get; set; }
+        public Command CloudConnectCommand { get; set; }
+        public Command CloudDisconnectCommand { get; set; }
+        public Command CloudModifyCommand { get; set; }
+        public Command DevicePairCommand { get; set; }
+        public Command DeviceUnpairCommand { get; set; }
+        public Command GoBackPageCommand { get; set; }
+        public Command GoToCloudsListPageCommand { get; set; }
 
-        public Command GoToProfilePageCommand { get; set; }
+        public Command GoToDevicesListPageCommand { get; set; }
 
-        public Command GoToFolderPageCommand { get; set; }
+        public Command GoToFoldersListPageCommand { get; set; }
+        
+        public Command DeviceUnassignCommand { get; set; }
+        public Command FolderUnassignCommand { get; set; }
 
-        public Command GoToChooseProviderPageCommand { get; set; }
 
-        public Command GoToChooseCloudFolderPageCommand { get; set; }
+        public int NumberOfClouds
+        {
+            get => _numberOfClouds;
+            set => SetProperty(ref _numberOfClouds, value);
+        }
 
-        public Command GoToChooseDevicePageCommand { get; set; }
+        public int NumberOfDevices
+        {
+            get => _numberOfDevices;
+            set => SetProperty(ref _numberOfDevices, value);
+        }
 
-        public Command ReturnCommand { get; set; }
+        public int NumberOfFolders
+        {
+            get => _numberOfFolders;
+            set => SetProperty(ref _numberOfFolders, value);
+        }
 
-        public Command GoToChangePasswordPageCommand { get; set; }
+        public ObservableCollection<VCCardListItem> CloudsCollection
+        {
+            get => _cloudsCollection;
+            set => SetProperty(ref _cloudsCollection, value);
+        }
 
-        public Command GoToAddCloudProviderCommand { get; set; }
+        public ObservableCollection<VCListItem> CloudChooseCollection
+        {
+            get => _cloudChooseCollection;
+            set => SetProperty(ref _cloudChooseCollection, value);
+        }
+
+        public ObservableCollection<VCListItem> DeviceFoldersCollection
+        {
+            get => _deviceFoldersCollection;
+            set => SetProperty(ref _deviceFoldersCollection, value);
+        }
+
+        public ObservableCollection<VCListItem> DevicesCollection
+        {
+            get => _devicesCollection;
+            set => SetProperty(ref _devicesCollection, value);
+        }
+
+        public ObservableCollection<VCListItem> FolderDevicesCollection
+        {
+            get => _folderDevicesCollection;
+            set => SetProperty(ref _folderDevicesCollection, value);
+        }
+        public ObservableCollection<VCListItem> FoldersCollection
+        {
+            get => _foldersCollection;
+            set => SetProperty(ref _foldersCollection, value);
+        }
+
+        public ObservableCollection<CardListItem> MainPageCards
+        {
+            get => _mainPageCards;
+            set => SetProperty(ref _mainPageCards, value);
+        }
+
+        public string CloudEmail
+        {
+            get => _cloudEmail;
+            set
+            {
+                SetProperty(ref _cloudEmail, value);
+                CloudConnectCommand?.ChangeCanExecute();
+            }
+        }
+
+        public string DeviceName
+        {
+            get => _deviceName;
+            set
+            {
+                SetProperty(ref _deviceName, value);
+                DevicePairCommand?.ChangeCanExecute();
+            }
+        }
+
+        public string PairCode
+        {
+            get => _pairCode;
+            set
+            {
+                SetProperty(ref _pairCode, value);
+                DevicePairCommand?.ChangeCanExecute();
+            }
+        }
+        public VCCardListItem SelectedCloudProvider
+        {
+            get => _selectedCloudProvider;
+            set => SetProperty(ref _selectedCloudProvider, value);
+        }
+
+        public VCListItem SelectedDevice
+        {
+            get => _selectedDevice;
+            set
+            {
+                SetProperty(ref _selectedDevice, value);
+                InitDeviceFoldersCollection();
+            }
+        }
+
+        public VCListItem SelectedFolder
+        {
+            get => _selectedFolder;
+            set
+            {
+                SetProperty(ref _selectedFolder, value);
+                InitFolderDevicesCollection();
+            }
+        }
 
         #endregion
 
@@ -111,138 +209,212 @@ namespace AAA.ViewModels
 
         public MainViewModel()
         {
-            TestNumberOne = "Hello!!!";
-            ChangePageCommand = new Command(ExecuteChangePageCommand);
-            GoToFolderPageCommand = new Command(ExecuteGoToFolderPageCommand);
-            GoToChangePasswordPageCommand = new Command(ExecuteGoToChangePasswordPageCommand);
-            GoToChooseProviderPageCommand = new Command(ExecuteGoToChooseProviderPageCommand);
-            GoToChooseCloudFolderPageCommand = new Command(ExecuteGoToChooseCloudFolderPageCommand);
-            GoToChooseDevicePageCommand = new Command(ExecuteGoToChooseDevicePageCommand);
-            ReturnCommand = new Command(ExecuteReturnCommand);
-            CommandOne = new Command(ExecuteCommandGoToDevice);
-            GoToAddCloudProviderCommand = new Command(ExecuteGoToAddCloudProviderCommand);
-            GoToProfilePageCommand = new Command(ExecuteCommandGoToProfilePage);
-            TestList = new ObservableCollection<ListItem>();
-            TestList.Add(new ListItem("Grandpa's tablet", CommandOne, CloudType.None, "Folders assigned: 4"));
-            TestList.Add(new ListItem("Anna's tablet", CommandOne, CloudType.None, "Folders assigned: 2"));
-            TestList.Add(new ListItem("DPF in my school", CommandOne, CloudType.None, "Folders assigned: 3"));
-            TestList3 = new ObservableCollection<ListItem>();
-            TestList3.Add(new ListItem("Holiday 2017", GoToFolderPageCommand, CloudType.Flickr, "Used by devices: 3"));
-            TestList3.Add(new ListItem("Dog's photos", GoToFolderPageCommand, CloudType.Dropbox, "Used by devices: 2"));
-            TestList3.Add(new ListItem("Selfies", GoToFolderPageCommand, CloudType.Google, "Used by devices: 1"));
-            TestList3.Add(new ListItem("Holiday 2017", GoToFolderPageCommand, CloudType.Flickr, "Used by devices: 3"));
-            TestList3.Add(new ListItem("Dog's photos", GoToFolderPageCommand, CloudType.Dropbox, "Used by devices: 2"));
-            TestList3.Add(new ListItem("Selfies", GoToFolderPageCommand, CloudType.Google, "Used by devices: 1"));
-            TestList3.Add(new ListItem("Holiday 2017", GoToFolderPageCommand, CloudType.Flickr, "Used by devices: 3"));
-            TestList4 = new ObservableCollection<ListItem>();
-            TestList4.Add(new ListItem("Dropbox", CloudType.Dropbox, "ddddd@email.com"));
-            TestList4.Add(new ListItem("Flickr", CloudType.Flickr, "fffff@email.com"));
-            TestList4.Add(new ListItem("Google", CloudType.Google, "ggggg@gmail.com"));
-            TestList4.Add(new ListItem("Microsoft", CloudType.Microsoft, "mmmmm@email.com"));
-            TestList2 = new ObservableCollection<CardItem>();
-            TestList2.Add(new CardItem("DEVICE", new Command(ExecuteCommandOne), "Paired devices: 8", "tablet_card_96px.png"));
-            TestList2.Add(new CardItem("FOLDERS", new Command(ExecuteCommandTwo), "Assigned folders: 12", "folder_card_96px.png"));
-            TestList2.Add(new CardItem("CLOUDS", new Command(ExecuteCommandThree), "Cloud providers: 2", "cloud_card_96px.png"));
+            PairCode = "";
+            DeviceName = "";
+            InitCommands();
+            InitUser();
+            InitCollections();
+            InitMainPageCards();
         }
 
-        /// <summary>
-        /// TestMethod method.
-        /// Updates value of TestNumberOne property if secondParameter is true.
-        /// </summary>
-        /// <param name="firstParameter">Value to assing to TestNumberOne property.</param>
-        /// <param name="secondParameter">Flag indicating whether to change value of TestNumberOne property or not.</param>
-        /// <returns>Returns flag indicating whether the value of TestNumberOne property was changed or not.</returns>
-        private bool TestMethod(string firstParameter, bool secondParameter)
+        private void InitCommands()
         {
-            if (secondParameter)
+            ChangePageCommand = new Command(ExecuteChangePageCommand);
+            CloudConnectCommand = new Command(ExecuteCloudConnectCommand, CanExecuteCloudConnectCommand);
+            CloudDisconnectCommand = new Command(ExecuteCloudDisconnectCommand);
+            CloudModifyCommand = new Command(ExecuteCloudModifyCommand);
+            DeviceUnpairCommand = new Command(ExecuteDeviceUnpairCommand);
+            DevicePairCommand = new Command(ExecuteDevicePairCommand, CanExecuteDevicePairCommand);
+            GoBackPageCommand = new Command(ExecuteGoBackPageCommand);
+            GoToDevicesListPageCommand = new Command(ExecuteGoToDevicesListPageCommand);
+            GoToFoldersListPageCommand = new Command(ExecuteGoToFoldersListPageCommand);
+            GoToCloudsListPageCommand = new Command(ExecuteGoToCloudsListPageCommand);
+            DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
+            FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
+        }
+
+        private void InitMainPageCards()
+        {
+            MainPageCards = new ObservableCollection<CardListItem>();
+            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "DEVICES", GoToDevicesListPageCommand,
+                "MANAGE", "tablet_card_96px.png", "Paired devices: " + NumberOfDevices));
+            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "FOLDERS", GoToFoldersListPageCommand,
+                "MANAGE", "folder_card_96px.png", "Assigned folders: " + NumberOfFolders));
+            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "CLOUDS", GoToCloudsListPageCommand,
+                "MANAGE", "cloud_card_96px.png", "Connected clouds: " + NumberOfClouds));
+        }
+
+        private void InitCollections()
+        {
+            CloudChooseCollection = new ObservableCollection<VCListItem>();
+            CloudsCollection = new ObservableCollection<VCCardListItem>();
+            DevicesCollection = new ObservableCollection<VCListItem>();
+            FoldersCollection = new ObservableCollection<VCListItem>();
+
+            foreach (var device in UserAccount.DevicesCollection)
             {
-                TestNumberOne = firstParameter;
-                return true;
+                DevicesCollection.Add(new VCListItem(device, ChangePageCommand));
+
+                foreach (var folder in device.FoldersCollection)
+                {
+                    if (FoldersCollection.FirstOrDefault(f => f.Folder == folder) == null)
+                    {
+                        FoldersCollection.Add(new VCListItem(folder, ChangePageCommand));
+                    }
+                }
+
             }
 
-            return false;
-        }
-        private void ExecuteCommandOne()
-        {
-            Application.Current.MainPage.Navigation.PushAsync(new DevicesListPage(this));
+            foreach (var cloud in UserAccount.CloudsCollection)
+            {
+                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortTwoActions, cloud, CloudModifyCommand, CloudDisconnectCommand));
+                CloudChooseCollection.Add(new VCListItem(cloud, null));
+            }
+
+            NumberOfClouds = UserAccount.CountCloudProviders();
+            NumberOfDevices = UserAccount.CountDevices();
+            NumberOfFolders = UserAccount.CountAllFolders();
         }
 
-        private void ExecuteCommandTwo()
+        private void InitDeviceFoldersCollection()
         {
-            Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
+            if (SelectedDevice == null)
+            {
+                return;;
+            }
+
+            DeviceFoldersCollection = new ObservableCollection<VCListItem>();
+
+            foreach (var folder in SelectedDevice.Device.FoldersCollection)
+            {
+                DeviceFoldersCollection.Add(new VCListItem(folder, null, FolderUnassignCommand));
+            }
         }
 
-        private void ExecuteCommandThree()
+        private void InitFolderDevicesCollection()
+        {
+            if (SelectedFolder == null)
+            {
+                return; ;
+            }
+
+            FolderDevicesCollection = new ObservableCollection<VCListItem>();
+
+            foreach (var device in UserAccount.DevicesCollection)
+            {
+                foreach (var folder in device.FoldersCollection)
+                {
+                    if (folder == SelectedFolder.Folder)
+                    {
+                        FolderDevicesCollection.Add(new VCListItem(device, null, DeviceUnassignCommand));
+                    }
+                }
+
+            }
+        }
+
+        private void InitUser()
+        {
+            UserAccount = new Account(1);
+        }
+
+        private bool CanExecuteCloudConnectCommand()
+        {
+            return CloudEmail?.Length > 0 && NewCloudType != CloudTypeEnum.None;
+        }
+
+        private bool CanExecuteDevicePairCommand()
+        {
+            return PairCode.Length == 5 && DeviceName.Length > 0;
+        }
+
+        private void ExecuteChangePageCommand(object pageType)
+        {
+            Page nextPage = (Page) Activator.CreateInstance((Type) pageType);
+            nextPage.BindingContext = this;
+            Application.Current.MainPage.Navigation.PushAsync(nextPage);
+        }
+
+        private void ExecuteCloudConnectCommand()
+        {
+            UserAccount.CloudsCollection.Add(new CloudProvider(NewCloudType, CloudEmail));
+            UpdateAllInformation();
+            ExecuteGoBackPageCommand();
+        }
+        private void ExecuteCloudDisconnectCommand()
+        {
+            if (SelectedCloudProvider == null)
+            {
+                return;
+            }
+
+            UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
+            UpdateAllInformation();
+            SelectedCloudProvider = null;
+        }
+
+        private void ExecuteCloudModifyCommand()
+        {
+            
+        }
+
+        private void ExecuteDevicePairCommand()
+        {
+            UserAccount.DevicesCollection.Add(new Models.Device(DeviceName, 1));
+            UpdateAllInformation();
+            ExecuteGoBackPageCommand();
+        }
+
+        private void ExecuteDeviceUnpairCommand()
+        {
+            ExecuteGoBackPageCommand();
+            UserAccount.DevicesCollection.Remove(SelectedDevice.Device);
+            SelectedDevice = null;
+            DeviceFoldersCollection = new ObservableCollection<VCListItem>();
+            UpdateAllInformation();
+        }
+
+        private void ExecuteGoBackPageCommand()
+        {
+            Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private void ExecuteGoToCloudsListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new CloudsListPage(this));
         }
 
-        private void ExecuteCommandGoToDevice()
+        private void ExecuteGoToDevicesListPageCommand()
         {
-            var newPage = new DevicePage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
+            Application.Current.MainPage.Navigation.PushAsync(new DevicesListPage(this));
         }
 
-        private void ExecuteChangePageCommand(object param)
+        private void ExecuteGoToFoldersListPageCommand()
         {
-            var page = new AddDevicePage();
-            page.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(page);
+            Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
         }
 
-        private void ExecuteCommandGoToProfilePage()
+        private void ExecuteDeviceUnassignCommand(object param)
         {
-            var newPage = new ProfilPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
+            UserAccount.DevicesCollection.FirstOrDefault(d => d == ((VCListItem)param).Device)?.FoldersCollection.Remove(SelectedFolder.Folder);
+            UpdateAllInformation();
+            Application.Current.MainPage.DisplayAlert("Unassignment", "The device has been successfully  unassiged", "OK");
         }
 
-        private void ExecuteGoToChangePasswordPageCommand()
+        private void ExecuteFolderUnassignCommand(object param)
         {
-            var newPage = new ChangePasswordPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
+            UserAccount.DevicesCollection.FirstOrDefault(d => d == SelectedDevice.Device)?.FoldersCollection.Remove(((VCListItem)param).Folder);
+            UpdateAllInformation();
+            Application.Current.MainPage.DisplayAlert("Unassignment", "The folder has been successfully  unassiged", "OK");
         }
 
-        private void ExecuteGoToFolderPageCommand()
+        private void UpdateAllInformation()
         {
-            var newPage = new FolderPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
-        }
-
-        private void ExecuteGoToChooseProviderPageCommand()
-        {
-            var newPage = new ChooseCloudPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
-        }
-
-        private void ExecuteGoToChooseCloudFolderPageCommand()
-        {
-            var newPage = new ChooseCloudFolderPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
-        }
-
-        private void ExecuteGoToChooseDevicePageCommand()
-        {
-            var newPage = new ChooseDevicePage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
-        }
-
-        private void ExecuteGoToAddCloudProviderCommand()
-        {
-            var newPage = new AddCloudPage();
-            newPage.BindingContext = this;
-            Application.Current.MainPage.Navigation.PushAsync(newPage);
-        }
-
-        private void ExecuteReturnCommand()
-        {
-            Application.Current.MainPage.Navigation.PopAsync();
+            UserAccount.UpdateInformation();
+            InitCollections();
+            InitMainPageCards();
+            InitDeviceFoldersCollection();
+            InitFolderDevicesCollection();
         }
 
         #endregion

@@ -76,24 +76,6 @@ namespace AAA.Controls
         }
 
         /// <summary>
-        /// Object specified by a binding source used by AdditionalCommand.
-        /// </summary>
-        public object AdditionalCommandParameter
-        {
-            get => GetValue(AdditionalCommandParameterProperty);
-            set => SetValue(AdditionalCommandParameterProperty, value);
-        }
-
-        /// <summary>
-        /// Source to additional image displayed on the cell.
-        /// </summary>
-        public string AdditionalImageSource
-        {
-            get => (string)GetValue(AdditionalImageSourceProperty);
-            set => SetValue(AdditionalImageSourceProperty, value);
-        }
-
-        /// <summary>
         /// Main command to execute on item tap.
         /// </summary>
         public ICommand MainCommand
@@ -103,12 +85,30 @@ namespace AAA.Controls
         }
 
         /// <summary>
+        /// Object specified by a binding source used by AdditionalCommand.
+        /// </summary>
+        public object AdditionalCommandParameter
+        {
+            get => GetValue(AdditionalCommandParameterProperty);
+            set => SetValue(AdditionalCommandParameterProperty, value);
+        }
+
+        /// <summary>
         /// Object specified by a binding source used by MainCommand.
         /// </summary>
         public object MainCommandParameter
         {
             get => GetValue(MainCommandParameterProperty);
             set => SetValue(MainCommandParameterProperty, value);
+        }
+
+        /// <summary>
+        /// Source to additional image displayed on the cell.
+        /// </summary>
+        public string AdditionalImageSource
+        {
+            get => (string)GetValue(AdditionalImageSourceProperty);
+            set => SetValue(AdditionalImageSourceProperty, value);
         }
 
         /// <summary>
