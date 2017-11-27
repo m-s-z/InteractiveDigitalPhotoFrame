@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApplication.Models;
+using Moq;
+using System.Web;
 
 namespace WebApplication.Controllers.Tests
 {
@@ -18,6 +20,9 @@ namespace WebApplication.Controllers.Tests
         {
             // Arrange
             AccountController controller = new AccountController();
+            var controllerContext = new Mock<ControllerContext>();
+            controllerContext.SetupGet(p => p.HttpContext.Session["UserId"]).Returns("test");
+            controller.ControllerContext = controllerContext.Object;
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -31,6 +36,9 @@ namespace WebApplication.Controllers.Tests
         {
             // Arrange
             AccountController controller = new AccountController();
+            var controllerContext = new Mock<ControllerContext>();
+            controllerContext.SetupGet(p => p.HttpContext.Session["UserId"]).Returns("test");
+            controller.ControllerContext = controllerContext.Object;
             Account account = new Account();
             int id = 1;
             // Act

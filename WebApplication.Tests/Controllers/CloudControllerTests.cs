@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApplication.ViewModels;
+using Moq;
 
 namespace WebApplication.Controllers.Tests
 {
@@ -60,7 +61,9 @@ namespace WebApplication.Controllers.Tests
             // Arrange
             CloudController controller = new CloudController();
             int id = 1;
-
+            var controllerContext = new Mock<ControllerContext>();
+            controllerContext.SetupGet(p => p.HttpContext.Session["UserId"]).Returns("test");
+            controller.ControllerContext = controllerContext.Object;
             // Act
             ViewResult result = await controller.ConfirmDeleteCloud(id) as ViewResult;
 
