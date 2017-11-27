@@ -32,5 +32,17 @@ namespace WebApplication.Controllers
             }
             return View(account);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAccount()
+        {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            var sessionAccount = Session["UserId"];
+            var account = db.Accounts.FirstOrDefault(a => a.Login == (string) sessionAccount);
+            return Json(account.Login, JsonRequestBehavior.AllowGet);
+        }
     }
 }
