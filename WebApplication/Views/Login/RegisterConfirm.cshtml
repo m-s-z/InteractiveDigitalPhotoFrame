@@ -1,0 +1,26 @@
+﻿@model WebApplication.ViewModels.RegisterConfirmViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+@if (Session["UserId"] != null)
+{
+    Response.Redirect("~/Home");
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RegisterConfirm</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div>
+        <div class="background-transparent">
+            <h2 class="text-center">@Model.Message</h2>
+            @Html.ActionLink("Back", "Index", "Login", new { area = "" }, new { @class = "center-object" })
+        </div>
+    </div>
+</body>
+</html>

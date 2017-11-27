@@ -110,3 +110,14 @@ textarea {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
+.register-box {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 6px !important;
+    opacity: 0.9;
+    background: white;
+    height: 29em;
+    width: 30em;
+}

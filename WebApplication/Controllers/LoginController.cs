@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
 using WebApplication.Services;
+using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
@@ -33,6 +34,17 @@ namespace WebApplication.Controllers
             }
             Session["UserId"] = null;
             return RedirectToAction("Index");
+        }
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RegisterConfirm(string login, string password, string password2)
+        {
+            RegisterConfirmViewModel view = new RegisterConfirmViewModel("success");
+            return View(view);
         }
     }
 }
