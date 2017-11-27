@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         // GET: Account
         public ActionResult Index()
         {
-            Account account = new Account("Tom123");
+            Account account = new Account((string) Session["UserId"]);
             AccountViewModel model = new AccountViewModel(account);
             return View(model);
         }
