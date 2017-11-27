@@ -2,172 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.CloudsListPage"
              Title="Cloud providers">
     <ContentPage.Content>
         <StackLayout>
-            <!--<ListView ItemsSource="{Binding TestList4}"
-                      RowHeight="80">
+            <ListView ItemsSource="{Binding CloudsCollection}"
+                      RowHeight="144"
+                      SelectedItem="{Binding SelectedCloudProvider, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
-                                                    AdditionalImageSource="minus_96px.png"
-                                                    MainCommand="{Binding Command1}"
-                                                    MainImageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
-                                                    MainText="{Binding S1}"
-                                                    Subtext="{Binding S2}" />
+                        <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
+                                               CardMainActionName="MODIFY"
+                                               CardImageSource="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
+                                               CardSecondActionCommand="{Binding CardSecondActionCommand}"
+                                               CardSecondActionName="DISCONNECT"
+                                               CardSubtext="{Binding CloudProvider.CloudEmail}"
+                                               CardTitle="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToCloudName}}"
+                                               CardType="{Binding CardType}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>-->
-            <ScrollView>
-                <StackLayout BackgroundColor="DarkGray">
-                <Grid HeightRequest="144" BackgroundColor="White">
-                    <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Google Drive"
-                       TextColor="Black" />
-                    <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="xxxxx@gmail.com"
-                       TextColor="Black"/>
-                    <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="google_96px.png" />
-                    <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                        <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                        <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                    </StackLayout>
-                </Grid>
-                <Grid HeightRequest="144" BackgroundColor="White">
-                    <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Flickr"
-                       TextColor="Black" />
-                    <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="fffff@email.com"
-                       TextColor="Black"/>
-                    <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="flickr_96px.png" />
-                    <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                        <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                        <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                    </StackLayout>
-                </Grid>
-                <Grid HeightRequest="144" BackgroundColor="White">
-                    <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="OneDrive"
-                       TextColor="Black" />
-                    <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="mmmmm@outlook.com"
-                       TextColor="Black"/>
-                    <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="microsoft_96px.png" />
-                    <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                        <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                        <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                    </StackLayout>
-                </Grid>
-                <Grid HeightRequest="144" BackgroundColor="White">
-                    <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Dropbox"
-                       TextColor="Black" />
-                    <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="ddddd@email.com"
-                       TextColor="Black"/>
-                    <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="dropbox_96px.png" />
-                    <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                        <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                        <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                    </StackLayout>
-                </Grid>
-                    </StackLayout>
-            </ScrollView>
-            <Button VerticalOptions="End" Text="CONNECT NEW ACCOUNT" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToAddCloudProviderCommand}"/>
+            </ListView>
+
+            <Button BackgroundColor="#32CD32"
+                    Command="{Binding ChangePageCommand}"
+                    CommandParameter="{x:Type views:AddCloudPage}"
+                    Text="CONNECT NEW ACCOUNT"
+                    TextColor="White"
+                    VerticalOptions="End" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

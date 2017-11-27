@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.ChooseCloudPage"
              Title="Choose cloud provider">
     
@@ -12,20 +13,23 @@
                    HorizontalTextAlignment="Center"
                    VerticalOptions="Center" 
                    HorizontalOptions="Center" />
-            <ListView ItemsSource="{Binding TestList4}"
+            <ListView ItemsSource="{Binding CloudChooseCollection}"
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding Command1}"
-                                                    AdditionalImageSource="go_next_96px.png"
-                                                    MainCommand="{Binding Command1}"
-                                                    MainImageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
-                                                    MainText="{Binding S1}"
-                                                    Subtext="{Binding S2}" />
+                        <controls:ViewCellExtension AdditionalImageSource="go_next_96px.png"
+                                                    MainImageSource="{Binding Cloud.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
+                                                    MainText="{Binding Cloud.CloudType, Converter={StaticResource CloudTypeToCloudName}}"
+                                                    Subtext="{Binding Cloud.CloudEmail}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button VerticalOptions="End" Text="CONNECT NEW ACCOUNT" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToAddCloudProviderCommand}"/>
+            <Button BackgroundColor="#32CD32"
+                    Command="{Binding ChangePageCommand}"
+                    CommandParameter="{x:Type views:AddCloudPage}"
+                    VerticalOptions="End"
+                    Text="CONNECT NEW ACCOUNT"
+                    TextColor="White" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

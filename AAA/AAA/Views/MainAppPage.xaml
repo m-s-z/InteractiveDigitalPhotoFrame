@@ -3,6 +3,7 @@
              xmlns:controls="clr-namespace:AAA.Controls"
              xmlns:viewModel="clr-namespace:AAA.ViewModels;"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.MainAppPage"
              Title="Home"
              x:Name="Root">
@@ -10,7 +11,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="user_96px.png"
                      Order="Primary"
-                     Command="{Binding GoToProfilePageCommand}"/>
+                     Command="{Binding ChangePageCommand}"
+                     CommandParameter="{x:Type views:ProfilPage}"/>
     </ContentPage.ToolbarItems>
         
     <ContentPage.BindingContext>
@@ -19,15 +21,18 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding TestList2}"
+            <ListView ItemsSource="{Binding MainPageCards}"
                       BackgroundColor="DarkGray"
                       RowHeight="185">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellCard Command="{Binding Command1}"
-                                               CardImageSource="{Binding S3}"
-                                               CardSubtext="{Binding S2}"
-                                               CardTitle="{Binding S1}" />
+                        <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
+                                               CardMainActionName="{Binding CardMainActionName}"
+                                               CardMainActionCommandParameter="{Binding CardMainActionCommandParameter}"
+                                               CardImageSource="{Binding CardImageSource}"
+                                               CardType="{Binding CardType}"
+                                               CardSubtext="{Binding CardSubtext}"
+                                               CardTitle="{Binding CardTitle}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

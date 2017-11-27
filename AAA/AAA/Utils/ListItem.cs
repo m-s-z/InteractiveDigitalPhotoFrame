@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AAA.Utils.CloudProvider;
 using AAA.Views;
 using IDPFLibrary;
 using Xamarin.Forms;
@@ -13,7 +14,7 @@ namespace AAA.Utils
     {
         private string _s1;
         private string _s2;
-        private CloudType _sImage;
+        private CloudTypeEnum _sImage;
 
         public string S1
         {
@@ -27,7 +28,7 @@ namespace AAA.Utils
             set => SetProperty(ref _s2, value);
         }
 
-        public CloudType SImage
+        public CloudTypeEnum SImage
         {
             get => _sImage;
             set => SetProperty(ref _sImage, value);
@@ -45,7 +46,7 @@ namespace AAA.Utils
             set;
         }
 
-        public ListItem(string s1, CloudType cT = CloudType.None, string s2 = "")
+        public ListItem(string s1, CloudTypeEnum cT = CloudTypeEnum.None, string s2 = "")
         {
             S1 = s1;
             S2 = s2;
@@ -54,7 +55,7 @@ namespace AAA.Utils
             Command2 = new Command(ExecuteCommand2);
         }
 
-        public ListItem(string s1,  Command c1, CloudType cT = CloudType.None,  string s2 = "",  Command c2 = null)
+        public ListItem(string s1,  Command c1, CloudTypeEnum cT = CloudTypeEnum.None,  string s2 = "",  Command c2 = null)
         {
             S1 = s1;
             S2 = s2;

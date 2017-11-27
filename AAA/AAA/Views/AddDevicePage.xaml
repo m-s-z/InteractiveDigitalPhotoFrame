@@ -10,6 +10,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0"
                    Margin="20"
@@ -19,8 +20,9 @@
                    HorizontalOptions="CenterAndExpand" />
             <BoxView Grid.Row="1" Color="Black"/>
             <Image Grid.Row="1" Source="dpf_code.png" Margin="10" HorizontalOptions="Center"/>
-            <Entry Margin="20" Grid.Row="2" BackgroundColor="White" Keyboard="Numeric" Placeholder="Pair code" HorizontalTextAlignment="Center"/>
-            <Button Grid.Row="3" VerticalOptions="End" Text="PAIR" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding ReturnCommand}"/>
+            <Entry Margin="20" Grid.Row="2" BackgroundColor="White" Keyboard="Numeric" Placeholder="Pair code" HorizontalTextAlignment="Center" Text="{Binding PairCode, Mode=TwoWay}"/>
+            <Entry Margin="20" Grid.Row="3" BackgroundColor="White" Placeholder="Device name" HorizontalTextAlignment="Center" Text="{Binding DeviceName, Mode=TwoWay}"/>
+            <Button Grid.Row="4" VerticalOptions="End" Text="PAIR" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding DevicePairCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

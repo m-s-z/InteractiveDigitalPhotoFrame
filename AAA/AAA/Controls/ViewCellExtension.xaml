@@ -4,6 +4,7 @@
           x:Class="AAA.Controls.ViewCellExtension"
           x:Name="Root">
 
+    <!--Main container-->
     <ViewCell.View>
         <Grid BindingContext="{x:Reference Name=Root}">
             <Grid.ColumnDefinitions>
@@ -11,12 +12,18 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
+                
+                <!--Main image-->
                 <Image HorizontalOptions="Start"
                        Margin="16, 16, 16, 16"
                        Source="{Binding MainImageSource}" />
+                
+                <!--Subimage-->
                 <Image HorizontalOptions="Start" 
                        Margin="40, 40, 8, 8"
                        Source="{Binding SubimageSource}" />
+                
+                <!--Main text of cell-->
                 <Label FontSize="20"
                        HorizontalTextAlignment="Start"
                        Margin="80, 16, 0, 8"
@@ -34,6 +41,8 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
+                
+                <!--Subtext of cell-->
                 <Label FontSize="15"
                        HorizontalTextAlignment="Start"
                        Margin="80, 0, 0, 16"
@@ -41,15 +50,19 @@
                        Text="{Binding Subtext}"
                        TextColor="Black"/>
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding MainCommand}" />
+                    <TapGestureRecognizer Command="{Binding MainCommand}"
+                                          CommandParameter="{Binding MainCommandParameter}" />
                 </Grid.GestureRecognizers>
             </Grid>
+            
+            <!--Additional image-->
             <Image Grid.Column="1"
                    HorizontalOptions="Center"
                    Margin="16, 16, 16, 16"
                    Source="{Binding AdditionalImageSource}">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding AdditionalCommand}"/>
+                    <TapGestureRecognizer Command="{Binding AdditionalCommand}"
+                                          CommandParameter="{Binding AdditionalCommandParameter}"/>
                 </Image.GestureRecognizers>
             </Image>
         </Grid>

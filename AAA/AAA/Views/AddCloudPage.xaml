@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.AddCloudPage">
+             x:Class="AAA.Views.AddCloudPage"
+             Title="Connect new account">
+
+    <!--Page with credentials to connect with new cloud account-->
     <ContentPage.Content>
+        
+        <!--Main container-->
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand">
                 <Grid BackgroundColor="White">
@@ -20,6 +25,7 @@
                            HorizontalOptions="Center" />
                     <Picker Grid.Row="1"
                             Margin="16, 16, 16, 8"
+                            SelectedItem="{Binding NewCloudType, Mode=OneWayToSource, Converter={StaticResource StringIntoCloudType}}"
                             Title="Select cloud provider">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -34,9 +40,9 @@
                            Margin="16, 8, 16, 8"
                            FontSize="20"
                            HorizontalTextAlignment="Start"
-                           IsPassword="True"
                            Placeholder="Login"
-                           PlaceholderColor="DarkGray" />
+                           PlaceholderColor="DarkGray"
+                           Text="{Binding CloudEmail, Mode=OneWayToSource}"/>
                     <Entry Grid.Row="3"
                            Margin="16, 8, 16, 8"
                            FontSize="20"
@@ -46,7 +52,7 @@
                            PlaceholderColor="DarkGray" />
                 </Grid>
             </ScrollView>
-            <Button Command="{Binding ReturnCommand}"
+            <Button Command="{Binding CloudConnectCommand}"
                     VerticalOptions="End" Text="CONNECT" TextColor="White"  BackgroundColor="#32CD32"/>
         </StackLayout>
     </ContentPage.Content>
