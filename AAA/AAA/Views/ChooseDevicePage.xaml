@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             x:Class="AAA.Views.ChooseDevicePage"
+             Title="Choose device">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Margin="20"
+                   Text="Select device to assign to folder."
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+            <ListView ItemsSource="{Binding TestList}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
+                                                    AdditionalImageSource="go_next_96px.png"
+                                                    MainCommand="{Binding Command2}"
+                                                    MainImageSource="tablet_96px.png"
+                                                    MainText="{Binding S1}"
+                                                    SubimageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
+                                                    Subtext="{Binding S2}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button VerticalOptions="End" Text="ASSIGN NEW DEVICE" TextColor="White"  BackgroundColor="#32CD32"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -20,6 +20,7 @@ namespace DPF.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            this.Window.AddFlags(WindowManagerFlags.Fullscreen);
             LoadApplication(new App());
         }
     }

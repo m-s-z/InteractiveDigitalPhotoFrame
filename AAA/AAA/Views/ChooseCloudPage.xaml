@@ -1,12 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.ChooseCloudPage">
+             xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             x:Class="AAA.Views.ChooseCloudPage"
+             Title="Choose cloud provider">
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Margin="20"
+                   Text="Choose cloud provider."
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+            <ListView ItemsSource="{Binding TestList4}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension AdditionalCommand="{Binding Command1}"
+                                                    AdditionalImageSource="go_next_96px.png"
+                                                    MainCommand="{Binding Command1}"
+                                                    MainImageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
+                                                    MainText="{Binding S1}"
+                                                    Subtext="{Binding S2}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button VerticalOptions="End" Text="CONNECT NEW ACCOUNT" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToAddCloudProviderCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

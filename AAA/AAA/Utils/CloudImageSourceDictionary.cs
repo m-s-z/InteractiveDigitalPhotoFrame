@@ -12,10 +12,11 @@ namespace AAA.Utils
         /// </summary>
         private static readonly Dictionary<CloudType, string> CLOUD_IMAGE_SOURCE_DICTIONARY = new Dictionary<CloudType, string>
         {
-            {CloudType.Dropbox, "bottle.jpg"},
-            {CloudType.Flirck, "icon.png"},
-            {CloudType.Google, "icon.png"},
-            {CloudType.Microsoft, "sack.png"},
+            {CloudType.Dropbox, "dropbox_96px.png"},
+            {CloudType.Flickr, "flickr_96px.png"},
+            {CloudType.Google, "google_96px.png"},
+            {CloudType.Microsoft, "microsoft_96px.png"},
+            {CloudType.None, ""}
         };
 
         /// <summary>

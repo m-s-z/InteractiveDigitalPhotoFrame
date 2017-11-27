@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace AAA.Controls
+namespace DPF.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Card : ContentView
+    public partial class MainAppPage : ContentPage
     {
-        public Card()
+        public MainAppPage()
         {
             InitializeComponent();
         }

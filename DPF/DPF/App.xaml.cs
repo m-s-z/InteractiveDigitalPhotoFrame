@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using DPF.Views;
 using Xamarin.Forms;
 
 namespace DPF
@@ -12,8 +12,7 @@ namespace DPF
         public App()
         {
             InitializeComponent();
-
-            MainPage = new DPF.MainPage();
+            MainPage = new NavigationPage(new MainAppPage());
         }
 
         protected override void OnStart()

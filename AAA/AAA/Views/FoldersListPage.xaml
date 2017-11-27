@@ -1,12 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.FoldersListPage">
+             xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             x:Class="AAA.Views.FoldersListPage"
+             Title="Assigned folders">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ListView ItemsSource="{Binding TestList3}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension AdditionalCommand="{Binding Command2}"
+                                                    MainCommand="{Binding Command1}"
+                                                    MainImageSource="folder_96px.png"
+                                                    MainText="{Binding S1}"
+                                                    SubimageSource="{Binding SImage, Converter={StaticResource CloudTypeToImageSourceConverter}}"
+                                                    Subtext="{Binding S2}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button VerticalOptions="End" Text="ASSIGN NEW FOLDER" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToChooseProviderPageCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
