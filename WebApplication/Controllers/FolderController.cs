@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Services;
 using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
     public class FolderController : Controller
     {
+        private ApplicationContext db = new ApplicationContext();
+        AuthenticationService authService = new AuthenticationService();
         // GET: Folder
         public ActionResult Index(int? IdOfOpenDevice)
         {
@@ -58,6 +63,10 @@ namespace WebApplication.Controllers
         }
         public ActionResult ConfirmDeleteFolder(int folderId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             return Redirect("Index");
         }
     }

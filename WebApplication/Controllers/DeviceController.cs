@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Services;
 using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
@@ -14,6 +15,7 @@ namespace WebApplication.Controllers
     public class DeviceController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
+        AuthenticationService authService = new AuthenticationService();
         // GET: Device
         public ActionResult Index()
         {
@@ -33,8 +35,13 @@ namespace WebApplication.Controllers
         {
             return View();
         }
-        /*public async Task<ActionResult> GetUserAllDevices(int? user)
+        [HttpGet]
+        public async Task<ActionResult> GetUserAllDevices(int? user)
         {
+            if(!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             if (user == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"User Id not specified");
@@ -53,7 +60,7 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
-        }*/
+        }
 
         public ActionResult DeleteDevice(int deviceId, String deviceName)
         {
@@ -62,11 +69,19 @@ namespace WebApplication.Controllers
         }
         public ActionResult ConfirmDeleteDevice(int deviceId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             return Redirect("Index");
         }
 
         public async Task<ActionResult> PairDevice(String pairCode)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             PairDeviceViewModel view = new PairDeviceViewModel("Success");
             return View(view);
         }

@@ -16,15 +16,7 @@ namespace WebApplication.Migrations
 
         protected override void Seed(WebApplication.Data.ApplicationContext context)
         {
-            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [Folders]");
-            context.SaveChanges();
-            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [DeviceAccounts]");
-            context.SaveChanges();
-
-            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [Devices]");
-
-            context.SaveChanges();
-
+            
             context.Accounts.AddOrUpdate(
                 p => p.Id, DummyData.getAccounts().ToArray());
             context.SaveChanges();

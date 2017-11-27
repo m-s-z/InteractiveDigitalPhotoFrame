@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Services;
 using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
@@ -13,7 +15,7 @@ namespace WebApplication.Controllers
     public class CloudController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-
+        AuthenticationService authService = new AuthenticationService();
         // GET: Cloud
         public ActionResult Index()
         {
@@ -30,6 +32,10 @@ namespace WebApplication.Controllers
         }
         public async Task<ActionResult> ConfirmDeleteCloud(int cloudId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             //next part maybe use services?
             /*
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
@@ -52,6 +58,12 @@ namespace WebApplication.Controllers
         public ActionResult NewCloud()
         {
             return View();
+        }
+
+        public ActionResult ManageCloud(string cloud)
+        {
+            MangeCloudViewModel view = new MangeCloudViewModel(cloud);
+            return View(view);
         }
     }
 }

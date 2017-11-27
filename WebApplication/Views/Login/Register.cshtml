@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+@if (Session["UserId"] != null)
+{
+    Response.Redirect("~/Home");
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body class="login">
+    <div class="register-box center-block">
+        <h2 class="text-center"> Create an account to use the site</h2>
+        <img class="center-block" src="~/Images/registretationIcon.png" />
+        @using (Html.BeginForm("RegisterConfirm", "Login", FormMethod.Post))
+            {
+            <input class="center-block form-control input-control" type="text" placeholder="username" name="login"></input>
+            <input class="center-block form-control input-control" type="password" placeholder="password" name="password"></input>
+            <input class="center-block form-control input-control" type="password" placeholder="repeat password" name="password2"></input>
+            <input class="btn btn-primary center-block" type="submit" value="Register" />
+        }
+        @Html.ActionLink("Back", "Index", "Login", new { area = "" }, null)
+
+
+    </div>
+</body>
+</html>
