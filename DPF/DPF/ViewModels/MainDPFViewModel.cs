@@ -12,10 +12,19 @@ namespace DPF.ViewModels
     {
         private List<String> _listOfImageNames;
         private int _photoCounter;
+        private string _code;
         private string _photoPath;
         private bool _isActive;
+        private bool _isCodeVisible;
         private bool _isSlideshow;
         private int _slideshowCounter;
+
+        public string Code
+        {
+            get => _code;
+            set => SetProperty(ref _code, value);
+        }
+
         public string PhotoPath
         {
             get => _photoPath;
@@ -26,6 +35,12 @@ namespace DPF.ViewModels
         {
             get => _isActive;
             set => SetProperty(ref _isActive, value);
+        }
+
+        public bool IsCodeVisible
+        {
+            get => _isCodeVisible;
+            set => SetProperty(ref _isCodeVisible, value);
         }
 
         public bool IsSlideshow
@@ -47,6 +62,12 @@ namespace DPF.ViewModels
         }
 
         public Command PreviousPhotoCommand
+        {
+            get;
+            set;
+        }
+
+        public Command ShowCodeCommand
         {
             get;
             set;
@@ -75,6 +96,7 @@ namespace DPF.ViewModels
             };
             PhotoPath = ListOfImageNames[0];
             _photoCounter = 0;
+            ShowCodeCommand = new Command(ExecuteShowCodeCommand);
             TapToActiveCommand = new Command(ExecuteTapToActiveCommand);
             PreviousPhotoCommand = new Command(ExecutePreviousPhotoCommand);
             NextPhotoCommand = new Command(ExecuteNextPhotoCommand);
@@ -106,6 +128,13 @@ namespace DPF.ViewModels
         private void ExecuteTapToActiveCommand()
         {
             IsActive = !IsActive;
+        }
+
+        private void ExecuteShowCodeCommand()
+        {
+            IsCodeVisible = !IsCodeVisible;
+            Random random = new Random();
+            Code = random.Next(10000, 99999).ToString();
         }
 
         private void ExecuteControlSlideshowCommand()

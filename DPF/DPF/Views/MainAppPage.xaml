@@ -15,9 +15,8 @@
             <Image Source="{Binding PhotoPath}" VerticalOptions="CenterAndExpand">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapToActiveCommand}"/>
-            </Image.GestureRecognizers>
+                </Image.GestureRecognizers>
             </Image>
-            <!--<BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />-->
             <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" IsVisible="{Binding IsActive}" />
             <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
@@ -42,7 +41,15 @@
                     <TapGestureRecognizer Command="{Binding ControlSlideshowCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}"/>
+            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100" IsVisible="{Binding IsCodeVisible}" />
+            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowCodeCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <StackLayout BackgroundColor="White" IsVisible="{Binding IsCodeVisible}" HeightRequest="60" WidthRequest="130" HorizontalOptions="End" VerticalOptions="Start" Margin="0, 90, 40, 0">
+                <Label Text="{Binding Code}" TextColor="#2196F3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="30"/>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
