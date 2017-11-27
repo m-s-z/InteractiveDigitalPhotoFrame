@@ -59,5 +59,11 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult ManageCloud(string cloud)
+        {
+            MangeCloudViewModel view = new MangeCloudViewModel(cloud);
+            return View(view);
+        }
     }
 }

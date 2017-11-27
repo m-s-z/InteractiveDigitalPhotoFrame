@@ -217,6 +217,7 @@
     <Compile Include="ViewModels\DeviceViewModel.cs" />
     <Compile Include="ViewModels\ConfirmDeleteFolderViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
+    <Compile Include="ViewModels\MangeCloudViewModel.cs" />
     <Compile Include="ViewModels\PairDeviceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +298,7 @@
     <Content Include="Views\Device\DeleteDevice.cshtml" />
     <Content Include="Views\Device\PairDevice.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Cloud\ManageCloud.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

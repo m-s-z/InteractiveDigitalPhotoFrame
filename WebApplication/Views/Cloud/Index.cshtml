@@ -11,7 +11,9 @@
             <li class="list-group-item">
                 <span class="provider">@cloud.Provider.ToString()</span>
                 <span class="provider">@cloud.Login</span>
-                <p class="btn btn-default remove-button">@Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, null)</p>
+                @Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, new { @class = "btn btn-default remove-button " })
+                @Html.ActionLink("Manage", "ManageCloud", "Cloud", new { cloud = cloud.Login }, new { @class = "btn btn-default remove-button" })
+
             </li>
         }
     </ul>
