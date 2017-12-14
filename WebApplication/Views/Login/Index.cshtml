@@ -23,6 +23,10 @@
             {
                 <input class="center-block form-control input-control" type="text" placeholder="username" name="login"></input>
                 <input class="center-block form-control input-control" type="password" placeholder="password" name="password"></input>
+                if(TempData["LoginFailed"] != null)
+                {
+                    <p class="login-failed">Password or Login not found</p>
+                }
 
                 <input class="btn btn-primary center-block" type="submit" value="login" />
 

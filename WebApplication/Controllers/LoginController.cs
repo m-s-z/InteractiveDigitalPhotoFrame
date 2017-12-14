@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
@@ -20,10 +21,19 @@ namespace WebApplication.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(string login, string password)
+        public async Task<ActionResult> Login(string login, string password)
         {
-            Session["UserId"] = login;
-            return RedirectToAction("../Home/Index");
+            if (await authService.Login(login,password))
+            {
+                Session["UserId"] = login;
+                return RedirectToAction("../Home/Index");
+            }else
+            {
+                TempData["LoginFailed"] = true;
+                return RedirectToAction("Index");
+            }
+            
+            
         }
 
         public ActionResult LogOut()
