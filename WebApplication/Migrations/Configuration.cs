@@ -27,6 +27,9 @@ namespace WebApplication.Migrations
             context.SaveChanges();
             context.Folders.AddOrUpdate(
                 p => p.FolderId, DummyData.getFolders(context).ToArray());
+            context.SaveChanges();
+            context.DeviceNames.AddOrUpdate(
+                p => p.DeviceNameId, DummyData.getDeviceNames().ToArray());
         }
     }
 }

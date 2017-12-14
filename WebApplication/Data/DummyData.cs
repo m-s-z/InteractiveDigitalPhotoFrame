@@ -81,8 +81,8 @@ namespace WebApplication.Data
             Device device = new Device(1, "Grandma's tablet");
             List<DeviceName> deviceNames = new List<DeviceName>()
             {
-                new DeviceName(acc1,device,"Grandma's Tablet"),
-                new DeviceName(acc2, device, "Mom's Tablet")
+                new DeviceName(1, acc1,device,"Grandma's Tablet"),
+                new DeviceName(2, acc2, device, "Mom's Tablet")
             };
             return deviceNames;
         }

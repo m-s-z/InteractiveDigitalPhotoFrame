@@ -202,10 +202,15 @@
     <Compile Include="Migrations\201711180104596_initial migration.Designer.cs">
       <DependentUpon>201711180104596_initial migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712141322442_DeviceNameMigration.cs" />
+    <Compile Include="Migrations\201712141322442_DeviceNameMigration.Designer.cs">
+      <DependentUpon>201712141322442_DeviceNameMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
     <Compile Include="Models\Device.cs" />
+    <Compile Include="Models\DeviceName.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\SimpleDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -320,6 +325,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711180104596_initial migration.resx">
       <DependentUpon>201711180104596_initial migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141322442_DeviceNameMigration.resx">
+      <DependentUpon>201712141322442_DeviceNameMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
