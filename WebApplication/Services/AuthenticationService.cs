@@ -39,5 +39,16 @@ namespace WebApplication.Services
                 return true;
             }
         }
+
+        public string getLoggedInUsername(HttpSessionStateBase session)
+        {
+            if (session["UserId"] != null)
+            {
+                return session["UserId"] as string;
+            }else
+            {
+                return null;
+            }
+        }
     }
 }

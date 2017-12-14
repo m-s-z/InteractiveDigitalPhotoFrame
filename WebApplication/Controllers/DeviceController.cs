@@ -16,16 +16,16 @@ namespace WebApplication.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
         AuthenticationService authService = new AuthenticationService();
+        DeviceService deviceService = new DeviceService();
         // GET: Device
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-           
-            var device = new Device(1,"Grandmas Tablet");
-            var device2 = new Device(2, "My Tablet");
-            List<Device> devices = new List<Device>();
-            devices.Add(device);
-            devices.Add(device2);
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
 
+            List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             DeviceViewModel deviceViewModel = new DeviceViewModel(devices);
 
             return View(deviceViewModel);

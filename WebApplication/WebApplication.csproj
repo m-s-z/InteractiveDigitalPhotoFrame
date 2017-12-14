@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201712141322442_DeviceNameMigration.Designer.cs">
       <DependentUpon>201712141322442_DeviceNameMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712142257527_DeviceNameMigrationSeedFix.cs" />
+    <Compile Include="Migrations\201712142257527_DeviceNameMigrationSeedFix.Designer.cs">
+      <DependentUpon>201712142257527_DeviceNameMigrationSeedFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
@@ -215,6 +219,7 @@
     <Compile Include="Models\SimpleDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\DeviceService.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\CloudViewModel.cs" />
     <Compile Include="ViewModels\ConfirmDeleteCloudViewModel.cs" />
@@ -328,6 +333,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712141322442_DeviceNameMigration.resx">
       <DependentUpon>201712141322442_DeviceNameMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712142257527_DeviceNameMigrationSeedFix.resx">
+      <DependentUpon>201712142257527_DeviceNameMigrationSeedFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -74,15 +74,12 @@ namespace WebApplication.Data
             return folders;
         }
 
-        public static List<DeviceName> getDeviceNames()
+        public static List<DeviceName> getDeviceNames(ApplicationContext context)
         {
-            Account acc1 = new Account(1, "Mati", "aaa");
-            Account acc2 = new Account(2, "Mik", "qqq");
-            Device device = new Device(1, "Grandma's tablet");
             List<DeviceName> deviceNames = new List<DeviceName>()
             {
-                new DeviceName(1, acc1,device,"Grandma's Tablet"),
-                new DeviceName(2, acc2, device, "Mom's Tablet")
+                new DeviceName(1, context.Accounts.First(a=> a.Login == "Mati"),context.Devices.First(p => p.Name == "Grandma's tablet"),"Grandma's Tablet"),
+                new DeviceName(1, context.Accounts.First(a=> a.Login == "Mik"),context.Devices.First(p => p.Name == "Grandma's tablet"),"Mom's Tablet"),
             };
             return deviceNames;
         }

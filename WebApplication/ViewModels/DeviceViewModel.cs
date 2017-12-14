@@ -8,11 +8,11 @@ namespace WebApplication.ViewModels
 {
     public class DeviceViewModel
     {
-        public DeviceViewModel(List<Device> devices)
+        public DeviceViewModel(List<DeviceName> devices)
         {
             Devices = devices;
         }
 
-        public List<Device> Devices { get; set; }
+        public List<DeviceName> Devices { get; set; }
     }
 }
