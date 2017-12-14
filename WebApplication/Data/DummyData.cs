@@ -73,5 +73,18 @@ namespace WebApplication.Data
             };
             return folders;
         }
+
+        public static List<DeviceName> getDeviceNames()
+        {
+            Account acc1 = new Account(1, "Mati", "aaa");
+            Account acc2 = new Account(2, "Mik", "qqq");
+            Device device = new Device(1, "Grandma's tablet");
+            List<DeviceName> deviceNames = new List<DeviceName>()
+            {
+                new DeviceName(acc1,device,"Grandma's Tablet"),
+                new DeviceName(acc2, device, "Mom's Tablet")
+            };
+            return deviceNames;
+        }
     }
 }
