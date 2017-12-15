@@ -35,6 +35,8 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+
+        //left as reference dont use this controller method
         [HttpGet]
         public async Task<ActionResult> GetUserAllDevices(int? user)
         {
@@ -60,6 +62,13 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GeneratePairCode(int deviceId)
+        {
+            string pairCode = await deviceService.GeneratePairCode(deviceId);
+            return Json(pairCode,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult DeleteDevice(int deviceId, String deviceName)

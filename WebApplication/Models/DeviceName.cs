@@ -26,7 +26,7 @@ namespace WebApplication.Models
             Device = device;
             CustomDeviceName = customDeviceName;
         }
-
+        
         public int DeviceNameId { get; set; }
         public Account Account { get; set; }
         public Device Device { get; set; }
