@@ -45,9 +45,9 @@ namespace WebApplication.Data
             };
             List<Device> devices = new List<Device>()
             {
-                new Device(1,"Grandma's tablet", accounts1),
-                new Device(2,"Mik's phone", accounts2),
-                new Device(3,"Mati's tablet", accounts3)
+                new Device(1,"Grandma's tablet", accounts1, "aaa"),
+                new Device(2,"Mik's phone", accounts2, "qqq"),
+                new Device(3,"Mati's tablet", accounts3, "zzz")
             };
             return devices;
         }

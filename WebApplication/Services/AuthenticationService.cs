@@ -18,10 +18,10 @@ namespace WebApplication.Services
 
         public async Task<bool> Login(string username, string password)
         {
-            var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login == username);
+            var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username));
             if (foundUser != null)
             {
-                if (foundUser.Password == password)
+                if (foundUser.Password == password && foundUser.Login == username)
                 {
                     return true;
                 }

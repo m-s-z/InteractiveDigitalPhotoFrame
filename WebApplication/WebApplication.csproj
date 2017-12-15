@@ -210,6 +210,22 @@
     <Compile Include="Migrations\201712142257527_DeviceNameMigrationSeedFix.Designer.cs">
       <DependentUpon>201712142257527_DeviceNameMigrationSeedFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712142319186_DevicePairCodeSeed.cs" />
+    <Compile Include="Migrations\201712142319186_DevicePairCodeSeed.Designer.cs">
+      <DependentUpon>201712142319186_DevicePairCodeSeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712142348477_DevicePairCodeSeedFix.cs" />
+    <Compile Include="Migrations\201712142348477_DevicePairCodeSeedFix.Designer.cs">
+      <DependentUpon>201712142348477_DevicePairCodeSeedFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712150020181_DeviceMyPropertyFix.cs" />
+    <Compile Include="Migrations\201712150020181_DeviceMyPropertyFix.Designer.cs">
+      <DependentUpon>201712150020181_DeviceMyPropertyFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712150023194_DeviceMyPropertyFixFix.cs" />
+    <Compile Include="Migrations\201712150023194_DeviceMyPropertyFixFix.Designer.cs">
+      <DependentUpon>201712150023194_DeviceMyPropertyFixFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
@@ -336,6 +352,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712142257527_DeviceNameMigrationSeedFix.resx">
       <DependentUpon>201712142257527_DeviceNameMigrationSeedFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712142319186_DevicePairCodeSeed.resx">
+      <DependentUpon>201712142319186_DevicePairCodeSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712142348477_DevicePairCodeSeedFix.resx">
+      <DependentUpon>201712142348477_DevicePairCodeSeedFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712150020181_DeviceMyPropertyFix.resx">
+      <DependentUpon>201712150020181_DeviceMyPropertyFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712150023194_DeviceMyPropertyFixFix.resx">
+      <DependentUpon>201712150023194_DeviceMyPropertyFixFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

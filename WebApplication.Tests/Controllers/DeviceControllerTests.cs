@@ -85,7 +85,7 @@ namespace WebApplication.Controllers.Tests
             controller.ControllerContext = controllerContext.Object;
 
             // Act
-            ViewResult result = await controller.PairDevice(paircode) as ViewResult;
+            ViewResult result = await controller.PairDevice(paircode,"new Name") as ViewResult;
 
             // Assert
             Assert.AreEqual((result.Model as PairDeviceViewModel).Result, "Success");

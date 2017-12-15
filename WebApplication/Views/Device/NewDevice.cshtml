@@ -9,6 +9,8 @@
     @using (Html.BeginForm("PairDevice", "Device", FormMethod.Post))
     {
         <input class="center-block pair-code" type="text" name="pairCode"/>
+        <label>Name for device</label>
+        <input class="center-block pair-code" type="text" name="deviceName" />
         <input class="btn btn-primary center-block" type="submit" value="Pair Device" />
 
     }

@@ -76,13 +76,15 @@ namespace WebApplication.Controllers
             return Redirect("Index");
         }
 
-        public async Task<ActionResult> PairDevice(String pairCode)
+        public async Task<ActionResult> PairDevice(String pairCode, string deviceName)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            PairDeviceViewModel view = new PairDeviceViewModel("Success");
+
+            string response = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
+            PairDeviceViewModel view = new PairDeviceViewModel(response);
             return View(view);
         }
     }
