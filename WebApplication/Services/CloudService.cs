@@ -34,5 +34,20 @@ namespace WebApplication.Services
             }
             return false;
         }
+        public async Task<bool> ChangePassword(string oldPassword, string newPassword, int cloudId )
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            if (cloud != null)
+            {
+                if (cloud.Password == oldPassword)
+                {
+                    cloud.Password = newPassword;
+                    db.Entry(cloud).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
