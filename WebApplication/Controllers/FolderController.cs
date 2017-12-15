@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
@@ -15,26 +16,25 @@ namespace WebApplication.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
         AuthenticationService authService = new AuthenticationService();
+        DeviceService deviceService = new DeviceService();
+        FolderService folderService = new FolderService();
         // GET: Folder
-        public ActionResult Index(int? IdOfOpenDevice)
+        public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {
-            int index;
-            var folder = new Folder("summer", 1, 1);
-            var folder2 = new Folder("winter", 2, 1);
+            List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             List<Folder> folders = new List<Folder>();
-            List<Folder> folders2 = new List<Folder>();
-
-            folders.Add(folder);
-            folders.Add(folder2);
-            folders2.Add(folder);
-            var device = new Device(1, "Grandmas Tablet");
-            var device2 = new Device(2, "My Tablet");
-            List<Device> devices = new List<Device>();
-            devices.Add(device);
-            devices.Add(device2);
+            foreach(var dev in devices)
+            {
+                List<Folder> deviceFolders = await folderService.getFolders(dev.Device.DeviceId);
+                foreach (var fold in deviceFolders)
+                {
+                    folders.Add(fold);
+                }
+            }
+            int index;
             if (IdOfOpenDevice != null)
             {
-                index = devices.FindIndex(d => d.DeviceId == IdOfOpenDevice);
+                index = devices.FindIndex(d => d.Device.DeviceId == IdOfOpenDevice);
             }
             else
             {
@@ -47,7 +47,9 @@ namespace WebApplication.Controllers
 
         
 
-        /*[Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
+        /*
+         * for now kept as a reference to be deleted soon
+         * [Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]
         public ActionResult BindDevice(int FolderId, int DeviceId)
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
