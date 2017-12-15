@@ -22,7 +22,8 @@ namespace WebApplication.Services
             var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username.ToLower()));
             if (foundUser != null)
             {
-                if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
+                if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
+                //if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
                     return true;
                 }

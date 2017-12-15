@@ -38,6 +38,10 @@ namespace WebApplication.Controllers
 
         public ActionResult DeleteCloud(int cloudId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             ConfirmDeleteCloudViewModel view = new ConfirmDeleteCloudViewModel(cloudId);
 
             return View(view);
@@ -45,12 +49,30 @@ namespace WebApplication.Controllers
 
         public ActionResult NewCloud()
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             return View();
         }
 
-        public ActionResult ManageCloud(string cloud)
+        public ActionResult ManageCloud(string cloud, int cloudId)
         {
-            MangeCloudViewModel view = new MangeCloudViewModel(cloud);
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            MangeCloudViewModel view = new MangeCloudViewModel(cloudId, cloud);
+            return View(view);
+        }
+        public async Task<ActionResult> ChangePassword(int cloudId, string oldPassword, string password, string password2)
+        {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            string result = "success";
+            ChangeCloudPasswordViewModel view = new ChangeCloudPasswordViewModel(result);
             return View(view);
         }
     }

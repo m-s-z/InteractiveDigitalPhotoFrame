@@ -4,5 +4,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="background-transparent">ManageCloud : @(Model.Login)</h2>
+<div class="background-transparent">
+    <div>
+        <h2 class="text-center">Change password for @Model.Login</h2>
+    </div>
+    @using (Html.BeginForm("ChangePassword", "Cloud", FormMethod.Post))
+    {
+        <div>
+            <h3 class="text-center">Change Password</h3>
+            <div class="text-center">
+                <input class="center-block form-control input-control" type="password" placeholder="old password" name="oldPassword" />
+                <input class="center-block form-control input-control" type="password" placeholder="new password" name="password" />
+                <input class="center-block form-control input-control" type="password" placeholder="repeat new password" name="password2" />
+            </div>
+        </div>
+        <input type="hidden" name="cloudId" value="@(Model.Id)"></input>
+        <div>
+            <input type="submit" class="btn btn-primary center-block change-login-class" value="change password" />
+        </div>
+    }
+</div>
 

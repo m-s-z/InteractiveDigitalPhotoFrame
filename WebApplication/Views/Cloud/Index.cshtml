@@ -12,7 +12,7 @@
                 <span class="provider">@cloud.Provider.ToString()</span>
                 <span class="provider">@cloud.Login</span>
                 @Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.CloudId }, new { @class = "btn btn-default remove-button " })
-                @Html.ActionLink("Manage", "ManageCloud", "Cloud", new { cloud = cloud.Login }, new { @class = "btn btn-default remove-button" })
+                @Html.ActionLink("Manage", "ManageCloud", "Cloud", new { cloud = cloud.Login, cloudId = cloud.CloudId }, new { @class = "btn btn-default remove-button" })
 
             </li>
         }
