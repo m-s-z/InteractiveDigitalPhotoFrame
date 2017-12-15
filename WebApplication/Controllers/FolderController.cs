@@ -63,12 +63,13 @@ namespace WebApplication.Controllers
             ConfirmDeleteFolderViewModel view = new ConfirmDeleteFolderViewModel(folderId, folderName);
             return View(view);
         }
-        public ActionResult ConfirmDeleteFolder(int folderId)
+        public async Task<ActionResult> ConfirmDeleteFolder(int folderId)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
+            await folderService.deleteFolder(folderId);
             return Redirect("Index");
         }
     }

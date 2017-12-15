@@ -24,5 +24,18 @@ namespace WebApplication.Services
             return folders;
         }
 
+        //deletes folder with specified id and return true on success and false if the folder cannot be found
+        public async Task<bool> deleteFolder(int folderId)
+        {
+            Folder folder = await db.Folders.FindAsync(folderId);
+            if (folder != null)
+            {
+                db.Folders.Remove(folder);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
     }
 }
