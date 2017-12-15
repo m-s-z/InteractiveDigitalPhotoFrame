@@ -16,16 +16,12 @@ namespace WebApplication.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
         AuthenticationService authService = new AuthenticationService();
+        CloudService cloudService = new CloudService();
         // GET: Cloud
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            Cloud cloud1 = new Cloud(ProviderType.DropBox, "amps@gmail.com");
-            Cloud cloud2 = new Cloud(ProviderType.Flicker, "amps@gmail.com");
-            Cloud cloud3 = new Cloud(ProviderType.DropBox, "sdmkas@gmail.com");
-            List<Cloud> clouds = new List<Cloud>();
-            clouds.Add(cloud1);
-            clouds.Add(cloud2);
-            clouds.Add(cloud3);
+            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            
             CloudViewModel model = new CloudViewModel(clouds);
 
             return View(model);

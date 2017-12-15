@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -28,7 +29,9 @@ namespace WebApplication.Models
         }
         
         public int DeviceNameId { get; set; }
+        [Index("IX_AccountAndDevice", 1, IsUnique = true)]
         public Account Account { get; set; }
+        [Index("IX_AccountAndDevice", 2, IsUnique = true)]
         public Device Device { get; set; }
         public String CustomDeviceName { get; set; }
     }
