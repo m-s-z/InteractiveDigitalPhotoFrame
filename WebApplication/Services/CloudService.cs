@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlickrNet;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -48,6 +49,35 @@ namespace WebApplication.Services
                 }
             }
             return false;
+        }
+        //legacy method left as reference do not use
+        public async Task<bool> CreateNewAccount(ProviderType provider, OAuthAccessToken token)
+        {
+            bool result = false;
+            switch(provider)
+            {
+                case ProviderType.Flicker:
+              //      result = await CreateFlickerAccount();
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+
+        public async Task<bool> CreateFlickerAccount(OAuthAccessToken token, string accountName, string username)
+        {
+            try
+            {
+                Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username);
+                Cloud cloud = new Cloud(ProviderType.Flicker, accountName, foundUser, token.Token, token.TokenSecret);
+                db.Clouds.Add(cloud);
+                await db.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

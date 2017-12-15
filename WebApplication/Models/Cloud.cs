@@ -38,13 +38,23 @@ namespace WebApplication.Models
             Id = id;
         }
 
+        public Cloud(ProviderType provider, string login, Account account, string token, string tokenSecret)
+        {
+            Provider = provider;
+            Login = login;
+            Account = account;
+            Token = token;
+            TokenSecret = tokenSecret;
+        }
+
         public int CloudId { get; set; }
         public String Password { get; set; }
         public ProviderType Provider { get; set; }
         public string Login { get; set; }
-
         public int Id { get; set; }
         public Account Account { get; set; }
-        
+        public string Token { get; set; }
+        public string TokenSecret { get; set; }
+
     }
 }

@@ -56,6 +56,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlickrNet.3.24.0\lib\net20\FlickrNet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -230,6 +233,10 @@
     <Compile Include="Migrations\201712151441477_DeviceNameMigrationSeedFix1.Designer.cs">
       <DependentUpon>201712151441477_DeviceNameMigrationSeedFix1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712152018056_TokenAndSecretTokenMigration.cs" />
+    <Compile Include="Migrations\201712152018056_TokenAndSecretTokenMigration.Designer.cs">
+      <DependentUpon>201712152018056_TokenAndSecretTokenMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
@@ -242,6 +249,7 @@
     <Compile Include="Services\CloudService.cs" />
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\FolderService.cs" />
+    <Compile Include="Utils\FlickrManager.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\ChangeCloudPasswordViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
@@ -338,6 +346,7 @@
     <Content Include="Views\Login\RegisterConfirm.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Cloud\ChangePassword.cshtml" />
+    <Content Include="Views\Cloud\ConfirmFlickrConnection.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -377,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712151441477_DeviceNameMigrationSeedFix1.resx">
       <DependentUpon>201712151441477_DeviceNameMigrationSeedFix1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712152018056_TokenAndSecretTokenMigration.resx">
+      <DependentUpon>201712152018056_TokenAndSecretTokenMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

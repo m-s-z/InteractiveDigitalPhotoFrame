@@ -4,6 +4,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="background-transparent">
-    <h2>NewCloud</h2>
+    <h2>Connect with a provider account</h2>
+    @using (Html.BeginForm("ConnectWithProvider", "Cloud", FormMethod.Post))
+    {
+        @Html.DropDownList("Providers")
+        <h3 class="text-center">Your Custom Name for Account</h3>
+        <input class="center-block pair-name" type="text" name="accountName" />
+        <input class="btn btn-primary center-block" type="submit" value="Connect" />
+    }
 </div>
 

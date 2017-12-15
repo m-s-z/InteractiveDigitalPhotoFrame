@@ -22,8 +22,8 @@ namespace WebApplication.Services
             var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username.ToLower()));
             if (foundUser != null)
             {
-                if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
-                //if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
+                //if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
+                if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
                     return true;
                 }
@@ -59,7 +59,7 @@ namespace WebApplication.Services
             string hashedPassword = Account.HashPassword(password);
             string lowerCaseLogin = login.ToLower();
             List<Device> devices = new List<Device>();
-            Account account = new Account(login, hashedPassword, devices);
+            Account account = new Account(lowerCaseLogin, hashedPassword, devices);
             try
             {
                 db.Accounts.Add(account);

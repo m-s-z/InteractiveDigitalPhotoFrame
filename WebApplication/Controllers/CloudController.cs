@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlickrNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Services;
+using WebApplication.Utils;
 using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
@@ -53,6 +55,18 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
+
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem { Text = "Drop Box", Value = ProviderType.DropBox.ToString() });
+
+            items.Add(new SelectListItem { Text = "Flickr", Value = ProviderType.Flicker.ToString(), Selected = true });
+
+            items.Add(new SelectListItem { Text = "Google Drive", Value = ProviderType.GoogleDrive.ToString()});
+
+            items.Add(new SelectListItem { Text = "One Drive", Value = ProviderType.OneDrive.ToString()});
+
+            ViewBag.Providers = items;
             return View();
         }
 
@@ -90,6 +104,25 @@ namespace WebApplication.Controllers
             }
             ChangeCloudPasswordViewModel view = new ChangeCloudPasswordViewModel(result);
             return View(view);
+        }
+
+        public async Task<ActionResult> ConnectWithProvider(ProviderType Providers, string accountName)
+        {
+            Flickr f = FlickrManager.GetInstance();
+            var fullUrl = this.Url.Action("ConfirmFlickrConnection", "Cloud", new { accountName = accountName }, this.Request.Url.Scheme);
+            OAuthRequestToken token = f.OAuthGetRequestToken(fullUrl);
+            Session["RequestToken"] = token;
+            string url = f.OAuthCalculateAuthorizationUrl(token.Token, AuthLevel.Read);
+            return Redirect(url);
+        }
+
+        public async Task<ActionResult> ConfirmFlickrConnection(string accountName)
+        {
+            Flickr f = FlickrManager.GetInstance();
+            OAuthRequestToken requestToken = Session["RequestToken"] as OAuthRequestToken;
+            OAuthAccessToken accessToken = f.OAuthGetAccessToken(requestToken, Request.QueryString["oauth_verifier"]);
+            await cloudService.CreateFlickerAccount(accessToken, accountName, authService.getLoggedInUsername(Session));
+            return View();
         }
     }
 }
