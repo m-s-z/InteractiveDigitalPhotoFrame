@@ -22,5 +22,17 @@ namespace WebApplication.Services
             List<Cloud> clouds = await db.Clouds.Where(c => c.Account.Login == username).ToListAsync<Cloud>();
             return clouds;
         }
+        //deletes clodu with specified id and return true on success and false if the cloud cannot be found
+        public async Task<bool> removeCloud(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            if (cloud != null)
+            {
+                db.Clouds.Remove(cloud);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

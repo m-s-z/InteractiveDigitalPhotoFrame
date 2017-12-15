@@ -32,15 +32,7 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            //next part maybe use services?
-            /*
-            Cloud cloud = await db.Clouds.FindAsync(cloudId);
-            if (cloud != null)
-            {
-                db.Clouds.Remove(cloud);
-
-            }
-            await db.SaveChangesAsync();*/
+            await cloudService.removeCloud(cloudId);
             return Redirect("Index");
         }
 
