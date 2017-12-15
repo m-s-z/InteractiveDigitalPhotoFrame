@@ -30,12 +30,27 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(string oldPassword, string password, string password2, int id)
         {
+            string result = "";
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-
-            ChangePasswordViewModel view = new ChangePasswordViewModel("success");
+            if (password == password2)
+            {
+                if (await authService.ChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
+                {
+                    result = "Success";
+                }
+                else
+                {
+                    result = "Old password does not match";
+                }
+            }
+            else
+            {
+                result = "new passwords do not match";
+            }
+            ChangePasswordViewModel view = new ChangePasswordViewModel(result);
             return View(view);
         }
 

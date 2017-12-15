@@ -22,8 +22,8 @@ namespace WebApplication.Services
             var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username.ToLower()));
             if (foundUser != null)
             {
-                if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
-                //if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
+                //if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
+                if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
                     return true;
                 }
@@ -70,6 +70,21 @@ namespace WebApplication.Services
                 result = "An account with that username already exists please try another";
             }
             return result;
+        }
+        public async Task<bool> ChangePassword(string oldPassword, string newPassword, string username)
+        {
+            Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username.ToLower());
+            if(foundUser != null)
+            {
+                if(Account.PasswordEquals(oldPassword, foundUser.Password))
+                {
+                    foundUser.Password = Account.HashPassword(newPassword);
+                    db.Entry(foundUser).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
