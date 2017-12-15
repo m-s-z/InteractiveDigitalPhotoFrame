@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication.Data;
+using WebApplication.Models;
 using WebApplication.Services;
 using WebApplication.ViewModels;
 
@@ -51,9 +52,18 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult RegisterConfirm(string login, string password, string password2)
+        public async Task<ActionResult> RegisterConfirm(string login, string password, string password2)
         {
-            RegisterConfirmViewModel view = new RegisterConfirmViewModel("success");
+            string registrationResult = "";
+            if(password != password2)
+            {
+                registrationResult = "passwords do not match";
+            }
+            else
+            {
+                registrationResult = await authService.RegisterAccount(login, password);
+            }
+            RegisterConfirmViewModel view = new RegisterConfirmViewModel(registrationResult);
             return View(view);
         }
     }

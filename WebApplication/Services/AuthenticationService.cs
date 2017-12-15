@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using WebApplication.Data;
+using WebApplication.Models;
 
 namespace WebApplication.Services
 {
@@ -18,10 +19,10 @@ namespace WebApplication.Services
 
         public async Task<bool> Login(string username, string password)
         {
-            var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username));
+            var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username.ToLower()));
             if (foundUser != null)
             {
-                if (foundUser.Password == password && foundUser.Login == username)
+                if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
                     return true;
                 }
@@ -49,6 +50,25 @@ namespace WebApplication.Services
             {
                 return null;
             }
+        }
+
+        public async Task<string> RegisterAccount(string login, string password)
+        {
+            string result = "success";
+            string hashedPassword = Account.HashPassword(password);
+            string lowerCaseLogin = login.ToLower();
+            List<Device> devices = new List<Device>();
+            Account account = new Account(login, hashedPassword, devices);
+            try
+            {
+                db.Accounts.Add(account);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                result = "An account with that username already exists please try another";
+            }
+            return result;
         }
     }
 }

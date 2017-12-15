@@ -64,19 +64,26 @@ namespace WebApplication.Models
         //helper function to compare passwords
         public static bool PasswordEquals(string password, string hashedPassword)
         {
-            byte[] hashBytes = Convert.FromBase64String(hashedPassword);
-            byte[] salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
-            /* Compute the hash on the password the user entered */
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-            /* Compare the results */
-            for (int i = 0; i < 20; i++)
+            //the try and catch will be removed later once i delete the initial accounts without hashed passwords (hotfix)
+            try
             {
-                if (hashBytes[i + 16] != hash[i])
+                byte[] hashBytes = Convert.FromBase64String(hashedPassword);
+                byte[] salt = new byte[16];
+                Array.Copy(hashBytes, 0, salt, 0, 16);
+                /* Compute the hash on the password the user entered */
+                var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+                byte[] hash = pbkdf2.GetBytes(20);
+                /* Compare the results */
+                for (int i = 0; i < 20; i++)
                 {
-                    return false;
+                    if (hashBytes[i + 16] != hash[i])
+                    {
+                        return false;
+                    }
                 }
+            }catch(Exception e)
+            {
+                return false;
             }
             return true;
         }
