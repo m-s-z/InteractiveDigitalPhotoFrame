@@ -31,23 +31,23 @@ namespace WebApplication.Models
 
         public Cloud(int cloudId, string password, ProviderType provider, string login, int id)
         {
-            CloudId = cloudId;
             Password = password;
             Provider = provider;
             Login = login;
             Id = id;
         }
 
-        public Cloud(ProviderType provider, string login, Account account, string token, string tokenSecret)
+        public Cloud(ProviderType provider, string login, Account account, string token, string tokenSecret, String flickrUserId)
         {
             Provider = provider;
             Login = login;
             Account = account;
             Token = token;
             TokenSecret = tokenSecret;
+            FlickrUserId = flickrUserId;
         }
 
-        public int CloudId { get; set; }
+        public String FlickrUserId { get; set; }
         public String Password { get; set; }
         public ProviderType Provider { get; set; }
         public string Login { get; set; }

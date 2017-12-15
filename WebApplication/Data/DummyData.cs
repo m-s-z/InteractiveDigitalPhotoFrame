@@ -65,11 +65,11 @@ namespace WebApplication.Data
         {
             List<Folder> folders = new List<Folder>()
             {
-                new Folder("winter Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mikflick").CloudId),
-                new Folder("winter Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mikflick").CloudId),
-                new Folder("Summer Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mik").CloudId),
-                new Folder("Birthday Photos",context.Devices.First(p => p.Name == "Mati's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").CloudId),
-                new Folder("Censored Birthday Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").CloudId),
+                new Folder("winter Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mikflick").Id),
+                new Folder("winter Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mikflick").Id),
+                new Folder("Summer Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mik").Id),
+                new Folder("Birthday Photos",context.Devices.First(p => p.Name == "Mati's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").Id),
+                new Folder("Censored Birthday Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").Id),
             };
             return folders;
         }

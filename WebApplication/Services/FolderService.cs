@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlickrNet;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Utils;
 
 namespace WebApplication.Services
 {
@@ -35,6 +37,27 @@ namespace WebApplication.Services
                 return true;
             }
             return false;
+        }
+        //checks if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+        public async Task<List<Folder>> RefreshFlickrFolders(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+            FlickrManager fm = new FlickrManager();
+            Flickr flicker = await fm.GetAuthInstance(cloudId);
+            List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            //deleting all folders that have been removed on the side of Flickr
+            foreach (var f in oldFolders)
+            {
+                Photoset album = newfolders.FirstOrDefault(g => g.Title == f.Name);
+                if(album == null)
+                {
+                    await deleteFolder(f.FolderId);
+                    oldFolders.Remove(f);
+                }
+            }
+            return oldFolders;
+            
         }
 
     }

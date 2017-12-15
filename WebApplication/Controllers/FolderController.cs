@@ -18,12 +18,31 @@ namespace WebApplication.Controllers
         AuthenticationService authService = new AuthenticationService();
         DeviceService deviceService = new DeviceService();
         FolderService folderService = new FolderService();
+        CloudService cloudService = new CloudService();
         // GET: Folder
         public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             List<Folder> folders = new List<Folder>();
-            foreach(var dev in devices)
+            //searching by cloud
+            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            foreach (var cloud in clouds)
+            {
+                switch(cloud.Provider)
+                {
+                    case ProviderType.Flicker:
+                        List<Folder> cloudFolders = await folderService.RefreshFlickrFolders(cloud.Id);
+                        foreach (var fold in cloudFolders)
+                        {
+                            folders.Add(fold);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+            foreach (var dev in devices)
             {
                 List<Folder> deviceFolders = await folderService.getFolders(dev.Device.DeviceId);
                 foreach (var fold in deviceFolders)

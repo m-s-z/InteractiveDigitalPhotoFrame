@@ -31,7 +31,7 @@ namespace WebApplication.Controllers.Tests
             Assert.IsNotNull(result);
         }
 
-        [TestMethod()]
+        /*[TestMethod()]
         public async Task AccountControllerChangeLoginTest()
         {
             // Arrange
@@ -46,6 +46,6 @@ namespace WebApplication.Controllers.Tests
 
             // Assert
             Assert.IsNotNull(result);
-        }
+        }*/
     }
 }

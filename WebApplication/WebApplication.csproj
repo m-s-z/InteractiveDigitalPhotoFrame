@@ -237,6 +237,10 @@
     <Compile Include="Migrations\201712152018056_TokenAndSecretTokenMigration.Designer.cs">
       <DependentUpon>201712152018056_TokenAndSecretTokenMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712152233382_CloudIdRemovedMigration.cs" />
+    <Compile Include="Migrations\201712152233382_CloudIdRemovedMigration.Designer.cs">
+      <DependentUpon>201712152233382_CloudIdRemovedMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
@@ -389,6 +393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712152018056_TokenAndSecretTokenMigration.resx">
       <DependentUpon>201712152018056_TokenAndSecretTokenMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712152233382_CloudIdRemovedMigration.resx">
+      <DependentUpon>201712152233382_CloudIdRemovedMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

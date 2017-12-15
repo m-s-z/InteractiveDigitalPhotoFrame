@@ -70,7 +70,7 @@ namespace WebApplication.Services
             try
             {
                 Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username);
-                Cloud cloud = new Cloud(ProviderType.Flicker, accountName, foundUser, token.Token, token.TokenSecret);
+                Cloud cloud = new Cloud(ProviderType.Flicker, accountName, foundUser, token.Token, token.TokenSecret, token.UserId);
                 db.Clouds.Add(cloud);
                 await db.SaveChangesAsync();
             }catch(Exception e)
