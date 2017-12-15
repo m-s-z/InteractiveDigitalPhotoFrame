@@ -67,12 +67,13 @@ namespace WebApplication.Controllers
             ConfirmDeleteDeviceViewModel view = new ConfirmDeleteDeviceViewModel(deviceId, deviceName);
             return View(view);
         }
-        public ActionResult ConfirmDeleteDevice(int deviceId)
+        public async Task<ActionResult> ConfirmDeleteDevice(int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
+            await deviceService.UnpairDevice(deviceId, authService.getLoggedInUsername(Session));
             return Redirect("Index");
         }
 
