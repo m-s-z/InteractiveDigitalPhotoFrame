@@ -243,6 +243,7 @@
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\FolderService.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\CloudViewModel.cs" />
     <Compile Include="ViewModels\ConfirmDeleteCloudViewModel.cs" />
     <Compile Include="ViewModels\ConfirmDeleteDeviceViewModel.cs" />
@@ -334,6 +335,7 @@
     <Content Include="Views\Cloud\ManageCloud.cshtml" />
     <Content Include="Views\Login\Register.cshtml" />
     <Content Include="Views\Login\RegisterConfirm.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

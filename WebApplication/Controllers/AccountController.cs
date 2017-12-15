@@ -24,13 +24,15 @@ namespace WebApplication.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<ActionResult> ChangeLogin(Account account, int id)
+        public async Task<ActionResult> ChangePassword(string oldPassword, string password, string password2, int id)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            return View(account);
+
+            ChangePasswordViewModel view = new ChangePasswordViewModel("success");
+            return View(view);
         }
 
         [HttpGet]
