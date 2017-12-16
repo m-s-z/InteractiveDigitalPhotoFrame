@@ -43,6 +43,8 @@ namespace WebApplication.Controllers
                 }
                 
             }
+            /*
+             * legacy searching by device
             foreach (var dev in devices)
             {
                 List<Folder> deviceFolders = await folderService.getFolders(dev.Device.DeviceId);
@@ -51,6 +53,7 @@ namespace WebApplication.Controllers
                     folders.Add(fold);
                 }
             }
+            */
             int index;
             if (IdOfOpenDevice != null)
             {
