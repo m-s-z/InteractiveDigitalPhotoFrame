@@ -23,6 +23,10 @@ namespace WebApplication.Controllers
         // GET: Folder
         public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             List<Folder> folders = new List<Folder>();
             //searching by cloud
@@ -79,6 +83,10 @@ namespace WebApplication.Controllers
         }*/
         public async Task<ActionResult> NewFolder(int deviceId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var cloud in clouds)
@@ -91,6 +99,10 @@ namespace WebApplication.Controllers
         }
         public ActionResult DeleteFolder(int folderId, String folderName)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             ConfirmDeleteFolderViewModel view = new ConfirmDeleteFolderViewModel(folderId, folderName);
             return View(view);
         }
@@ -106,6 +118,10 @@ namespace WebApplication.Controllers
 
         public async Task<ActionResult> SelectFolder(int Clouds, int deviceId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             Cloud cloud = await cloudService.GetCloud(Clouds);
             List<Photoset> folders = await folderService.GetFlickrFolders(cloud.Id);
             SelectFolderViewModel view = new SelectFolderViewModel(cloud, folders, deviceId);
@@ -113,6 +129,10 @@ namespace WebApplication.Controllers
         }
         public async Task<ActionResult> ConfirmAddFolder(SelectFolderViewModel model, int cloudId, int deviceId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             if (model.SelectedFolders != null)
             {
                 await folderService.AddFlickrFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);

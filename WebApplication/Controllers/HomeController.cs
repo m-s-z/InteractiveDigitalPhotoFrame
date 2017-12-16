@@ -10,6 +10,10 @@ namespace WebApplication.Controllers
     {
         public ActionResult Index()
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             ViewBag.Title = "Home Page";
 
             return View();

@@ -22,6 +22,10 @@ namespace WebApplication.Controllers
         // GET: Cloud
         public async Task<ActionResult> Index()
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
             
             CloudViewModel model = new CloudViewModel(clouds);
@@ -108,6 +112,10 @@ namespace WebApplication.Controllers
 
         public ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             Flickr f = FlickrManager.GetInstance();
             var fullUrl = this.Url.Action("ConfirmFlickrConnection", "Cloud", new { accountName = accountName }, this.Request.Url.Scheme);
             OAuthRequestToken token = f.OAuthGetRequestToken(fullUrl);
@@ -118,6 +126,10 @@ namespace WebApplication.Controllers
 
         public async Task<ActionResult> ConfirmFlickrConnection(string accountName)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             Flickr f = FlickrManager.GetInstance();
             OAuthRequestToken requestToken = Session["RequestToken"] as OAuthRequestToken;
             OAuthAccessToken accessToken = f.OAuthGetAccessToken(requestToken, Request.QueryString["oauth_verifier"]);
