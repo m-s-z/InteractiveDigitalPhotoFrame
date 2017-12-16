@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlickrNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -73,9 +74,17 @@ namespace WebApplication.Controllers
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
         }*/
-        public ActionResult NewFolder()
+        public async Task<ActionResult> NewFolder(int deviceId)
         {
-            return View();
+            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (var cloud in clouds)
+            {
+                items.Add(new SelectListItem { Text = cloud.Login, Value = cloud.Id.ToString() });
+            }
+            ViewBag.Clouds = items;
+            NewFolderViewModel view = new NewFolderViewModel(deviceId);
+            return View(view);
         }
         public ActionResult DeleteFolder(int folderId, String folderName)
         {
@@ -91,5 +100,19 @@ namespace WebApplication.Controllers
             await folderService.deleteFolder(folderId);
             return Redirect("Index");
         }
+
+        public async Task<ActionResult> SelectFolder(int Clouds, int deviceId)
+        {
+            Cloud cloud = await cloudService.GetCloud(Clouds);
+            List<Photoset> folders = await folderService.GetFlickrFolders(cloud.Id);
+            SelectFolderViewModel view = new SelectFolderViewModel(cloud, folders, deviceId);
+            return View(view);
+        }
+        public async Task<ActionResult> ConfirmAddFolder(SelectFolderViewModel model, int cloudId, int deviceId)
+        {
+            await folderService.AddFlickrFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
+            return RedirectToAction("Index");
+        }
+
     }
 }

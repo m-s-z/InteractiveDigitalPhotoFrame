@@ -59,6 +59,37 @@ namespace WebApplication.Services
             return oldFolders;
             
         }
+        public async Task<List<Photoset>> GetFlickrFolders(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            FlickrManager fm = new FlickrManager();
+            Flickr flicker = await fm.GetAuthInstance(cloudId);
+            List<Photoset> folders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            return folders;
+        }
+
+        public async Task<bool> AddFlickrFolders(List<string> folders, int cloudId, int deviceId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            Device device = await db.Devices.FindAsync(deviceId);
+            if (cloud != null && device != null)
+            {
+                try
+                {
+                    foreach (var f in folders)
+                    {
+                        Folder folder = new Folder(f, device, cloud);
+                        db.Folders.Add(folder);
+                    }
+                    await db.SaveChangesAsync();
+                }catch(Exception e)
+                {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
 
     }
 }

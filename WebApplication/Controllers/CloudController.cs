@@ -106,7 +106,7 @@ namespace WebApplication.Controllers
             return View(view);
         }
 
-        public async Task<ActionResult> ConnectWithProvider(ProviderType Providers, string accountName)
+        public ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
         {
             Flickr f = FlickrManager.GetInstance();
             var fullUrl = this.Url.Action("ConfirmFlickrConnection", "Cloud", new { accountName = accountName }, this.Request.Url.Scheme);

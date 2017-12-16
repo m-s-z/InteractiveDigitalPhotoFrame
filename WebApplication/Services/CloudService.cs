@@ -79,5 +79,11 @@ namespace WebApplication.Services
             }
             return true;
         }
+
+        public async Task<Cloud> GetCloud(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            return cloud;
+        }
     }
 }

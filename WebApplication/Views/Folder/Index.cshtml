@@ -35,7 +35,7 @@
                         </li>
                     }
                 </ul>
-                <p >@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { area = "" }, new { @class = "btn btn-default remove-button center-block" })</p>
+                <p >@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { deviceId = device.Device.DeviceId}, new { @class = "btn btn-default remove-button center-block" })</p>
             </li>
             i++;
         }

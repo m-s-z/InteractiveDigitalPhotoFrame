@@ -264,8 +264,10 @@
     <Compile Include="ViewModels\ConfirmDeleteFolderViewModel.cs" />
     <Compile Include="ViewModels\FolderViewModel.cs" />
     <Compile Include="ViewModels\MangeCloudViewModel.cs" />
+    <Compile Include="ViewModels\NewFolderViewModel.cs" />
     <Compile Include="ViewModels\PairDeviceViewModel.cs" />
     <Compile Include="ViewModels\RegisterConfirmViewModel.cs" />
+    <Compile Include="ViewModels\SelectFolderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\WebApplication.Data.ApplicationContext.mdf" />
@@ -351,6 +353,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Cloud\ChangePassword.cshtml" />
     <Content Include="Views\Cloud\ConfirmFlickrConnection.cshtml" />
+    <Content Include="Views\Folder\SelectFolder.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

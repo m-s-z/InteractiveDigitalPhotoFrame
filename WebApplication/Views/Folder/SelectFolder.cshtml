@@ -1,0 +1,31 @@
+﻿@model WebApplication.ViewModels.SelectFolderViewModel
+@{
+    ViewBag.Title = "SelectFolder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="background-transparent">
+    <h2 class="text-center">Folders in @Model.SelectedCloud.Login</h2>
+    @using (Html.BeginForm("ConfirmAddFolder", "Folder", FormMethod.Post))
+    {
+        <ul class="list-group">
+            @foreach (var folder in Model.Folders)
+            {
+                <li class="list-group-item">
+                    <span>@folder.Title</span>
+                    <span>Number of photos</span>
+                    <span>@folder.NumberOfPhotos</span>
+                    <span>Last updated</span>
+                    <span>@folder.DateUpdated.Year @folder.DateUpdated.Month @folder.DateUpdated.Day</span>
+                
+                    <input type="checkbox" name="SelectedFolders" value="@folder.Title">
+                </li>
+            }
+        </ul>
+        <input type="hidden" name="cloudId" value="@Model.SelectedCloud.Id" />
+        <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+        <input class="btn btn-primary center-block" type="submit" value="Select" />
+
+    }
+</div>
+
