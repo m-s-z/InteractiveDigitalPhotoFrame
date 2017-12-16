@@ -241,6 +241,18 @@
     <Compile Include="Migrations\201712152233382_CloudIdRemovedMigration.Designer.cs">
       <DependentUpon>201712152233382_CloudIdRemovedMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712161400312_DeviceNameMigrationSeedFix2.cs" />
+    <Compile Include="Migrations\201712161400312_DeviceNameMigrationSeedFix2.Designer.cs">
+      <DependentUpon>201712161400312_DeviceNameMigrationSeedFix2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712161553562_NewAzureDBMigration.cs" />
+    <Compile Include="Migrations\201712161553562_NewAzureDBMigration.Designer.cs">
+      <DependentUpon>201712161553562_NewAzureDBMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712161631312_DeviceTokenMigration.cs" />
+    <Compile Include="Migrations\201712161631312_DeviceTokenMigration.Designer.cs">
+      <DependentUpon>201712161631312_DeviceTokenMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Cloud.cs" />
@@ -399,6 +411,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712152233382_CloudIdRemovedMigration.resx">
       <DependentUpon>201712152233382_CloudIdRemovedMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712161400312_DeviceNameMigrationSeedFix2.resx">
+      <DependentUpon>201712161400312_DeviceNameMigrationSeedFix2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712161553562_NewAzureDBMigration.resx">
+      <DependentUpon>201712161553562_NewAzureDBMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712161631312_DeviceTokenMigration.resx">
+      <DependentUpon>201712161631312_DeviceTokenMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

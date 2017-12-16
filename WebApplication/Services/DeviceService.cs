@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IDPFLibrary.DTO;
+using IDPFLibrary.Utils;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -78,33 +80,100 @@ namespace WebApplication.Services
         }
 
         //returns new genreated code of lentght CODESIZE (7) on success. If the device cannot be found it returns an empty string
-        public async Task<string> GeneratePairCode(int deviceId)
+        public async Task<string> GeneratePairCode(int deviceId, string deviceToken)
         {
             string code = "";
             Device device = await db.Devices.FindAsync(deviceId);
             if (device != null)
             {
-                char[] chars = new char[62];
-                chars =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
-                byte[] data = new byte[1];
-                using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+                if (device.DeviceToken == deviceToken)
                 {
-                    crypto.GetNonZeroBytes(data);
-                    data = new byte[CODESIZE];
-                    crypto.GetNonZeroBytes(data);
+                    code = TrueRandomString(CODESIZE);                    device.ConnectionCode = code;
+                    db.Entry(device).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
                 }
-                StringBuilder result = new StringBuilder(CODESIZE);
-                foreach (byte b in data)
-                {
-                    result.Append(chars[b % (chars.Length)]);
-                }
-                code = result.ToString();
-                device.ConnectionCode = code;
-                db.Entry(device).State = System.Data.Entity.EntityState.Modified;
-                await db.SaveChangesAsync();
             }
             return code;
+        }
+        public async Task<CreateNewDeviceDTO> CreateDevice(string code)
+        {
+            CreateNewDeviceDTO dto = null;
+            if(code == RegistrationCode.CODE)
+            {
+                bool flag = true;
+                ICollection<Account> accounts = new List<Account>();
+                string token = "";
+                //check if generated string already exists i need the string to be unique else i cant retrieve id
+                while (flag)
+                {
+                    token = TrueRandomString(CODESIZE);
+                    Device temp = await db.Devices.FirstOrDefaultAsync(d => d.DeviceToken == token);
+                    if(temp == null)
+                    {
+                        flag = false;
+                    }
+
+                }
+                string name = "";
+
+                Device device = new Device(token, name, accounts);
+                db.Devices.Add(device);
+                await db.SaveChangesAsync();
+                device = await db.Devices.FirstOrDefaultAsync(d => d.DeviceToken == token);
+                dto = new CreateNewDeviceDTO(device.DeviceId, device.DeviceToken);
+            }
+            return dto;
+        }
+        private string TrueRandomString(int lenght)
+        {
+            char[] chars = new char[62];
+            chars =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+            byte[] data = new byte[1];
+            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            {
+                crypto.GetNonZeroBytes(data);
+                data = new byte[lenght];
+                crypto.GetNonZeroBytes(data);
+            }
+            StringBuilder result = new StringBuilder(lenght);
+            foreach (byte b in data)
+            {
+                result.Append(chars[b % (chars.Length)]);
+            }
+            return result.ToString();
+        }
+
+        public async Task<GetDeviceAccountsDTO> GetDeviceAccounts(int deviceId, string deviceToken)
+        {
+            GetDeviceAccountsDTO dto = null;
+            Device device = await db.Devices.FindAsync(deviceId);
+            if(device != null)
+            {
+                if(device.DeviceToken == deviceToken)
+                {
+                    List<SAccount> sAccounts = new List<SAccount>();
+                    foreach(var acc in device.Accounts)
+                    {
+                        List<Cloud> clouds = await db.Clouds.Where(c => c.Account.Id == acc.Id).ToListAsync();
+                        List<SCloud> sClouds = new List<SCloud>();
+                        foreach(var c in clouds)
+                        {
+                            SCloud sCloud = new SCloud(c.Id, c.Token, c.TokenSecret);
+                            sClouds.Add(sCloud);
+                        }
+                        SAccount sacc = new SAccount(acc.Login,sClouds,acc.Id);
+                        sAccounts.Add(sacc);
+                    }
+                    dto = new GetDeviceAccountsDTO(sAccounts);
+                }
+            }
+            return dto;
+        }
+        public async Task<Bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
+        {
+            Device device = await db.Devices.FindAsync(deviceId);
+            return device.DeviceToken == deviceToken
         }
     }
 }

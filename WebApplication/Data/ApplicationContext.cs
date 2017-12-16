@@ -14,5 +14,10 @@ namespace WebApplication.Data
         public DbSet<Cloud> Clouds { get; set; }
         public DbSet<Folder> Folders { get; set; }
         public DbSet<DeviceName> DeviceNames { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<ApplicationContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

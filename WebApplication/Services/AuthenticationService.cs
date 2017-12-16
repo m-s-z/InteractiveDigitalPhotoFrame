@@ -86,5 +86,10 @@ namespace WebApplication.Services
             }
             return false;
         }
+        public async Task<string> GetAccountLogin(int id)
+        {
+            Account account = await db.Accounts.FindAsync(id);
+            return account.Login;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace WebApplication.Models
 {
     public class Device
     {
+        public String DeviceToken { get; set; }
         public int DeviceId { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
@@ -38,6 +39,20 @@ namespace WebApplication.Models
             Name = name;
             Accounts = accounts;
             ConnectionCode = connectionCode;
+        }
+
+        public Device(string deviceToken, string name, ICollection<Account> accounts, string connectionCode)
+        {
+            DeviceToken = deviceToken;
+            Name = name;
+            Accounts = accounts;
+            ConnectionCode = connectionCode;
+        }
+        public Device(string deviceToken, string name, ICollection<Account> accounts)
+        {
+            DeviceToken = deviceToken;
+            Name = name;
+            Accounts = accounts;
         }
     }
 }

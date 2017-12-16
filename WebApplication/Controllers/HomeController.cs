@@ -8,12 +8,9 @@ namespace WebApplication.Controllers
 {
     public class HomeController : Controller
     {
+        //should not be authenticated since this runs before we can redirect to login
         public ActionResult Index()
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             ViewBag.Title = "Home Page";
 
             return View();

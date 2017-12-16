@@ -20,8 +20,16 @@ namespace WebApplication.Services
         //gets all clouds connected to account in case username has no clouds assigned it returns an empty list.
         public async Task<List<Cloud>> GetClouds(string username)
         {
-            List<Cloud> clouds = await db.Clouds.Where(c => c.Account.Login == username).ToListAsync<Cloud>();
-            return clouds;
+            try
+            {
+                var temp = db.Clouds.Where(c => c.Account.Login == username);
+                List<Cloud> clouds = await temp.ToListAsync<Cloud>();
+                return clouds;
+            }catch(Exception e)
+            {
+                return new List<Cloud>();
+            }
+
         }
         //deletes clodu with specified id and return true on success and false if the cloud cannot be found
         public async Task<bool> removeCloud(int cloudId)
