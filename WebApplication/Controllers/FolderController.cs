@@ -113,7 +113,10 @@ namespace WebApplication.Controllers
         }
         public async Task<ActionResult> ConfirmAddFolder(SelectFolderViewModel model, int cloudId, int deviceId)
         {
-            await folderService.AddFlickrFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
+            if (model.SelectedFolders != null)
+            {
+                await folderService.AddFlickrFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
+            }
             return RedirectToAction("Index");
         }
 

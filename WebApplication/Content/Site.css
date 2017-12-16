@@ -125,7 +125,38 @@ textarea {
     color: red;
 }
 .pair-name {
-    min-width: 80%;
+    min-width: 10em;
     font-size: 1.5em;
     margin-bottom: 1em;
+}
+.select-dropdown {
+    margin-bottom: 1em;
+}
+.list-name{
+    width: 40%;
+}
+.list-nophotos {
+    width: 20%;
+}
+.list-last-updated {
+    width: 30%;
+}
+.list-select {
+    width: 20%;
+}
+.table-folders{
+    width : 90%;
+    margin-left: 3em;
+    margin-right: 3em;
+    margin-bottom: 1em;
+}
+.checkbox-folder {
+    width: 1.3em;
+    height: 1.3em;
+}
+.checkbox-folder-div {
+    margin-left: 36%;
+}
+.register-link{
+    margin-left: 80%;
 }

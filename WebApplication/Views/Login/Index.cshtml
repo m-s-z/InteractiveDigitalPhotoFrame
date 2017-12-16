@@ -25,13 +25,13 @@
                 <input class="center-block form-control input-control" type="password" placeholder="password" name="password"></input>
                 if(TempData["LoginFailed"] != null)
                 {
-                    <p class="login-failed">Password or Login not found</p>
+                    <p class="login-failed text-center">Password or Login not found</p>
                 }
 
                 <input class="btn btn-primary center-block" type="submit" value="login" />
 
             }
-            @Html.ActionLink("Register", "Register", "Login", new { area = "" }, new { @class = "text-center" })
+            @Html.ActionLink("Register", "Register", "Login", new { area = "" }, new { @class = "text-center register-link" })
         </div>
     </div>
 </body>
