@@ -24,5 +24,12 @@ namespace WebApplication.Models
             DeviceId = deviceId;
             CloudId = cloudId;
         }
+
+        public Folder(string name, Device device, Cloud cloud)
+        {
+            Name = name;
+            Device = device;
+            Cloud = cloud;
+        }
     }
 }

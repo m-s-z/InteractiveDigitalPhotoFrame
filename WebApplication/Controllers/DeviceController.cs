@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDPFLibrary.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,16 +17,16 @@ namespace WebApplication.Controllers
     {
         private ApplicationContext db = new ApplicationContext();
         AuthenticationService authService = new AuthenticationService();
+        DeviceService deviceService = new DeviceService();
         // GET: Device
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-           
-            var device = new Device(1,"Grandmas Tablet");
-            var device2 = new Device(2, "My Tablet");
-            List<Device> devices = new List<Device>();
-            devices.Add(device);
-            devices.Add(device2);
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
 
+            List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             DeviceViewModel deviceViewModel = new DeviceViewModel(devices);
 
             return View(deviceViewModel);
@@ -35,6 +36,8 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+
+        //left as reference dont use this controller method
         [HttpGet]
         public async Task<ActionResult> GetUserAllDevices(int? user)
         {
@@ -62,28 +65,94 @@ namespace WebApplication.Controllers
             return Json(sDevices, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> GeneratePairCode(int deviceId, string deviceToken)
+        {
+            string pairCode = await deviceService.GeneratePairCode(deviceId, deviceToken);
+            if (pairCode != "")
+            {
+                return Json(pairCode, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "invalid device token");
+            }
+        }
+
         public ActionResult DeleteDevice(int deviceId, String deviceName)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             ConfirmDeleteDeviceViewModel view = new ConfirmDeleteDeviceViewModel(deviceId, deviceName);
             return View(view);
         }
-        public ActionResult ConfirmDeleteDevice(int deviceId)
+        public async Task<ActionResult> ConfirmDeleteDevice(int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
+            await deviceService.UnpairDevice(deviceId, authService.getLoggedInUsername(Session));
             return Redirect("Index");
         }
 
-        public async Task<ActionResult> PairDevice(String pairCode)
+        public async Task<ActionResult> PairDevice(String pairCode, string deviceName)
         {
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            PairDeviceViewModel view = new PairDeviceViewModel("Success");
+
+            string response = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
+            PairDeviceViewModel view = new PairDeviceViewModel(response);
             return View(view);
+        }
+        [HttpPost]
+        public async Task<ActionResult> CreateNewDevice(String key)
+        {
+            CreateNewDeviceDTO dto = await deviceService.CreateDevice(key);
+            if(dto ==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid key");
+            }
+            else
+            {
+                return Json(dto, JsonRequestBehavior.DenyGet);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> GetDeviceAccounts(int deviceId, string deviceToken)
+        {
+            GetDeviceAccountsDTO dto = await deviceService.GetDeviceAccounts(deviceId, deviceToken);
+            if(dto ==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid token");
+            }
+            else
+            {
+                return Json(dto, JsonRequestBehavior.DenyGet);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> UnpairDevice(int deviceId, string deviceToken, int accountId)
+        {
+            if(await deviceService.DeviceIsAuthenticated(deviceId,deviceToken))
+            {
+                string username = await authService.GetAccountLogin(accountId);
+                if(await deviceService.UnpairDevice(deviceId,username))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "accountId not found");
+
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
+
         }
     }
 }

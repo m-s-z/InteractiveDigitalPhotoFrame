@@ -17,7 +17,7 @@
         @foreach (var device in Model.Devices)
         {
             <li class="list-group-item">
-                <span class="collapsing-content folder-name" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.Name</span>
+                <span class="collapsing-content folder-name" data-toggle="collapse" data-target=".collapsable-device-@(i)">@device.CustomDeviceName</span>
                 @if (Model.IndexOfOpenDevice == i)
                 {
                     collapse = "in";
@@ -27,7 +27,7 @@
                     collapse = "";
                 }
                 <ul class="list-group collapsable-device-@(i) collapse @(collapse)">
-                    @foreach (var folder in Model.Folders)
+                    @foreach (var folder in Model.Folders.Where(f=> f.DeviceId == device.Device.DeviceId).ToList())
                     {
                         <li class="list-group-item">
                             <span class="single-folder">@folder.Name</span>
@@ -35,7 +35,7 @@
                         </li>
                     }
                 </ul>
-                <p >@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { area = "" }, new { @class = "btn btn-default remove-button center-block" })</p>
+                <p >@Html.ActionLink("Assign New Folder", "NewFolder", "Folder", new { deviceId = device.Device.DeviceId}, new { @class = "btn btn-default remove-button center-block" })</p>
             </li>
             i++;
         }

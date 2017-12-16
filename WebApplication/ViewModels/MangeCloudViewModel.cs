@@ -12,6 +12,13 @@ namespace WebApplication.ViewModels
             Login = name;
         }
 
+        public MangeCloudViewModel(int id, string login)
+        {
+            Id = id;
+            Login = login;
+        }
+
+        public int Id { get; set; }
         public String Login { get; set; }
     }
 }

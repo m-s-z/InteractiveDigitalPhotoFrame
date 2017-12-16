@@ -19,18 +19,39 @@ namespace WebApplication.Controllers
         // GET: Account
         public ActionResult Index()
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             Account account = new Account((string) Session["UserId"]);
             AccountViewModel model = new AccountViewModel(account);
             return View(model);
         }
         [HttpPost]
-        public async Task<ActionResult> ChangeLogin(Account account, int id)
+        public async Task<ActionResult> ChangePassword(string oldPassword, string password, string password2, int id)
         {
+            string result = "";
             if (!authService.IsAuthenticated(Session))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            return View(account);
+            if (password == password2)
+            {
+                if (await authService.ChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
+                {
+                    result = "Success";
+                }
+                else
+                {
+                    result = "Old password does not match";
+                }
+            }
+            else
+            {
+                result = "new passwords do not match";
+            }
+            ChangePasswordViewModel view = new ChangePasswordViewModel(result);
+            return View(view);
         }
 
         [HttpGet]

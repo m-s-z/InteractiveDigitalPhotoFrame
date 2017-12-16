@@ -1,9 +1,15 @@
-﻿
+﻿@model WebApplication.ViewModels.NewFolderViewModel
 @{
     ViewBag.Title = "NewFolder";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="background-transparent">
-    <h2>NewFolder</h2>
+    <h2 class="text-center">Select the cloud from which you want to add a folder from</h2>
+    @using (Html.BeginForm("SelectFolder", "Folder", FormMethod.Post))
+    {
+        @Html.DropDownList("Clouds", null, new { @class = "form-control center-block select-dropdown" })
+        <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+        <input class="btn btn-primary center-block" type="submit" value="Select" />
+    }
 </div>
 

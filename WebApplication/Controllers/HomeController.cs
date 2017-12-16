@@ -8,6 +8,7 @@ namespace WebApplication.Controllers
 {
     public class HomeController : Controller
     {
+        //should not be authenticated since this runs before we can redirect to login
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

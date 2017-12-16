@@ -45,9 +45,9 @@ namespace WebApplication.Data
             };
             List<Device> devices = new List<Device>()
             {
-                new Device(1,"Grandma's tablet", accounts1),
-                new Device(2,"Mik's phone", accounts2),
-                new Device(3,"Mati's tablet", accounts3)
+                new Device(1,"Grandma's tablet", accounts1, "aaa"),
+                new Device(2,"Mik's phone", accounts2, "qqq"),
+                new Device(3,"Mati's tablet", accounts3, "zzz")
             };
             return devices;
         }
@@ -65,13 +65,23 @@ namespace WebApplication.Data
         {
             List<Folder> folders = new List<Folder>()
             {
-                new Folder("winter Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mikflick").CloudId),
-                new Folder("winter Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mikflick").CloudId),
-                new Folder("Summer Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mik").CloudId),
-                new Folder("Birthday Photos",context.Devices.First(p => p.Name == "Mati's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").CloudId),
-                new Folder("Censored Birthday Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").CloudId),
+                new Folder("winter Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mikflick").Id),
+                new Folder("winter Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mikflick").Id),
+                new Folder("Summer Photos",context.Devices.First(p => p.Name == "Mik's phone").DeviceId,context.Clouds.First(p => p.Login == "mik").Id),
+                new Folder("Birthday Photos",context.Devices.First(p => p.Name == "Mati's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").Id),
+                new Folder("Censored Birthday Photos",context.Devices.First(p => p.Name == "Grandma's tablet").DeviceId,context.Clouds.First(p => p.Login == "mati").Id),
             };
             return folders;
+        }
+
+        public static List<DeviceName> getDeviceNames(ApplicationContext context)
+        {
+            List<DeviceName> deviceNames = new List<DeviceName>()
+            {
+                new DeviceName(1, context.Accounts.First(a=> a.Login == "Mati"),context.Devices.First(p => p.Name == "Grandma's tablet"),"Grandma's Tablet"),
+                new DeviceName(1, context.Accounts.First(a=> a.Login == "Mik"),context.Devices.First(p => p.Name == "Grandma's tablet"),"Mom's Tablet"),
+            };
+            return deviceNames;
         }
     }
 }

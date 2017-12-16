@@ -10,9 +10,11 @@
         @foreach (var device in Model.Devices)
         {
             <li class="list-group-item">
-                <span class="link-goto folder-name">@Html.ActionLink(@device.Name, "Index", "Folder", new { IdOfOpenDevice = device.DeviceId }, new { @class = "remove-link" })</span>
+                <span class="link-goto folder-name">
+                    @Html.ActionLink(@device.CustomDeviceName, "Index", "Folder", new { IdOfOpenDevice = device.Device.DeviceId }, new { @class = "remove-link" })
+                </span>
 
-                @Html.ActionLink("Unpair Device", "DeleteDevice", "Device", new { deviceId = device.DeviceId, deviceName = device.Name }, new { @class = "btn btn-default remove-button" })
+                @Html.ActionLink("Unpair Device", "DeleteDevice", "Device", new { deviceId = device.Device.DeviceId, deviceName = device.CustomDeviceName}, new { @class = "btn btn-default remove-button" })
             </li>
         }
     </ul>
