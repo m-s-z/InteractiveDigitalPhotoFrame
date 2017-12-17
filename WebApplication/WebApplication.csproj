@@ -367,7 +367,12 @@
     <Content Include="Views\Cloud\ConfirmFlickrConnection.cshtml" />
     <Content Include="Views\Folder\SelectFolder.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\IDPFLibrary\IDPFLibrary.csproj">
+      <Project>{5CAEA247-6AFD-4708-9999-8465EF59527E}</Project>
+      <Name>IDPFLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>

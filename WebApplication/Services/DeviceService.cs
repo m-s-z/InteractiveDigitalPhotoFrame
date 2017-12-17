@@ -170,10 +170,10 @@ namespace WebApplication.Services
             }
             return dto;
         }
-        public async Task<Bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
+        public async Task<bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
         {
             Device device = await db.Devices.FindAsync(deviceId);
-            return device.DeviceToken == deviceToken
+            return device.DeviceToken == deviceToken;
         }
     }
 }
