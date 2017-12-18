@@ -93,6 +93,12 @@ namespace DPF.ViewModels
             set;
         }
 
+        public ObservableCollection<String> ListOfImageUrl
+        {
+            get;
+            set;
+        }
+
         //public Command CreateNewDeviceCommand
         //{
         //    get;
@@ -217,6 +223,36 @@ namespace DPF.ViewModels
         private void OnErrorOccurred(object sedner, string errorMessage)
         {
             
+        }
+
+        private async void GetAllPhotosUrl()
+        {
+            using (var client = new HttpClient())
+            {
+                GetAllFlickrPgotosURLRequestDTO requestDto = new GetAllFlickrPgotosURLRequestDTO
+                {
+                    DeviceId = _deviceId,
+                    DeviceToken = _deviceToken,
+                    AccountIds = GetDeviceAccounts.Accounts.Select(p => p.AccountId).ToList<int>()
+                };
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                string url = "https://idpf.azurewebsites.net/Device/GetAllFlickrPhotosUrl";
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(url),
+                    Method = HttpMethod.Post,
+                    Content = new StringContent(json,
+                        Encoding.UTF8,
+                        "application/json")
+                };
+
+                var response = await client.SendAsync(request);
+                var contents = await response.Content.ReadAsStringAsync();
+                GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
+                Debug.WriteLine("");
+            }
         }
 
         private async Task GetConnectedAccountsRequest()

@@ -38,6 +38,8 @@
     <Compile Include="CloudProviderType.cs" />
     <Compile Include="DTO\CreateNewDeviceDTO.cs" />
     <Compile Include="DTO\CreateNewDeviceRequestDTO.cs" />
+    <Compile Include="DTO\GetAllFlickrPgotosURLRequestDTO.cs" />
+    <Compile Include="DTO\GetAllFlickrPhotosURLResponseDTO.cs" />
     <Compile Include="DTO\GetDeviceAccountsDTO.cs" />
     <Compile Include="DTO\UnpairDeviceRequestDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
