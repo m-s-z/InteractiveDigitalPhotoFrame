@@ -12,13 +12,21 @@
 
     <ContentPage.Content>
         <Grid>
-            <Image Source="{Binding PhotoPath}" VerticalOptions="CenterAndExpand">
-                <Image.GestureRecognizers>
+            <Image Source="{Binding PhotoPath}" VerticalOptions="Fill" />
+            <BoxView Color="#00000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100">
+                <BoxView.Triggers>
+                    <DataTrigger TargetType="BoxView"
+                                 Binding="{Binding IsActive}"
+                                 Value="True">
+                        <Setter Property="Color" Value="#55000000" />
+                    </DataTrigger>
+                </BoxView.Triggers>
+                <BoxView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapToActiveCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
+                </BoxView.GestureRecognizers>
+            </BoxView>
             <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" IsVisible="{Binding IsActive}" />
-            <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
+                <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PreviousPhotoCommand}"/>
                 </Image.GestureRecognizers>
@@ -47,9 +55,14 @@
                     <TapGestureRecognizer Command="{Binding ShowCodeCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <StackLayout BackgroundColor="White" IsVisible="{Binding IsCodeVisible}" HeightRequest="60" WidthRequest="130" HorizontalOptions="End" VerticalOptions="Start" Margin="0, 90, 40, 0">
+            <StackLayout BackgroundColor="White" IsVisible="{Binding IsCodeVisible}" HeightRequest="60" WidthRequest="150" HorizontalOptions="End" VerticalOptions="Start" Margin="0, 90, 40, 0">
                 <Label Text="{Binding Code}" TextColor="#2196F3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="30"/>
             </StackLayout>
+            <Image Source="settings_96px.png" HorizontalOptions="Start" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToAccountsListPageCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
