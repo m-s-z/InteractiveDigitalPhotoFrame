@@ -77,6 +77,30 @@ namespace WebApplication.Services
             }*/
             return newfolders;
         }
+        public async Task<List<Photoset>> GetDeviceFlickrFolders(int cloudId, int deviceId)
+        {
+
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
+            FlickrManager fm = new FlickrManager();
+            Flickr flicker = await fm.GetAuthInstance(cloudId);
+            List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            List<string> photosetsToBeRemoved = new List<string>();
+            foreach (var f in newfolders)
+            {
+                Folder folder = oldFolders.FirstOrDefault(g => g.Name == f.Title);
+                if (folder == null)
+                {
+                    photosetsToBeRemoved.Add(f.PhotosetId);
+                }
+            }
+            foreach(var f in photosetsToBeRemoved)
+            {
+                Photoset temp =  newfolders.FirstOrDefault(a => a.PhotosetId == f);
+                newfolders.Remove(temp);
+            }
+            return newfolders;
+        }
 
         public async Task<bool> AddFlickrFolders(List<string> folders, int cloudId, int deviceId)
         {

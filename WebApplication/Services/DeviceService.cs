@@ -46,6 +46,18 @@ namespace WebApplication.Services
             if (device != null && founduser != null)
             {
                 DeviceName deviceName = await db.DeviceNames.FirstOrDefaultAsync(dn => dn.Account.Id == founduser.Id && dn.Device.DeviceId == device.DeviceId);
+                List<Cloud> clouds = await db.Clouds.Where(c => c.Account.Login == userName).ToListAsync<Cloud>();
+                foreach(var c in clouds)
+                {
+                    List<Folder> folders = await db.Folders.Where(f => f.DeviceId == deviceId && f.CloudId == c.Id).ToListAsync<Folder>();
+                    foreach(var f in folders)
+                    {
+                        db.Folders.Remove(f);
+                        db.Entry(f).State = System.Data.Entity.EntityState.Modified;
+                        await db.SaveChangesAsync();
+                    }
+
+                }
                 founduser.Devices.Remove(device);
                 device.Accounts.Remove(founduser);
                 db.Entry(founduser).State = System.Data.Entity.EntityState.Modified;
@@ -178,7 +190,7 @@ namespace WebApplication.Services
             return device.DeviceToken == deviceToken;
         }
 
-        public async Task<List<string>> GetAllFlickrPhotosUrl(List<int> accountIds)
+        public async Task<List<string>> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
         {
             List<string> photoUrlList = new List<string>();
 
@@ -195,7 +207,7 @@ namespace WebApplication.Services
                     foreach (var cloud in cloudList)
                     {
                         Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
-                        List<Photoset> photosetList = await folderService.GetFlickrFolders(cloud.Id);
+                        List<Photoset> photosetList = await folderService.GetDeviceFlickrFolders(cloud.Id, deviceId);
                         foreach (var photoset in photosetList)
                         {
                             var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
