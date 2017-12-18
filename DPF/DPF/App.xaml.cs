@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DPF.Models;
 using DPF.Views;
 using Xamarin.Forms;
 
@@ -12,7 +13,15 @@ namespace DPF
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new MainAppPage());
+            var deviceToken = DependencyService.Get<ILocalStorageService>().GetDeviceToken();
+            if (deviceToken == null)
+            {
+                MainPage = new WelcomePage();
+            }
+            else
+            {
+                MainPage = new NavigationPage(new MainAppPage());
+            }
         }
 
         protected override void OnStart()
