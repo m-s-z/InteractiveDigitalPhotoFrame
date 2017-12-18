@@ -61,20 +61,10 @@ namespace WebApplication.Services
         }
         public async Task<List<Photoset>> GetFlickrFolders(int cloudId)
         {
-            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
             List<Photoset> folders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
-            //We dont want to display the folders we already have
-            foreach(var f in oldFolders)
-            {
-                Photoset temp = folders.FirstOrDefault(a => a.Title == f.Name);
-                if(temp != null)
-                {
-                    folders.Remove(temp);
-                }
-            }
             return folders;
         }
 

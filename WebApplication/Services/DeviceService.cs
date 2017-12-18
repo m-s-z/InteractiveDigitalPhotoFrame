@@ -201,7 +201,7 @@ namespace WebApplication.Services
                             var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
                             foreach (var photo in photoCollection)
                             {
-                                photoUrlList.Add(photo.Large2048Url);
+                                photoUrlList.Add(photo.LargeUrl);
                             }
                         }
 
