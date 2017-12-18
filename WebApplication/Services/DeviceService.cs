@@ -8,8 +8,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using FlickrNet;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Utils;
 
 namespace WebApplication.Services
 {
@@ -174,6 +176,43 @@ namespace WebApplication.Services
         {
             Device device = await db.Devices.FindAsync(deviceId);
             return device.DeviceToken == deviceToken;
+        }
+
+        public async Task<List<string>> GetAllFlickrPhotosUrl(List<int> accountIds)
+        {
+            List<string> photoUrlList = new List<string>();
+
+            FlickrManager flickrManager = new FlickrManager();
+
+            FolderService folderService = new FolderService();
+
+            try
+            {
+                foreach (int accountId in accountIds)
+                {
+                    List<Cloud> cloudList = await db.Clouds.Where(p => p.Account.Id == accountId).ToListAsync<Cloud>();
+
+                    foreach (var cloud in cloudList)
+                    {
+                        Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
+                        List<Photoset> photosetList = await folderService.GetFlickrFolders(cloud.Id);
+                        foreach (var photoset in photosetList)
+                        {
+                            var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
+                            foreach (var photo in photoCollection)
+                            {
+                                photoUrlList.Add(photo.Large2048Url);
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                photoUrlList = null;
+            }
+            return photoUrlList;
         }
     }
 }
