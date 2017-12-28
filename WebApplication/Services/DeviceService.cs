@@ -8,8 +8,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using FlickrNet;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Utils;
 
 namespace WebApplication.Services
 {
@@ -44,6 +46,18 @@ namespace WebApplication.Services
             if (device != null && founduser != null)
             {
                 DeviceName deviceName = await db.DeviceNames.FirstOrDefaultAsync(dn => dn.Account.Id == founduser.Id && dn.Device.DeviceId == device.DeviceId);
+                List<Cloud> clouds = await db.Clouds.Where(c => c.Account.Login == userName).ToListAsync<Cloud>();
+                foreach(var c in clouds)
+                {
+                    List<Folder> folders = await db.Folders.Where(f => f.DeviceId == deviceId && f.CloudId == c.Id).ToListAsync<Folder>();
+                    foreach(var f in folders)
+                    {
+                        db.Folders.Remove(f);
+                        db.Entry(f).State = System.Data.Entity.EntityState.Modified;
+                        await db.SaveChangesAsync();
+                    }
+
+                }
                 founduser.Devices.Remove(device);
                 device.Accounts.Remove(founduser);
                 db.Entry(founduser).State = System.Data.Entity.EntityState.Modified;
@@ -170,10 +184,47 @@ namespace WebApplication.Services
             }
             return dto;
         }
-        public async Task<Bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
+        public async Task<bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
         {
             Device device = await db.Devices.FindAsync(deviceId);
-            return device.DeviceToken == deviceToken
+            return device.DeviceToken == deviceToken;
+        }
+
+        public async Task<List<string>> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
+        {
+            List<string> photoUrlList = new List<string>();
+
+            FlickrManager flickrManager = new FlickrManager();
+
+            FolderService folderService = new FolderService();
+
+            try
+            {
+                foreach (int accountId in accountIds)
+                {
+                    List<Cloud> cloudList = await db.Clouds.Where(p => p.Account.Id == accountId).ToListAsync<Cloud>();
+
+                    foreach (var cloud in cloudList)
+                    {
+                        Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
+                        List<Photoset> photosetList = await folderService.GetDeviceFlickrFolders(cloud.Id, deviceId);
+                        foreach (var photoset in photosetList)
+                        {
+                            var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
+                            foreach (var photo in photoCollection)
+                            {
+                                photoUrlList.Add(photo.LargeUrl);
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                photoUrlList = null;
+            }
+            return photoUrlList;
         }
     }
 }

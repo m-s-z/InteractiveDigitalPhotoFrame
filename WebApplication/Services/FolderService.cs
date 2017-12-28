@@ -61,21 +61,45 @@ namespace WebApplication.Services
         }
         public async Task<List<Photoset>> GetFlickrFolders(int cloudId)
         {
-            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            //List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
-            List<Photoset> folders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
-            //We dont want to display the folders we already have
-            foreach(var f in oldFolders)
+            List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            /*foreach (var f in newfolders)
             {
-                Photoset temp = folders.FirstOrDefault(a => a.Title == f.Name);
-                if(temp != null)
+                Folder folder = oldFolders.FirstOrDefault(g => g.Name == f.Title);
+                if (folder == null)
                 {
-                    folders.Remove(temp);
+                    newfolders.Remove(f);
+                }
+            }*/
+            return newfolders;
+        }
+        public async Task<List<Photoset>> GetDeviceFlickrFolders(int cloudId, int deviceId)
+        {
+
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
+            FlickrManager fm = new FlickrManager();
+            Flickr flicker = await fm.GetAuthInstance(cloudId);
+            List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            List<string> photosetsToBeRemoved = new List<string>();
+            foreach (var f in newfolders)
+            {
+                Folder folder = oldFolders.FirstOrDefault(g => g.Name == f.Title);
+                if (folder == null)
+                {
+                    photosetsToBeRemoved.Add(f.PhotosetId);
                 }
             }
-            return folders;
+            foreach(var f in photosetsToBeRemoved)
+            {
+                Photoset temp =  newfolders.FirstOrDefault(a => a.PhotosetId == f);
+                newfolders.Remove(temp);
+            }
+            return newfolders;
         }
 
         public async Task<bool> AddFlickrFolders(List<string> folders, int cloudId, int deviceId)

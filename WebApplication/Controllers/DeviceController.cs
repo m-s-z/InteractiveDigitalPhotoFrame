@@ -154,5 +154,36 @@ namespace WebApplication.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
 
         }
+
+        [HttpPost] public async Task<ActionResult> GetAllFlickrPhotosUrl(int deviceId, string deviceToken, List<int> accountIds)
+        {
+            if (await deviceService.DeviceIsAuthenticated(deviceId, deviceToken))
+            {
+                List<String> urls = await deviceService.GetAllFlickrPhotosUrl(accountIds, deviceId);
+                if (urls != null)
+                {
+                    GetAllFlickrPhotosURLResponseDTO dto = new GetAllFlickrPhotosURLResponseDTO(urls);
+                    return Json(dto, JsonRequestBehavior.DenyGet);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "accountId not found");
+                }
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Test()
+        {
+            List<int> accountIds = new List<int>() { 1 };
+            int deviceId = 1;
+            List<String> urls = await deviceService.GetAllFlickrPhotosUrl(accountIds, deviceId);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
     }
 }

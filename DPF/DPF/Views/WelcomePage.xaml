@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:DPF.ViewModels;assembly=DPF"
+             x:Class="DPF.Views.WelcomePage">
+
+    <ContentPage.BindingContext>
+        <viewModels:WelcomePageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Center"
+                     VerticalOptions="Center">
+            <Button Text="Start DPF" Command="{Binding CreateNewDeviceCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
