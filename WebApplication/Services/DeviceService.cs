@@ -190,9 +190,9 @@ namespace WebApplication.Services
             return device.DeviceToken == deviceToken;
         }
 
-        public async Task<List<string>> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
+        public async Task<GetAllFlickrPhotosURLResponseDTO> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
         {
-            List<string> photoUrlList = new List<string>();
+            List<Urls> photoUrlList = new List<Urls>();
 
             FlickrManager flickrManager = new FlickrManager();
 
@@ -213,7 +213,8 @@ namespace WebApplication.Services
                             var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
                             foreach (var photo in photoCollection)
                             {
-                                photoUrlList.Add(photo.LargeUrl);
+                                Urls url = new Urls(photo.LargeUrl, photo.PhotoId, IDPFLibrary.CloudProviderType.Flickr, photo.DateUploaded);
+                                photoUrlList.Add(url);
                             }
                         }
 
@@ -224,7 +225,8 @@ namespace WebApplication.Services
             {
                 photoUrlList = null;
             }
-            return photoUrlList;
+            GetAllFlickrPhotosURLResponseDTO response = new GetAllFlickrPhotosURLResponseDTO(photoUrlList);
+            return response;
         }
     }
 }

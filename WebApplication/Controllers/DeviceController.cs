@@ -159,10 +159,9 @@ namespace WebApplication.Controllers
         {
             if (await deviceService.DeviceIsAuthenticated(deviceId, deviceToken))
             {
-                List<String> urls = await deviceService.GetAllFlickrPhotosUrl(accountIds, deviceId);
-                if (urls != null)
+                GetAllFlickrPhotosURLResponseDTO dto = await deviceService.GetAllFlickrPhotosUrl(accountIds, deviceId);
+                if (dto != null)
                 {
-                    GetAllFlickrPhotosURLResponseDTO dto = new GetAllFlickrPhotosURLResponseDTO(urls);
                     return Json(dto, JsonRequestBehavior.DenyGet);
                 }
                 else
