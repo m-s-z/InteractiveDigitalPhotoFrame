@@ -33,19 +33,23 @@ namespace WebApplication.Controllers
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
             foreach (var cloud in clouds)
             {
-                switch(cloud.Provider)
+                List<Folder> cloudFolders = new List<Folder>();
+                switch (cloud.Provider)
                 {
                     case ProviderType.Flicker:
-                        List<Folder> cloudFolders = await folderService.RefreshFlickrFolders(cloud.Id);
-                        foreach (var fold in cloudFolders)
-                        {
-                            folders.Add(fold);
-                        }
+                        cloudFolders = await folderService.RefreshFlickrFolders(cloud.Id);
+                        break;
+                    case ProviderType.DropBox:
+                        cloudFolders = await folderService.RefreshDropboxFolders(cloud.Id);
                         break;
                     default:
                         break;
                 }
-                
+                foreach (var fold in cloudFolders)
+                {
+                    folders.Add(fold);
+                }
+
             }
             /*
              * legacy searching by device
@@ -144,7 +148,7 @@ namespace WebApplication.Controllers
             }
             if (model.SelectedFolders != null)
             {
-                await folderService.AddFlickrFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
+                await folderService.AddCloudFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
             }
             return RedirectToAction("Index");
         }

@@ -1,4 +1,5 @@
 ﻿using Dropbox.Api;
+using Dropbox.Api.Files;
 using FlickrNet;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,25 @@ namespace WebApplication.Services
                 }
             }
             return oldFolders;
-            
+        }
+
+        //checks if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+        public async Task<List<Folder>> RefreshDropboxFolders(int cloudId)
+        {
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+            List<UniversalFolder> newFolders = await GetDropboxFolders(cloudId);
+            //deleting all folders that have been removed on the side of Flickr
+            foreach (var f in oldFolders)
+            {
+                UniversalFolder album = newFolders.FirstOrDefault(g => g.Title == f.Name);
+                if (album == null)
+                {
+                    await deleteFolder(f.FolderId);
+                    oldFolders.Remove(f);
+                }
+            }
+            return oldFolders;
         }
         public async Task<List<UniversalFolder>> GetFlickrFolders(int cloudId)
         {
@@ -91,11 +110,27 @@ namespace WebApplication.Services
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<UniversalFolder> response = new List<UniversalFolder>();
             DropboxClient dbx = new DropboxClient(cloud.Token);
-            var list = await dbx.Files.ListFolderAsync(string.Empty);
+            var list = await dbx.Files.ListFolderAsync(String.Empty,true);
             foreach(var folder in list.Entries.Where(i => i.IsFolder))
             {
-                //var metaData = await dbx.Files.GetMetadataAsync(folder.PathLower);
-                UniversalFolder fold = new UniversalFolder(folder.Name, 1, DateTime.Now);
+                var folderContents = await dbx.Files.ListFolderAsync(folder.PathLower);
+                var folderList = folderContents.Entries.Where(i => i.IsFile);
+                List<FileMetadata> fileList = new List<FileMetadata>();
+                foreach (var f in folderList)
+                {
+                    fileList.Add(f as FileMetadata);
+                }
+                DateTime updated = DateTime.Now;
+                FolderMetadata folderMetadata = folder as FolderMetadata;
+                try
+                {
+                    updated = fileList.OrderByDescending(i => i.ClientModified).First().ClientModified;
+                }
+                catch(Exception e)
+                {
+
+                }
+                UniversalFolder fold = new UniversalFolder(folder.PathDisplay, fileList.Count, updated);
                 response.Add(fold);
             }
             return response;
@@ -125,7 +160,7 @@ namespace WebApplication.Services
             return newfolders;
         }
 
-        public async Task<bool> AddFlickrFolders(List<string> folders, int cloudId, int deviceId)
+        public async Task<bool> AddCloudFolders(List<string> folders, int cloudId, int deviceId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             Device device = await db.Devices.FindAsync(deviceId);
