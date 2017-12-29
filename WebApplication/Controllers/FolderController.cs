@@ -122,8 +122,17 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
+            List<UniversalFolder> folders = new List<UniversalFolder>();
             Cloud cloud = await cloudService.GetCloud(Clouds);
-            List<Photoset> folders = await folderService.GetFlickrFolders(cloud.Id);
+            switch(cloud.Provider)
+            {
+                case ProviderType.Flicker:
+                    folders = await folderService.GetFlickrFolders(cloud.Id);
+                    break;
+                case ProviderType.DropBox:
+                    folders = await folderService.GetDropboxFolders(cloud.Id);
+                    break;
+            }
             SelectFolderViewModel view = new SelectFolderViewModel(cloud, folders, deviceId);
             return View(view);
         }

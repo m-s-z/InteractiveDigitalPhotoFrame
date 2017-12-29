@@ -1,4 +1,5 @@
-﻿using FlickrNet;
+﻿using Dropbox.Api;
+using FlickrNet;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,6 +9,7 @@ using System.Web;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Utils;
+using WebApplication.ViewModels;
 
 namespace WebApplication.Services
 {
@@ -59,14 +61,20 @@ namespace WebApplication.Services
             return oldFolders;
             
         }
-        public async Task<List<Photoset>> GetFlickrFolders(int cloudId)
+        public async Task<List<UniversalFolder>> GetFlickrFolders(int cloudId)
         {
 
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<UniversalFolder> response = new List<UniversalFolder>();
             //List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
             List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            foreach(var f in newfolders)
+            {
+                UniversalFolder folder = new UniversalFolder(f.Title, f.NumberOfPhotos, f.DateUpdated);
+                response.Add(folder);
+            }
             /*foreach (var f in newfolders)
             {
                 Folder folder = oldFolders.FirstOrDefault(g => g.Name == f.Title);
@@ -75,7 +83,22 @@ namespace WebApplication.Services
                     newfolders.Remove(f);
                 }
             }*/
-            return newfolders;
+            return response;
+        }
+        public async Task<List<UniversalFolder>> GetDropboxFolders(int cloudId)
+        {
+
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<UniversalFolder> response = new List<UniversalFolder>();
+            DropboxClient dbx = new DropboxClient(cloud.Token);
+            var list = await dbx.Files.ListFolderAsync(string.Empty);
+            foreach(var folder in list.Entries.Where(i => i.IsFolder))
+            {
+                //var metaData = await dbx.Files.GetMetadataAsync(folder.PathLower);
+                UniversalFolder fold = new UniversalFolder(folder.Name, 1, DateTime.Now);
+                response.Add(fold);
+            }
+            return response;
         }
         public async Task<List<Photoset>> GetDeviceFlickrFolders(int cloudId, int deviceId)
         {

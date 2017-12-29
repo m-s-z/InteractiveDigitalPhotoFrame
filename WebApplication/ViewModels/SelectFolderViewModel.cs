@@ -8,6 +8,24 @@ using WebApplication.Models;
 
 namespace WebApplication.ViewModels
 {
+    public class UniversalFolder
+    {
+        public UniversalFolder()
+        {
+
+        }
+
+        public UniversalFolder(string title, int numberOfPhotos, DateTime dateUpdated)
+        {
+            Title = title;
+            NumberOfPhotos = numberOfPhotos;
+            DateUpdated = dateUpdated;
+        }
+
+        public String Title { get; set; }
+        public int NumberOfPhotos { get; set; }
+        public DateTime DateUpdated { get; set; }
+    }
     public class SelectFolderViewModel
     {
         public SelectFolderViewModel()
@@ -15,7 +33,7 @@ namespace WebApplication.ViewModels
 
         }
 
-        public SelectFolderViewModel(Cloud selectedCloud, List<Photoset> folders, int deviceId)
+        public SelectFolderViewModel(Cloud selectedCloud, List<UniversalFolder> folders, int deviceId)
         {
             SelectedCloud = selectedCloud;
             Folders = folders;
@@ -24,6 +42,6 @@ namespace WebApplication.ViewModels
         public int DeviceId { get; set; }
         public IEnumerable<String> SelectedFolders { get; set; }
         public Cloud SelectedCloud { get; set; }
-        public List<Photoset> Folders { get; set; }
+        public List<UniversalFolder> Folders { get; set; }
     }
 }

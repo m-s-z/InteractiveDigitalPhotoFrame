@@ -1,4 +1,5 @@
-﻿using FlickrNet;
+﻿using Dropbox.Api;
+using FlickrNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,12 +117,26 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-            Flickr f = FlickrManager.GetInstance();
-            var fullUrl = this.Url.Action("ConfirmFlickrConnection", "Cloud", new { accountName = accountName }, this.Request.Url.Scheme);
-            OAuthRequestToken token = f.OAuthGetRequestToken(fullUrl);
-            Session["RequestToken"] = token;
-            string url = f.OAuthCalculateAuthorizationUrl(token.Token, AuthLevel.Read);
-            return Redirect(url);
+            switch(Providers)
+            {
+                case ProviderType.Flicker:
+                    Flickr f = FlickrManager.GetInstance();
+                    var fullUrl = this.Url.Action("ConfirmFlickrConnection", "Cloud", new { accountName = accountName }, this.Request.Url.Scheme);
+                    OAuthRequestToken token = f.OAuthGetRequestToken(fullUrl);
+                    Session["RequestToken"] = token;
+                    string url = f.OAuthCalculateAuthorizationUrl(token.Token, AuthLevel.Read);
+                    return Redirect(url);
+                case ProviderType.DropBox:
+                    var dropboxRedirectUrl = this.Url.Action("ConfirmDropBoxConnection", "Cloud", null , this.Request.Url.Scheme);
+
+                    DeviceService devService = new DeviceService();
+                    Session["DropBoxState"] = devService.TrueRandomString(6);
+                    Session["NewCloudName"] = accountName;
+                    var redirect = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Code, ApiKeys.DropBoxApiKey , dropboxRedirectUrl, Session["DropBoxState"] as String);
+                    return Redirect(redirect.ToString());
+                default:
+                    return View();
+            }
         }
 
         public async Task<ActionResult> ConfirmFlickrConnection(string accountName)
@@ -135,6 +150,24 @@ namespace WebApplication.Controllers
             OAuthAccessToken accessToken = f.OAuthGetAccessToken(requestToken, Request.QueryString["oauth_verifier"]);
             await cloudService.CreateFlickerAccount(accessToken, accountName, authService.getLoggedInUsername(Session));
             return View();
+        }
+
+        public async Task<ActionResult> ConfirmDropBoxConnection(string code, string state)
+        {
+            string accountName = "Not Specified Name";
+            if(Session["DropBoxState"] as String != state)
+            {
+                return Redirect("Index");
+            }
+            if(Session["NewCloudName"] != null)
+            {
+                accountName = Session["NewCloudName"] as string;
+            }
+            string redirectUrl = this.Url.Action("ConfirmDropBoxConnection", "Cloud", null, this.Request.Url.Scheme);
+            OAuth2Response response = await DropboxOAuth2Helper.ProcessCodeFlowAsync(code, ApiKeys.DropBoxApiKey, ApiKeys.DropBoxApiKeySecret, redirectUrl);
+            await cloudService.CreateDropBoxAccount(response.AccessToken, accountName, authService.getLoggedInUsername(Session), response.Uid);
+            return View();
+
         }
     }
 }

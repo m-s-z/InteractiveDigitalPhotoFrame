@@ -138,7 +138,7 @@ namespace WebApplication.Services
             }
             return dto;
         }
-        private string TrueRandomString(int lenght)
+        public string TrueRandomString(int lenght)
         {
             char[] chars = new char[62];
             chars =
