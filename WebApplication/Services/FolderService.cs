@@ -49,15 +49,21 @@ namespace WebApplication.Services
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
             List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
+            List<String> toDelete = new List<string>();
             //deleting all folders that have been removed on the side of Flickr
             foreach (var f in oldFolders)
             {
                 Photoset album = newfolders.FirstOrDefault(g => g.Title == f.Name);
                 if(album == null)
                 {
+                    toDelete.Add(f.Name);
                     await deleteFolder(f.FolderId);
-                    oldFolders.Remove(f);
                 }
+            }
+            foreach (var d in toDelete)
+            {
+                Folder found = oldFolders.FirstOrDefault(f => f.Name == d);
+                oldFolders.Remove(found);
             }
             return oldFolders;
         }
@@ -67,16 +73,25 @@ namespace WebApplication.Services
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
-            List<UniversalFolder> newFolders = await GetDropboxFolders(cloudId);
-            //deleting all folders that have been removed on the side of Flickr
+            DropboxClient dbx = new DropboxClient(cloud.Token);
+            var list = await dbx.Files.ListFolderAsync(String.Empty, true);
+
+            var newFolders = list.Entries.Where(i => i.IsFolder);
+            //deleting all folders that have been removed on the side of DropBox
+            List<String> toDelete = new List<string>();
             foreach (var f in oldFolders)
             {
-                UniversalFolder album = newFolders.FirstOrDefault(g => g.Title == f.Name);
+                var album = newFolders.FirstOrDefault(g => g.PathDisplay == f.Name);
                 if (album == null)
                 {
                     await deleteFolder(f.FolderId);
-                    oldFolders.Remove(f);
+                    toDelete.Add(f.Name);
                 }
+            }
+            foreach (var d in toDelete)
+            {
+                Folder found = oldFolders.FirstOrDefault(f => f.Name == d);
+                oldFolders.Remove(found);
             }
             return oldFolders;
         }
@@ -85,53 +100,55 @@ namespace WebApplication.Services
 
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<UniversalFolder> response = new List<UniversalFolder>();
-            //List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
             List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
-            foreach(var f in newfolders)
+            foreach (var f in newfolders)
             {
-                UniversalFolder folder = new UniversalFolder(f.Title, f.NumberOfPhotos, f.DateUpdated);
-                response.Add(folder);
-            }
-            /*foreach (var f in newfolders)
-            {
-                Folder folder = oldFolders.FirstOrDefault(g => g.Name == f.Title);
-                if (folder == null)
+                Folder alreadyChoosen = oldFolders.FirstOrDefault(i => i.Name == f.Title);
+                if (alreadyChoosen == null)
                 {
-                    newfolders.Remove(f);
+                    UniversalFolder folder = new UniversalFolder(f.Title, f.NumberOfPhotos, f.DateUpdated);
+                    response.Add(folder);
                 }
-            }*/
+            }
+            
             return response;
         }
         public async Task<List<UniversalFolder>> GetDropboxFolders(int cloudId)
         {
 
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             List<UniversalFolder> response = new List<UniversalFolder>();
             DropboxClient dbx = new DropboxClient(cloud.Token);
+            //boolean parameter set to true to obtain recursivly all folders
             var list = await dbx.Files.ListFolderAsync(String.Empty,true);
             foreach(var folder in list.Entries.Where(i => i.IsFolder))
             {
-                var folderContents = await dbx.Files.ListFolderAsync(folder.PathLower);
-                var folderList = folderContents.Entries.Where(i => i.IsFile);
-                List<FileMetadata> fileList = new List<FileMetadata>();
-                foreach (var f in folderList)
+                Folder alreadyChoosen =  oldFolders.FirstOrDefault(f => f.Name == folder.PathDisplay);
+                if (alreadyChoosen == null)
                 {
-                    fileList.Add(f as FileMetadata);
-                }
-                DateTime updated = DateTime.Now;
-                FolderMetadata folderMetadata = folder as FolderMetadata;
-                try
-                {
-                    updated = fileList.OrderByDescending(i => i.ClientModified).First().ClientModified;
-                }
-                catch(Exception e)
-                {
+                    var folderContents = await dbx.Files.ListFolderAsync(folder.PathLower);
+                    var folderList = folderContents.Entries.Where(i => i.IsFile);
+                    List<FileMetadata> fileList = new List<FileMetadata>();
+                    foreach (var f in folderList)
+                    {
+                        fileList.Add(f as FileMetadata);
+                    }
+                    DateTime updated = DateTime.Now;
+                    try
+                    {
+                        updated = fileList.OrderByDescending(i => i.ClientModified).First().ClientModified;
+                    }
+                    catch (Exception e)
+                    {
 
+                    }
+                    UniversalFolder fold = new UniversalFolder(folder.PathDisplay, fileList.Count, updated);
+                    response.Add(fold);
                 }
-                UniversalFolder fold = new UniversalFolder(folder.PathDisplay, fileList.Count, updated);
-                response.Add(fold);
             }
             return response;
         }
