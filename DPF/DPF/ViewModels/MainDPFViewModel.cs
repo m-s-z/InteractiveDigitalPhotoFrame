@@ -275,6 +275,19 @@ namespace DPF.ViewModels
             CurrentPhotoset = newPhotoset;
             var json = JsonConvert.SerializeObject(CurrentPhotoset);
             _localStorageModel.SavePhotoset(json);
+            if (CurrentPhotoset.Urls.Count != 0)
+            {
+                if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
+                {
+                    _photoCounter = 0;
+                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+                }
+                else
+                {
+                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+                }
+                
+            }
             _localStorageModel.SaveImage();
         }
 
@@ -313,7 +326,7 @@ namespace DPF.ViewModels
                     GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
                     if (getAllFlickrPhotosUrl != null)
                     {
-                        _localStorageModel.SynchronizingImages(getAllFlickrPhotosUrl, CurrentPhotoset);
+                        _localStorageModel.SynchronizeImages(getAllFlickrPhotosUrl, CurrentPhotoset);
 
 
                         //ListOfImageNames.Clear();
@@ -409,7 +422,7 @@ namespace DPF.ViewModels
             _photoCounter--;
             if (_photoCounter < 0)
             {
-                _photoCounter = ListOfImageNames.Count - 1;
+                _photoCounter = CurrentPhotoset.Urls.Count - 1;
             }
 
             PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);

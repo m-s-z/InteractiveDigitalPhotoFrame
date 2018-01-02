@@ -36,7 +36,7 @@ namespace DPF.Droid.Services
             return st;
         }
 
-        public async void SynchronizingImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
+        public async void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
             foreach (var newPhotosetUrl in newPhotoset.Urls)
             {

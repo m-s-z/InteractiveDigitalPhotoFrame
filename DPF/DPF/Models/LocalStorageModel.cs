@@ -69,10 +69,10 @@ namespace DPF.Models
             _service.SaveImage();
         }
 
-        public void SynchronizingImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
+        public void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
             GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
-            _service.SynchronizingImages(newPhotoset, oldPhotoset);
+            _service.SynchronizeImages(newPhotoset, oldPhotoset);
         }
 
         private void ErrorOccuredEventHandler(object sender, string errorMessage)

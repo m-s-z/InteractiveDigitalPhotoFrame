@@ -29,7 +29,7 @@ namespace DPF.Models
 
         void SavePhotoset(string json);
 
-        void SynchronizingImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
+        void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
             GetAllFlickrPhotosURLResponseDTO oldPhotoset);
 
         void SaveImage();
