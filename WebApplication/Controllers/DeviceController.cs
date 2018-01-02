@@ -104,7 +104,7 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
             }
-
+            pairCode = pairCode.ToUpper();
             string response = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
             PairDeviceViewModel view = new PairDeviceViewModel(response);
             return View(view);

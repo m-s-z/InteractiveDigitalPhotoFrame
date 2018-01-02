@@ -6,8 +6,14 @@
 @{ 
        string className = Model.Folders.Count > 5 ? "multipleFolders" : null;
 }
+
 <div class="background-transparent">
+    
     <h2 class="@className text-center">Folders</h2>
+    @if (Model.Devices.Count == 0)
+    {
+        <h3 class="text-center">You need to connect a device to add folders.</h3>
+    }
     <ul class="list-group">
         @{
             int i = 0;
