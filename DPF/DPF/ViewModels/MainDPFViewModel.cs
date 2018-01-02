@@ -251,7 +251,7 @@ namespace DPF.ViewModels
             {
                 using (var client = new HttpClient())
                 {
-                    GetAllFlickrPgotosURLRequestDTO requestDto = new GetAllFlickrPgotosURLRequestDTO
+                    GetAllFlickrPhotosURLRequestDTO requestDto = new GetAllFlickrPhotosURLRequestDTO
                     {
                         DeviceId = _deviceId,
                         DeviceToken = _deviceToken,
@@ -275,7 +275,11 @@ namespace DPF.ViewModels
                     GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
                     if (getAllFlickrPhotosUrl != null)
                     {
-                        ListOfImageNames = getAllFlickrPhotosUrl.Urls;
+                        ListOfImageNames.Clear();
+                        foreach (var photoUrl in getAllFlickrPhotosUrl.Urls)
+                        {
+                            ListOfImageNames.Add(photoUrl.Link);
+                        }
                         PhotoPath = ListOfImageNames[0];
                     }
                 }
