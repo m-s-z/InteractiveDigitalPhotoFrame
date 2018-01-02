@@ -532,8 +532,13 @@ namespace DPF.ViewModels
         {
             if (param is VCListItem item)
             {
-                DisconnectAccount(item.AccountId);
-            }
+                var result = await Application.Current.MainPage.DisplayAlert("Disconnect?", "Do you want to disconnect acconut: \"" + item.AccountName + "\" from this DPF?", "Disconnect", "Cancel");
+                if (result)
+                {
+                    item.AccountName = "Disconnecting...";
+                    DisconnectAccount(item.AccountId);
+                }
+            }    
         }
 
         private async void DisconnectAccount(int accountId)
@@ -567,6 +572,7 @@ namespace DPF.ViewModels
                 }
 
                 await GetUpdates();
+                await GetAllPhotosUrl();
             }
         }
 
