@@ -20,6 +20,8 @@ namespace DPF.ViewModels
 {
     public class MainDPFViewModel : ViewModelBase
     {
+        private const string EMPTY_PHOTOSET_DEFAULT_PATH = "photos_96px.png";
+
         private bool _isNetworkConnected;
 
         private int _deviceId;
@@ -226,13 +228,13 @@ namespace DPF.ViewModels
                 }
                 else
                 {
-                    PhotoPath = "photos_96px.png";
+                    PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
                 }
             }
             else
             {
                 CurrentPhotoset = new GetAllFlickrPhotosURLResponseDTO(new List<Urls>());
-                PhotoPath = "photos_96px.png";
+                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
             }
 
             string json = _localStorageModel.GetDeviceToken();
@@ -378,6 +380,7 @@ namespace DPF.ViewModels
 
             if (CurrentPhotoset.Urls.Count == 0)
             {
+                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
                 return;
             }
 
@@ -398,6 +401,7 @@ namespace DPF.ViewModels
 
             if (CurrentPhotoset.Urls.Count == 0)
             {
+                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
                 return;
             }
 
@@ -495,7 +499,7 @@ namespace DPF.ViewModels
 
                     if (_slideshowCounter >= 40)
                     {
-                        ExecuteNextPhotoCommand();
+                        ChangeNextPhoto();
                     }
                 }
                 else
