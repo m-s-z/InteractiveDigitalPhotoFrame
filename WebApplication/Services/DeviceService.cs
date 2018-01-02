@@ -102,7 +102,8 @@ namespace WebApplication.Services
             {
                 if (device.DeviceToken == deviceToken)
                 {
-                    code = TrueRandomString(CODESIZE);                    device.ConnectionCode = code;
+                    code = TrueRandomString(CODESIZE);
+                    device.ConnectionCode = code;
                     db.Entry(device).State = System.Data.Entity.EntityState.Modified;
                     await db.SaveChangesAsync();
                 }
@@ -142,7 +143,7 @@ namespace WebApplication.Services
         {
             char[] chars = new char[62];
             chars =
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
             byte[] data = new byte[1];
             using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
             {
