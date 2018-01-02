@@ -8,8 +8,9 @@
     <img class="center-block" width="300em" src="~/Images/dpf_code.png" />
     @using (Html.BeginForm("PairDevice", "Device", FormMethod.Post))
     {
+        <h3 class="text-center">Pair Code</h3>
         <input class="center-block pair-code" type="text" name="pairCode"/>
-        <h3 class="text-center">Name for device</h3>
+        <h4 class="text-center">Name for device</h4>
         <input class="center-block pair-name" type="text" name="deviceName" />
         <input class="btn btn-primary center-block" type="submit" value="Pair Device" />
 

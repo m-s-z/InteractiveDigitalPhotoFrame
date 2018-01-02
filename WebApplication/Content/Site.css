@@ -91,6 +91,7 @@ textarea {
     margin-bottom: 1em;
     width: 13em;
     font-size: 2em;
+    font-family: Helvetica, Arial, Sans-Serif;
 }
 .login{
     height: 60em;
