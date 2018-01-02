@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using DPF.Droid.Services;
 using DPF.Models;
 using Xamarin.Forms;
@@ -24,10 +25,17 @@ namespace DPF.Droid.Services
 
         public void CreateImagesFolder()
         {
-            Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
-            Directory.CreateDirectory(string.Format(PATH_TO_DATA_TEMPLATE,
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
+            try
+            {
+                Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
+                Directory.CreateDirectory(string.Format(PATH_TO_DATA_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
+            }
+            catch (Exception exception)
+            {
+                ErrorHandler(exception.Message);
+            }
         }
 
         public List<string> GetImagesList()
@@ -44,9 +52,11 @@ namespace DPF.Droid.Services
                     p.PhotoId == newPhotosetUrl.PhotoId && p.MyProperty == newPhotosetUrl.MyProperty);
                 if (temp == null)
                 {
-                    SaveImage(newPhotosetUrl);
+                    await SaveImage(newPhotosetUrl);
                 }
             }
+
+            //SynchronizationCompleted?.Invoke(this, newPhotoset);
 
             foreach (var oldPhotosetUrl in oldPhotoset.Urls)
             {
@@ -71,8 +81,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                ErrorHandler(exception.Message);
             }
         }
 
@@ -80,6 +89,14 @@ namespace DPF.Droid.Services
         {
             try
             {
+                var st = Directory.GetFiles(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), ""));
+                foreach (string s in st)
+                {
+                    System.Diagnostics.Debug.WriteLine(s);
+                }
+
                 string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                     CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), imageToShow.PhotoId);
@@ -90,14 +107,13 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                ErrorHandler(exception.Message);
             }
 
             return null;
         }
 
-        public async void SaveImage(Urls imageToSave)
+        public async Task SaveImage(Urls imageToSave)
         {
             try
             {
@@ -120,8 +136,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                ErrorHandler(exception.Message);
             }
         }
 
@@ -194,6 +209,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }
 
@@ -208,6 +224,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }  
         }
@@ -222,7 +239,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                return;
+                ErrorHandler(exception.Message);
             }
         }
 
@@ -235,6 +252,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }
         }
@@ -249,7 +267,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                return;
+                ErrorHandler(exception.Message);
             }
         }
 
@@ -262,8 +280,7 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                ErrorHandler(exception.Message);
             }
         }
 
@@ -287,6 +304,11 @@ namespace DPF.Droid.Services
                 default:
                     return "/unknown";
             }
+        }
+
+        private void ErrorHandler(string errorMessage)
+        {
+            ErrorOccured?.Invoke(this, errorMessage);
         }
     }
 }

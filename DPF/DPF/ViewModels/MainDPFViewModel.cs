@@ -267,7 +267,7 @@ namespace DPF.ViewModels
 
         private void OnErrorOccurred(object sedner, string errorMessage)
         {
-            
+            Application.Current.MainPage.DisplayAlert("Error occurred", errorMessage, "OK");
         }
 
         private void OnSynchronizationCompleted(object sender, GetAllFlickrPhotosURLResponseDTO newPhotoset)
@@ -275,26 +275,30 @@ namespace DPF.ViewModels
             CurrentPhotoset = newPhotoset;
             var json = JsonConvert.SerializeObject(CurrentPhotoset);
             _localStorageModel.SavePhotoset(json);
+            _localStorageModel.SaveImage();
             if (CurrentPhotoset.Urls.Count != 0)
             {
                 if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
                 {
                     _photoCounter = 0;
-                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
                 }
                 else
                 {
-                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
                 }
-                
             }
-            _localStorageModel.SaveImage();
+            else
+            {
+                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+            }
         }
 
         private async Task GetAllPhotosUrl()
         {
             if (GetDeviceAccounts.Accounts.Count == 0)
             {
+                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
                 return;
             }
 
