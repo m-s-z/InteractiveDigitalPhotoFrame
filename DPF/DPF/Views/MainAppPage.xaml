@@ -11,8 +11,14 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
+
+        <!--Main container-->
         <Grid>
+
+            <!--Photo in background-->
             <Image Source="{Binding PhotoPath}" VerticalOptions="Fill" />
+            
+            <!--Activation area-->
             <BoxView Color="#00000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100">
                 <BoxView.Triggers>
                     <DataTrigger TargetType="BoxView"
@@ -25,23 +31,30 @@
                     <TapGestureRecognizer Command="{Binding TapToActiveCommand}"/>
                 </BoxView.GestureRecognizers>
             </BoxView>
+            
+            <!--Slideshow controls-->
             <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="100" IsVisible="{Binding IsActive}" />
-                <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
+            
+            <!--Previous photo button-->
+            <Image Source="back_96px.png" Rotation="90" HorizontalOptions="Start" VerticalOptions="End" Margin="60, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding PreviousPhotoCommand}"/>
                 </Image.GestureRecognizers>
             </Image> 
 
+            <!--Next photo button-->
             <Image Source="back_96px.png" Rotation="-90" HorizontalOptions="End" VerticalOptions="End" Margin="0, 0, 60, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding NextPhotoCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
+            
+            <!--Start and pause slideshow-->
             <Image Source="play_96px.png" HorizontalOptions="Center" VerticalOptions="End" Margin="0, 0, 0, 25" HeightRequest="50" IsVisible="{Binding IsActive}">
                 <Image.Triggers>
                     <DataTrigger TargetType="Image"
-                                 Binding="{Binding IsSlideshow}"
-                                 Value="True">
+                                    Binding="{Binding IsSlideshow}"
+                                    Value="True">
                         <Setter Property="Source" Value="pause_96px.png" />
                     </DataTrigger>
                 </Image.Triggers>
@@ -49,20 +62,35 @@
                     <TapGestureRecognizer Command="{Binding ControlSlideshowCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
-            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100" IsVisible="{Binding IsCodeVisible}" />
-            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ShowCodeCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <StackLayout BackgroundColor="White" IsVisible="{Binding IsCodeVisible}" HeightRequest="60" WidthRequest="150" HorizontalOptions="End" VerticalOptions="Start" Margin="0, 90, 40, 0">
-                <Label Text="{Binding Code}" TextColor="#2196F3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="30"/>
-            </StackLayout>
+ 
+            <!--Settings button-->
             <Image Source="settings_96px.png" HorizontalOptions="Start" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding GoToAccountsListPageCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
+
+            <!--Darken background area-->
+            <BoxView Color="#99000000" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100" IsVisible="{Binding IsCodeVisible}" />
+
+            <!--Show pair code button-->
+            <Image Source="link_96px.png" HorizontalOptions="End" VerticalOptions="Start" Margin="40" HeightRequest="40" IsVisible="{Binding IsActive}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowCodeCommand}"/>
+                </Image.GestureRecognizers>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                 Binding="{Binding IsCodeVisible}"
+                                 Value="True">
+                        <Setter Property="Source" Value="link_active_96px.png" />
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+
+            <!--Pair code conatiner-->
+            <StackLayout BackgroundColor="White" IsVisible="{Binding IsCodeVisible}" HeightRequest="60" WidthRequest="200" HorizontalOptions="End" VerticalOptions="Start" Margin="0, 90, 40, 0">
+                <Label Text="{Binding Code}" TextColor="#2196F3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="30"/>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -45,7 +45,9 @@
     <Compile Include="Models\CloudFolder.cs" />
     <Compile Include="Models\ConnectedAccount.cs" />
     <Compile Include="Models\ILocalStorageService.cs" />
+    <Compile Include="Models\INetworkConnectionService.cs" />
     <Compile Include="Models\LocalStorageModel.cs" />
+    <Compile Include="Models\NetworkConnectionModel.cs" />
     <Compile Include="Models\PhotoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Controls\VCListItem.cs" />

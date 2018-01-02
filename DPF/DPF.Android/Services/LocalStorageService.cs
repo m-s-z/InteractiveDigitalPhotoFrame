@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using DPF.Droid.Services;
 using DPF.Models;
 using Xamarin.Forms;
@@ -113,7 +112,16 @@ namespace DPF.Droid.Services
 
         public void SaveDeviceToken(string json)
         {
-            File.WriteAllText(string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), "DeviceToken.txt"), json);
+            try
+            {
+                Directory.CreateDirectory(string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
+                File.WriteAllText(string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), "DeviceToken.txt"), json);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
         }
     }
 }

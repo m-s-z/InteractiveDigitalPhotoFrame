@@ -2,13 +2,13 @@
 
 namespace IDPFLibrary.DTO
 {
-    public class GetAllFlickrPgotosURLRequestDTO
+    public class GetAllFlickrPhotosURLRequestDTO
     {
-        public GetAllFlickrPgotosURLRequestDTO()
+        public GetAllFlickrPhotosURLRequestDTO()
         {
 
         }
-        public GetAllFlickrPgotosURLRequestDTO(int deviceId, string deviceToken, List<int> accountIds)
+        public GetAllFlickrPhotosURLRequestDTO(int deviceId, string deviceToken, List<int> accountIds)
         {
             DeviceId = deviceId;
             DeviceToken = deviceToken;
