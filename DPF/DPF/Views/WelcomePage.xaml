@@ -9,9 +9,20 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Center"
-                     VerticalOptions="Center">
-            <Button Text="Start DPF" Command="{Binding CreateNewDeviceCommand}"/>
-        </StackLayout>
+        <!--Main container-->
+        <Grid>
+
+            <!--Photo in background-->
+            <Image Aspect="AspectFill" Source="dpf_background.jpg"/>
+
+            <StackLayout VerticalOptions="Center" BackgroundColor="#E6FFFFFF" Margin="20">
+                <Label HorizontalOptions="Center" Text="Digital Photo Frame" Margin="20, 20, 20, 20" Font="Bold, 25" TextColor="#333333" />
+                <Label HorizontalOptions="Center" HorizontalTextAlignment="Center" Margin="20, 20, 20, 20"  FontSize="18" TextColor="#333333" Text="Tap the button below to create a new Digital Photo Frame device and start using the application." />
+                <!--Pair code conatiner-->
+                <Button BackgroundColor="#ffc34d" TextColor="White" HeightRequest="60"  HorizontalOptions="FillAndExpand" Margin="20, 100, 20, 20" Text="Create DPF" Command="{Binding CreateNewDeviceCommand}" />
+            </StackLayout>
+
+            
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

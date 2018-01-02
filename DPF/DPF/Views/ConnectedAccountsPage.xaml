@@ -6,8 +6,8 @@
              Title="Settings">
 
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout IsVisible="True">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout IsVisible="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Button Text="Refresh" HorizontalOptions="FillAndExpand" Command="{Binding RefreshCommand}" BackgroundColor="{Binding RefreshingColor}"
                         TextColor="White"
                         FontSize="Large"/>
@@ -15,14 +15,14 @@
                           HorizontalOptions="FillAndExpand"
                           VerticalOptions="FillAndExpand"
                           BackgroundColor="White"
-                          RowHeight="80"
-                          IsEnabled="True">
+                          RowHeight="80">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:ViewCellExtension AdditionalCommand="{Binding AdditionalCommand}"
                                                         AdditionalCommandParameter="{Binding .}"
                                                         AdditionalImageSource="minus_96px.png"
-                                                        MainText="{Binding AccountName}" />
+                                                        MainText="{Binding AccountName}"
+                                                        MainImageSource="account_profile_96px.png" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
