@@ -16,7 +16,8 @@
                           VerticalOptions="FillAndExpand"
                           BackgroundColor="White"
                           RowHeight="80"
-                          IsEnabled="True">
+                          IsEnabled="True"
+                          IsPullToRefreshEnabled="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:ViewCellExtension AdditionalCommand="{Binding AdditionalCommand}"

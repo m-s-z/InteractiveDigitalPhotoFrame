@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DPF.Models;
@@ -24,6 +25,8 @@ namespace DPF.ViewModels
         private int _deviceId;
         private string _deviceToken;
         private GetDeviceAccountsDTO _getDeviceAccounts;
+
+        private GetAllFlickrPhotosURLResponseDTO _currentPhotoset;
 
         private LocalStorageModel _localStorageModel;
         private NetworkConnectionModel _networkConnectionModel;
@@ -52,6 +55,12 @@ namespace DPF.ViewModels
         {
             get => _refreshingColor;
             set => SetProperty(ref _refreshingColor, value);
+        }
+
+        public GetAllFlickrPhotosURLResponseDTO CurrentPhotoset
+        {
+            get => _currentPhotoset;
+            set => SetProperty(ref _currentPhotoset, value);
         }
 
         public GetDeviceAccountsDTO GetDeviceAccounts
@@ -171,13 +180,13 @@ namespace DPF.ViewModels
 
 
 
-            ListOfImageNames = new List<string>()
-            {
-                "dpf_mock_background.png",
-                "mock_2.jpg",
-                "mock_3.jpg"
-            };
-            PhotoPath = ListOfImageNames[0];
+            //ListOfImageNames = new List<string>()
+            //{
+            //    "dpf_mock_background.png",
+            //    "mock_2.jpg",
+            //    "mock_3.jpg"
+            //};
+            //PhotoPath = ListOfImageNames[0];
             _photoCounter = 0;
             RefreshingColor = new Color(0, 255, 0);
         }
@@ -204,7 +213,28 @@ namespace DPF.ViewModels
         {
             _localStorageModel = new LocalStorageModel();
             _localStorageModel.ErrorOccured += OnErrorOccurred;
+            _localStorageModel.SynchronizationCompleted += OnSynchronizationCompleted;
             _localStorageModel.CreateImagesFolder();
+
+            string photosetJson = _localStorageModel.GetPhotoset();
+            if (photosetJson != null)
+            {
+                CurrentPhotoset = JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(photosetJson);
+                if (CurrentPhotoset.Urls.Count != 0)
+                {
+                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[0]);
+                }
+                else
+                {
+                    PhotoPath = "photos_96px.png";
+                }
+            }
+            else
+            {
+                CurrentPhotoset = new GetAllFlickrPhotosURLResponseDTO(new List<Urls>());
+                PhotoPath = "photos_96px.png";
+            }
+
             string json = _localStorageModel.GetDeviceToken();
             if (json != null)
             {
@@ -238,15 +268,21 @@ namespace DPF.ViewModels
             
         }
 
+        private void OnSynchronizationCompleted(object sender, GetAllFlickrPhotosURLResponseDTO newPhotoset)
+        {
+            CurrentPhotoset = newPhotoset;
+            var json = JsonConvert.SerializeObject(CurrentPhotoset);
+            _localStorageModel.SavePhotoset(json);
+            _localStorageModel.SaveImage();
+        }
+
         private async Task GetAllPhotosUrl()
         {
             if (GetDeviceAccounts.Accounts.Count == 0)
             {
-                ListOfImageNames.Clear();
-                ListOfImageNames.Add("photos_96px.png");
-                PhotoPath = "photos_96px.png";
                 return;
             }
+
             if (CheckIfNetworkConnection())
             {
                 using (var client = new HttpClient())
@@ -275,13 +311,18 @@ namespace DPF.ViewModels
                     GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
                     if (getAllFlickrPhotosUrl != null)
                     {
-                        ListOfImageNames.Clear();
-                        foreach (var photoUrl in getAllFlickrPhotosUrl.Urls)
-                        {
-                            ListOfImageNames.Add(photoUrl.Link);
-                        }
-                        PhotoPath = ListOfImageNames[0];
+                        _localStorageModel.SynchronizingImages(getAllFlickrPhotosUrl, CurrentPhotoset);
+
+
+                        //ListOfImageNames.Clear();
+                        //foreach (var photoUrl in getAllFlickrPhotosUrl.Urls)
+                        //{
+                        //    ListOfImageNames.Add(photoUrl.Link);
+                        //}
+                        //PhotoPath = ListOfImageNames[0];
                     }
+
+                    
                 }
             }
         }
@@ -319,11 +360,11 @@ namespace DPF.ViewModels
 
         private void ExecuteGoToAccountsListPageCommand()
         {
-            IsActive = false;
             CheckIfNetworkConnection();
             var page = new ConnectedAccountsPage();
             page.BindingContext = this;
             Application.Current.MainPage.Navigation.PushAsync(page);
+            IsActive = false;
         }
 
         private void ExecuteNextPhotoCommand()
@@ -334,25 +375,40 @@ namespace DPF.ViewModels
 
         private void ChangeNextPhoto()
         {
+
+            if (CurrentPhotoset.Urls.Count == 0)
+            {
+                return;
+            }
+
             _slideshowCounter = 0;
             _photoCounter++;
-            if (_photoCounter > ListOfImageNames.Count - 1)
+
+            if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
             {
                 _photoCounter = 0;
             }
-            PhotoPath = ListOfImageNames[_photoCounter];
+
+            PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
         }
 
         private void ExecutePreviousPhotoCommand()
         {
             _keepActiveCounter = 0;
+
+            if (CurrentPhotoset.Urls.Count == 0)
+            {
+                return;
+            }
+
             _slideshowCounter = 0;
             _photoCounter--;
             if (_photoCounter < 0)
             {
                 _photoCounter = ListOfImageNames.Count - 1;
             }
-            PhotoPath = ListOfImageNames[_photoCounter];
+
+            PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
         }
 
         private void ExecuteTapToActiveCommand()

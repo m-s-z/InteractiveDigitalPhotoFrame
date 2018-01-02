@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using DPF.Droid.Services;
 using DPF.Models;
 using Xamarin.Forms;
+using IDPFLibrary;
+using IDPFLibrary.DTO;
 
 [assembly: Dependency(typeof(LocalStorageService))]
 
@@ -12,21 +15,114 @@ namespace DPF.Droid.Services
 {
     public class LocalStorageService : ILocalStorageService
     {
-        private const string PATH_TO_PICTURES_TEMPLATE = "{0}/pictures/{1}";
+        private const string PATH_TO_PICTURES_TEMPLATE = "{0}/pictures{1}/{2}";
         private const string PATH_TO_DATA_TEMPLATE = "{0}/data/{1}";
 
         public event ErrorOccurredDelegate ErrorOccured;
 
+        public event SynchronizationCompletedDelegate SynchronizationCompleted;
+
         public void CreateImagesFolder()
         {
-            Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
-            Directory.CreateDirectory(string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
+            Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
+            Directory.CreateDirectory(string.Format(PATH_TO_DATA_TEMPLATE,
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal), ""));
         }
 
         public List<string> GetImagesList()
         {
             var st = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Personal)).ToList();
             return st;
+        }
+
+        public async void SynchronizingImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
+        {
+            foreach (var newPhotosetUrl in newPhotoset.Urls)
+            {
+                var temp = oldPhotoset.Urls.Find(p =>
+                    p.PhotoId == newPhotosetUrl.PhotoId && p.MyProperty == newPhotosetUrl.MyProperty);
+                if (temp == null)
+                {
+                    SaveImage(newPhotosetUrl);
+                }
+            }
+
+            foreach (var oldPhotosetUrl in oldPhotoset.Urls)
+            {
+                var temp = newPhotoset.Urls.Find(p =>
+                    p.PhotoId == oldPhotosetUrl.PhotoId && p.MyProperty == oldPhotosetUrl.MyProperty);
+                if (temp == null)
+                {
+                    DeleteImage(oldPhotosetUrl);
+                }
+            }
+
+            SynchronizationCompleted?.Invoke(this, newPhotoset);
+        }
+
+        private void DeleteImage(Urls imageToDelete)
+        {
+            try
+            {
+                File.Delete(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    CloudProviderTypeToDirectoryNameConverter(imageToDelete.MyProperty), imageToDelete.PhotoId));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        public string GetImageToShow(Urls imageToShow)
+        {
+            try
+            {
+                string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), imageToShow.PhotoId);
+                if (File.Exists(path))
+                {
+                    return path;
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+
+            return null;
+        }
+
+        public async void SaveImage(Urls imageToSave)
+        {
+            try
+            {
+                Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    CloudProviderTypeToDirectoryNameConverter(imageToSave.MyProperty), ""));
+
+                var webClient = new WebClient();
+                webClient.DownloadDataCompleted += (s, e) =>
+                {
+                    var bytes = e.Result;
+                    string imagePath = string.Format(PATH_TO_PICTURES_TEMPLATE,
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                        CloudProviderTypeToDirectoryNameConverter(imageToSave.MyProperty), imageToSave.PhotoId);
+                    File.WriteAllBytes(imagePath, bytes); // writes to local storage
+                };
+
+                var url = new Uri(imageToSave.Link);
+                webClient.DownloadDataAsync(url);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
         }
 
         public void SaveImage()
@@ -39,6 +135,11 @@ namespace DPF.Droid.Services
             foreach (string s in st)
             {
                 System.Diagnostics.Debug.WriteLine(s);
+                System.Diagnostics.Debug.WriteLine("Directory: " + Directory.GetParent(s).Name + "  File: " +
+                                                   Path.GetFileName(s));
+                System.Diagnostics.Debug.WriteLineIf(
+                    (Directory.GetParent(s).Name.Equals("files")) && Path.GetFileName(s).Equals("downloaded.png"),
+                    "Yes, it is!");
             }
             System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
             st = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -47,6 +148,13 @@ namespace DPF.Droid.Services
                 System.Diagnostics.Debug.WriteLine(s);
             }
             System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
+            st = Directory.GetDirectories(string.Format(PATH_TO_PICTURES_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
+            foreach (string s in st)
+            {
+                System.Diagnostics.Debug.WriteLine(s);
+            }
+            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
+
 
             //var webClient = new WebClient();
             //webClient.DownloadDataCompleted += (s, e) =>
@@ -101,13 +209,48 @@ namespace DPF.Droid.Services
             catch (Exception exception)
             {
                 return null;
-            }
-            
+            }  
         }
 
         public void SaveConnectedAccounts(string json)
         {
-            File.WriteAllText(string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ConnectedAccounts.txt"), json);
+            try
+            {
+                File.WriteAllText(
+                    string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                        "ConnectedAccounts.txt"), json);
+            }
+            catch (Exception exception)
+            {
+                return;
+            }
+        }
+
+        public string GetPhotoset()
+        {
+            try
+            {
+                return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Photoset.txt"));
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+        public void SavePhotoset(string json)
+        {
+            try
+            {
+                File.WriteAllText(
+                    string.Format(PATH_TO_DATA_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                        "Photoset.txt"), json);
+            }
+            catch (Exception exception)
+            {
+                return;
+            }
         }
 
         public void SaveDeviceToken(string json)
@@ -121,6 +264,28 @@ namespace DPF.Droid.Services
             {
                 Console.WriteLine(exception);
                 throw;
+            }
+        }
+
+        private bool CheckIfPhotoIsStillSynchronizing()
+        {
+            return false;
+        }
+
+        private string CloudProviderTypeToDirectoryNameConverter(CloudProviderType cloudProviderType)
+        {
+            switch (cloudProviderType)
+            {
+                case CloudProviderType.Dropbox:
+                    return "/dropbox";
+                case CloudProviderType.Flickr:
+                    return "/flickr";
+                case CloudProviderType.GoogleDrive:
+                    return "/googledrive";
+                case CloudProviderType.OneDrive:
+                    return "/onedrive";
+                default:
+                    return "/unknown";
             }
         }
     }

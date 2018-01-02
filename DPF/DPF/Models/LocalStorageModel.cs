@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IDPFLibrary.DTO;
 using Xamarin.Forms;
 
 namespace DPF.Models
@@ -9,10 +10,13 @@ namespace DPF.Models
 
         public event ErrorOccurredDelegate ErrorOccured;
 
+        public event SynchronizationCompletedDelegate SynchronizationCompleted;
+
         public LocalStorageModel()
         {
             _service = DependencyService.Get<ILocalStorageService>();
             _service.ErrorOccured += ErrorOccuredEventHandler;
+            _service.SynchronizationCompleted += SynchronizationCompletedEventHandler;
         }
 
         public void CreateImagesFolder()
@@ -35,6 +39,16 @@ namespace DPF.Models
             return _service.GetDeviceToken();
         }
 
+        public string GetPhotoset()
+        {
+            return _service.GetPhotoset();
+        }
+
+        public string GetImageToShow(Urls imageToShow)
+        {
+            return _service.GetImageToShow(imageToShow);
+        }
+
         public void SaveConnectedAccounts(string json)
         {
             _service.SaveConnectedAccounts(json);
@@ -45,14 +59,30 @@ namespace DPF.Models
             _service.SaveDeviceToken(json);
         }
 
+        public void SavePhotoset(string json)
+        {
+            _service.SavePhotoset(json);
+        }
+
         public void SaveImage()
         {
             _service.SaveImage();
         }
 
+        public void SynchronizingImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
+            GetAllFlickrPhotosURLResponseDTO oldPhotoset)
+        {
+            _service.SynchronizingImages(newPhotoset, oldPhotoset);
+        }
+
         private void ErrorOccuredEventHandler(object sender, string errorMessage)
         {
             ErrorOccured?.Invoke(this, errorMessage);
+        }
+
+        private void SynchronizationCompletedEventHandler(object sender, GetAllFlickrPhotosURLResponseDTO newPhotoset)
+        {
+            SynchronizationCompleted?.Invoke(this, newPhotoset);
         }
     }
 }
