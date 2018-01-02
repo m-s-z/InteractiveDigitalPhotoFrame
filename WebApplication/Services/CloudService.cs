@@ -88,6 +88,22 @@ namespace WebApplication.Services
             return true;
         }
 
+        public async Task<bool> CreateDropBoxAccount(string token, string accountName, string username, string userId)
+        {
+            try
+            {
+                Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username);
+                Cloud cloud = new Cloud(ProviderType.DropBox, accountName, foundUser, token, "", userId);
+                db.Clouds.Add(cloud);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<Cloud> GetCloud(int cloudId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
