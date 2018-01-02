@@ -25,29 +25,36 @@ namespace DPF.ViewModels
 
         private async void ExecuteCreateNewDeviceCommand()
         {
-            using (var client = new HttpClient())
+            if (DependencyService.Get<INetworkConnectionService>().CheckIfNetworkConnected())
             {
-                CreateNewDeviceRequestDTO requestDto = new CreateNewDeviceRequestDTO { key = RegistrationCode.CODE };
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
-
-                string url = "https://idpf.azurewebsites.net/Device/CreateNewDevice";
-                var request = new HttpRequestMessage()
+                using (var client = new HttpClient())
                 {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Post,
-                    Content = new StringContent(json,
-                        Encoding.UTF8,
-                        "application/json")
-                };
+                    CreateNewDeviceRequestDTO requestDto = new CreateNewDeviceRequestDTO { key = RegistrationCode.CODE };
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                var response = await client.SendAsync(request);
-                var contents = await response.Content.ReadAsStringAsync();
-                CreateNewDeviceDTO newDeviceDto = (JsonConvert.DeserializeObject<CreateNewDeviceDTO>(contents));
-                DependencyService.Get<ILocalStorageService>().SaveDeviceToken(contents);
+                    string url = "https://idpf.azurewebsites.net/Device/CreateNewDevice";
+                    var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(url),
+                        Method = HttpMethod.Post,
+                        Content = new StringContent(json,
+                            Encoding.UTF8,
+                            "application/json")
+                    };
+
+                    var response = await client.SendAsync(request);
+                    var contents = await response.Content.ReadAsStringAsync();
+                    CreateNewDeviceDTO newDeviceDto = (JsonConvert.DeserializeObject<CreateNewDeviceDTO>(contents));
+                    DependencyService.Get<ILocalStorageService>().SaveDeviceToken(contents);
+                }
+
+                var page = new MainAppPage();
+                Application.Current.MainPage = new NavigationPage(page);
             }
-
-            var page = new MainAppPage();
-            Application.Current.MainPage = new NavigationPage(page);
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Offline mode", "Connect to the Internet to start using DPF", "OK");
+            }
         }
     }
 }

@@ -7,23 +7,44 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Refresh" HorizontalOptions="FillAndExpand" Command="{Binding RefreshCommand}" BackgroundColor="{Binding RefreshingColor}"
-                    TextColor="White"
-                    FontSize="Large"/>
-            <ListView ItemsSource="{Binding ConnectedAccountsCollection}"
-                      HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand"
-                      BackgroundColor="Aqua"
-                      RowHeight="80">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ViewCellExtension AdditionalCommand="{Binding AdditionalCommand}"
-                                                    AdditionalCommandParameter="{Binding .}"
-                                                    AdditionalImageSource="minus_96px.png"
-                                                    MainText="{Binding AccountName}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <StackLayout IsVisible="True">
+                <Button Text="Refresh" HorizontalOptions="FillAndExpand" Command="{Binding RefreshCommand}" BackgroundColor="{Binding RefreshingColor}"
+                        TextColor="White"
+                        FontSize="Large"/>
+                <ListView ItemsSource="{Binding ConnectedAccountsCollection}"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand"
+                          BackgroundColor="White"
+                          RowHeight="80"
+                          IsEnabled="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ViewCellExtension AdditionalCommand="{Binding AdditionalCommand}"
+                                                        AdditionalCommandParameter="{Binding .}"
+                                                        AdditionalImageSource="minus_96px.png"
+                                                        MainText="{Binding AccountName}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsNetworkConnected}"
+                                 Value="False">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <StackLayout IsVisible="False" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Image Source="offline_96px.png" />
+                <Label Text="Offline mode" TextColor="#696969" FontSize="30"/>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsNetworkConnected}"
+                                 Value="False">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
