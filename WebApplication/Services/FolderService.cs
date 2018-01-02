@@ -95,12 +95,12 @@ namespace WebApplication.Services
             }
             return oldFolders;
         }
-        public async Task<List<UniversalFolder>> GetFlickrFolders(int cloudId)
+        public async Task<List<UniversalFolder>> GetFlickrFolders(int cloudId, int deviceId)
         {
 
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<UniversalFolder> response = new List<UniversalFolder>();
-            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
             FlickrManager fm = new FlickrManager();
             Flickr flicker = await fm.GetAuthInstance(cloudId);
             List<Photoset> newfolders = flicker.PhotosetsGetList(cloud.FlickrUserId).ToList<Photoset>();
@@ -116,11 +116,11 @@ namespace WebApplication.Services
             
             return response;
         }
-        public async Task<List<UniversalFolder>> GetDropboxFolders(int cloudId)
+        public async Task<List<UniversalFolder>> GetDropboxFolders(int cloudId, int deviceId)
         {
 
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
-            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
             List<UniversalFolder> response = new List<UniversalFolder>();
             DropboxClient dbx = new DropboxClient(cloud.Token);
             //boolean parameter set to true to obtain recursivly all folders

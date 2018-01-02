@@ -131,10 +131,10 @@ namespace WebApplication.Controllers
             switch(cloud.Provider)
             {
                 case ProviderType.Flicker:
-                    folders = await folderService.GetFlickrFolders(cloud.Id);
+                    folders = await folderService.GetFlickrFolders(cloud.Id, deviceId);
                     break;
                 case ProviderType.DropBox:
-                    folders = await folderService.GetDropboxFolders(cloud.Id);
+                    folders = await folderService.GetDropboxFolders(cloud.Id, deviceId);
                     break;
             }
             SelectFolderViewModel view = new SelectFolderViewModel(cloud, folders, deviceId);

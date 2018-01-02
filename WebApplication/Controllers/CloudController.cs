@@ -1,5 +1,7 @@
 ﻿using Dropbox.Api;
 using FlickrNet;
+using Microsoft.OneDrive.Sdk;
+using Microsoft.OneDrive.Sdk.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ using WebApplication.Models;
 using WebApplication.Services;
 using WebApplication.Utils;
 using WebApplication.ViewModels;
+using IDPFLibrary.Utils;
 
 namespace WebApplication.Controllers
 {
@@ -67,10 +70,6 @@ namespace WebApplication.Controllers
 
             items.Add(new SelectListItem { Text = "Flickr", Value = ProviderType.Flicker.ToString(), Selected = true });
 
-            items.Add(new SelectListItem { Text = "Google Drive", Value = ProviderType.GoogleDrive.ToString()});
-
-            items.Add(new SelectListItem { Text = "One Drive", Value = ProviderType.OneDrive.ToString()});
-
             ViewBag.Providers = items;
             return View();
         }
@@ -111,7 +110,7 @@ namespace WebApplication.Controllers
             return View(view);
         }
 
-        public ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
+        public  ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
         {
             if (!authService.IsAuthenticated(Session))
             {
@@ -128,7 +127,6 @@ namespace WebApplication.Controllers
                     return Redirect(url);
                 case ProviderType.DropBox:
                     var dropboxRedirectUrl = this.Url.Action("ConfirmDropBoxConnection", "Cloud", null , this.Request.Url.Scheme);
-
                     DeviceService devService = new DeviceService();
                     Session["DropBoxState"] = devService.TrueRandomString(6);
                     Session["NewCloudName"] = accountName;
