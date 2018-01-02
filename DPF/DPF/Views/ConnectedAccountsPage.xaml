@@ -6,8 +6,8 @@
              Title="Settings">
 
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout IsVisible="True">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout IsVisible="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Button Text="Refresh" HorizontalOptions="FillAndExpand" Command="{Binding RefreshCommand}" BackgroundColor="{Binding RefreshingColor}"
                         TextColor="White"
                         FontSize="Large"/>
