@@ -21,14 +21,8 @@ namespace WebApplication.Controllers
         // GET: Device
         public async Task<ActionResult> Index()
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
-
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             DeviceViewModel deviceViewModel = new DeviceViewModel(devices);
-
             return View(deviceViewModel);
         }
         

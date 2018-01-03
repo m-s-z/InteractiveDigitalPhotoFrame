@@ -26,10 +26,6 @@ namespace WebApplication.Controllers
         // GET: Cloud
         public async Task<ActionResult> Index()
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
             
             CloudViewModel model = new CloudViewModel(clouds);
