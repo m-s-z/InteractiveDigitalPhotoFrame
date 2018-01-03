@@ -19,10 +19,6 @@ namespace WebApplication.Controllers
         // GET: Account
         public ActionResult Index()
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             Account account = new Account((string) Session["UserId"]);
             AccountViewModel model = new AccountViewModel(account);
             return View(model);

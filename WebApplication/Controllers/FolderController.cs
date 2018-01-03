@@ -23,10 +23,6 @@ namespace WebApplication.Controllers
         // GET: Folder
         public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
             List<Folder> folders = new List<Folder>();
             //searching by cloud
@@ -51,17 +47,6 @@ namespace WebApplication.Controllers
                 }
 
             }
-            /*
-             * legacy searching by device
-            foreach (var dev in devices)
-            {
-                List<Folder> deviceFolders = await folderService.getFolders(dev.Device.DeviceId);
-                foreach (var fold in deviceFolders)
-                {
-                    folders.Add(fold);
-                }
-            }
-            */
             int index;
             if (IdOfOpenDevice != null)
             {
