@@ -22,6 +22,9 @@ namespace DPF.ViewModels
     {
         private const string EMPTY_PHOTOSET_DEFAULT_PATH = "photos_96px.png";
 
+        private const int REFRESH_TIMER = 5;
+        private const int SLIDESHOW_TIMER = 40;
+
         private bool _isNetworkConnected;
 
         private int _deviceId;
@@ -191,6 +194,15 @@ namespace DPF.ViewModels
             //PhotoPath = ListOfImageNames[0];
             _photoCounter = 0;
             RefreshingColor = new Color(0, 255, 0);
+
+            Device.StartTimer(TimeSpan.FromMinutes(REFRESH_TIMER), () =>
+            {
+                RefreshingColor = new Color(255, 0, 0);
+                ExecuteRefreshCommand();
+                RefreshingColor = new Color(0, 255, 0);
+
+                return true;
+            });
         }
 
         private void InitCommands()
@@ -514,7 +526,7 @@ namespace DPF.ViewModels
                 {
                     _slideshowCounter++;
 
-                    if (_slideshowCounter >= 40)
+                    if (_slideshowCounter >= SLIDESHOW_TIMER)
                     {
                         ChangeNextPhoto();
                     }

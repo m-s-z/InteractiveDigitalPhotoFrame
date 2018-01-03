@@ -209,7 +209,6 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                ErrorHandler(exception.Message);
                 return null;
             }
 
@@ -224,7 +223,6 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                ErrorHandler(exception.Message);
                 return null;
             }  
         }
@@ -252,7 +250,6 @@ namespace DPF.Droid.Services
             }
             catch (Exception exception)
             {
-                ErrorHandler(exception.Message);
                 return null;
             }
         }
