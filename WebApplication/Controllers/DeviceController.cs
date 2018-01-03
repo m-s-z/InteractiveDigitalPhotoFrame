@@ -1,4 +1,5 @@
 ﻿using IDPFLibrary.DTO;
+using IDPFLibrary.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,7 +161,7 @@ namespace WebApplication.Controllers
                 }
                 else
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "accountId not found");
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Cloud token has been revoked");
                 }
             }
             else
@@ -168,15 +169,12 @@ namespace WebApplication.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
             }
         }
-        /*
-        [HttpPost]
+        
         public async Task<ActionResult> Test()
         {
-            List<int> accountIds = new List<int>() { 1 };
-            int deviceId = 1;
-            List<String> urls = await deviceService.GetAllFlickrPhotosUrl(accountIds, deviceId);
+            var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }*/
+        }
 
     }
 }

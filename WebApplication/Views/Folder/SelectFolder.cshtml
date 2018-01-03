@@ -6,38 +6,48 @@
 
 <div class="background-transparent">
     <h2 class="text-center">Folders in @Model.SelectedCloud.Login</h2>
-    @using (Html.BeginForm("ConfirmAddFolder", "Folder", FormMethod.Post))
+    @if(Model.Folders == null)
     {
-        <div class="table-responsive">
-            <table class="table-bordered table-folders">
-                <tr>
-                    <th class="list-name text-center">Name</th>
-                    <th class="list-nophotos text-center">Number of Photos</th>
-                    <th class="list-last-updated text-center">Last Updated</th>
-                    <th class="list-select text-center">select</th>
-                </tr>
-                @foreach (var folder in Model.Folders)
-                {
-                    <tr>
-                        <th class="text-center">@folder.Title</th>
-                        <th class="text-center">@folder.NumberOfPhotos</th>
-                        <th class="text-center">@folder.DateUpdated.Year @folder.DateUpdated.Month @folder.DateUpdated.Day</th>
-                        <th >
-                            <div class="checkbox-folder-div">
-                                <input type="checkbox" name="SelectedFolders" value="@folder.Title" class="center-block checkbox-folder">
-                            </div>
-                        </th>
-                    </tr>
-                }
-            </table>
-        </div>
-        <input type="hidden" name="cloudId" value="@Model.SelectedCloud.Id" />
-        <input type="hidden" name="deviceId" value="@Model.DeviceId" />
-        <div class="text-center">
+        <h3 class="text-center">Your connection with this cloud has expired or has been revoked. 
+        We have removed this cloud. If you would like to use it please reconnect with the cloud in the clouds tab</h3>
+        @Html.ActionLink("Back", "Index", "Folder", new { area = "" }, new { @class = "btn btn-primary text-center" })
 
-            @Html.ActionLink("Back", "Index", "Folder", new { area = "" }, new { @class = "btn btn-primary " })
-            <input class="btn btn-primary " type="submit" value="Select" />
-        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("ConfirmAddFolder", "Folder", FormMethod.Post))
+        {
+            <div class="table-responsive">
+                <table class="table-bordered table-folders">
+                    <tr>
+                        <th class="list-name text-center">Name</th>
+                        <th class="list-nophotos text-center">Number of Photos</th>
+                        <th class="list-last-updated text-center">Last Updated</th>
+                        <th class="list-select text-center">select</th>
+                    </tr>
+                    @foreach (var folder in Model.Folders)
+                    {
+                        <tr>
+                            <th class="text-center">@folder.Title</th>
+                            <th class="text-center">@folder.NumberOfPhotos</th>
+                            <th class="text-center">@folder.DateUpdated.Year @folder.DateUpdated.Month @folder.DateUpdated.Day</th>
+                            <th>
+                                <div class="checkbox-folder-div">
+                                    <input type="checkbox" name="SelectedFolders" value="@folder.Title" class="center-block checkbox-folder">
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <input type="hidden" name="cloudId" value="@Model.SelectedCloud.Id" />
+            <input type="hidden" name="deviceId" value="@Model.DeviceId" />
+        
+            <div class="text-center">
+                @Html.ActionLink("Back", "Index", "Folder", new { area = "" }, new { @class = "btn btn-primary " })
+                <input class="btn btn-primary " type="submit" value="Select" />
+            </div>
+        }
     }
 </div>
 

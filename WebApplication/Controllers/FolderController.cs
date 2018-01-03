@@ -41,11 +41,13 @@ namespace WebApplication.Controllers
                     default:
                         break;
                 }
-                foreach (var fold in cloudFolders)
+                if (cloudFolders != null)
                 {
-                    folders.Add(fold);
+                    foreach (var fold in cloudFolders)
+                    {
+                        folders.Add(fold);
+                    }
                 }
-
             }
             int index;
             if (IdOfOpenDevice != null)

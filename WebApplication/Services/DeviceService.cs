@@ -193,6 +193,7 @@ namespace WebApplication.Services
 
         public async Task<GetAllFlickrPhotosURLResponseDTO> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
         {
+            // there is a need to handle if token has expired or has been revoked
             List<Urls> photoUrlList = new List<Urls>();
 
             FlickrManager flickrManager = new FlickrManager();
@@ -207,16 +208,27 @@ namespace WebApplication.Services
 
                     foreach (var cloud in cloudList)
                     {
-                        Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
+                        try
+                        {
+                            Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
                         List<Photoset> photosetList = await folderService.GetDeviceFlickrFolders(cloud.Id, deviceId);
                         foreach (var photoset in photosetList)
                         {
-                            var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
-                            foreach (var photo in photoCollection)
-                            {
-                                Urls url = new Urls(photo.LargeUrl, photo.PhotoId, IDPFLibrary.CloudProviderType.Flickr, photo.DateUploaded);
-                                photoUrlList.Add(url);
-                            }
+                           
+                                var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
+                                foreach (var photo in photoCollection)
+                                {
+                                    Urls url = new Urls(photo.LargeUrl, photo.PhotoId, IDPFLibrary.CloudProviderType.Flickr, photo.DateUploaded);
+                                    photoUrlList.Add(url);
+                                }
+                        }
+                        }
+                        catch (Exception e)
+                        {
+
+                            CloudService cloudService = new CloudService();
+                            await cloudService.removeCloud(cloud.Id);
+                            return null;
                         }
 
                     }

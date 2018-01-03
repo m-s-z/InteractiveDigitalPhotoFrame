@@ -23,6 +23,15 @@ namespace WebApplication.Controllers
         private ApplicationContext db = new ApplicationContext();
         AuthenticationService authService = new AuthenticationService();
         CloudService cloudService = new CloudService();
+        public CloudController()
+        {
+
+        }
+        public CloudController(CloudService cs)
+        {
+            cloudService = cs;
+
+        }
         // GET: Cloud
         public async Task<ActionResult> Index()
         {
