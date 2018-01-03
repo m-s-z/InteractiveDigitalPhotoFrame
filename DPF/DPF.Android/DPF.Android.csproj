@@ -156,6 +156,10 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\IDPFLibrary\IDPFLibrary.csproj">
+      <Project>{5CAEA247-6AFD-4708-9999-8465EF59527E}</Project>
+      <Name>IDPFLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DPF\DPF.csproj">
       <Project>{d1fe0b11-06a8-4766-81a5-e67763f941e7}</Project>
       <Name>DPF</Name>
@@ -199,6 +203,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\link_96px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\account_profile_96px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\dpf_background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
