@@ -4,14 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="background-transparent">
+    <div class="text-center">
+        <h2>Delete Cloud</h2>
+        <p>Are you sure you want to delete this cloud provider account?</p>
+        @using (Html.BeginForm("ConfirmDeleteCloud", "Cloud", FormMethod.Post))
+        {
+            <input type="hidden" name="cloudId" value="@(Model.CloudId)"></input>
+            <input class="btn btn-warning" type="submit" value="Remove Cloud Account" />
 
-    <h2>Delete Cloud</h2>
-    <p>Are you sure you want to delete this cloud provider account?</p>
-    @using (Html.BeginForm("ConfirmDeleteCloud", "Cloud", FormMethod.Post))
-    {
-        <input type="hidden" name="cloudId" value="@(Model.CloudId)"></input>
-        <input class="btn btn-warning" type="submit" value="Remove Cloud Account" />
-
-    }
+        }
+    </div>
 </div>
 
