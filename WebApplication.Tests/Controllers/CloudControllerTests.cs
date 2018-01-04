@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using WebApplication.ViewModels;
 using Moq;
+using WebApplication.Services;
 
 namespace WebApplication.Controllers.Tests
 {
@@ -15,13 +16,13 @@ namespace WebApplication.Controllers.Tests
     public class CloudControllerTests
     {
         [TestMethod()]
-        public void CloudControllerIndexTest()
+        public async void CloudControllerIndexTest()
         {
             // Arrange
             CloudController controller = new CloudController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = await controller.Index() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -44,8 +45,11 @@ namespace WebApplication.Controllers.Tests
         public void CloudControllerDeleteCloudTest()
         {
             // Arrange
-            CloudController controller = new CloudController();
             int id = 1;
+            var service = new Mock<CloudService>();
+            service.Setup(m => m.removeCloud(It.IsAny<int>())).Returns(Task.FromResult(true));
+            CloudController controller = new CloudController(service.Object);
+
 
             // Act
             ViewResult result = controller.DeleteCloud(id) as ViewResult;

@@ -15,40 +15,41 @@ namespace WebApplication.Controllers.Tests
     public class FolderControllerTests
     {
         [TestMethod()]
-        public void FolderControllerIndexTest()
+        public async void FolderControllerIndexTest()
         {
             // Arrange
             FolderController controller = new FolderController();
 
             // Act
-            ViewResult result = controller.Index(null) as ViewResult;
+            ViewResult result = await controller.Index(null) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
         }
 
         [TestMethod()]
-        public void FolderControllerIndexWithIdTest()
+        public async void FolderControllerIndexWithIdTest()
         {
             // Arrange
             FolderController controller = new FolderController();
             int id = 1;
 
             // Act
-            ViewResult result = controller.Index(id) as ViewResult;
+            ViewResult result = await controller.Index(id) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
         }
 
         [TestMethod()]
-        public void FolderControllerNewFolderTest()
+        public async void FolderControllerNewFolderTest()
         {
             // Arrange
             FolderController controller = new FolderController();
+            int deviceId = 1;
 
             // Act
-            ViewResult result = controller.NewFolder() as ViewResult;
+            ViewResult result = await controller.NewFolder(deviceId) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -72,7 +73,7 @@ namespace WebApplication.Controllers.Tests
         }
 
         [TestMethod()]
-        public void FolderControllerConfirmDeleteFolderTest()
+        public async void FolderControllerConfirmDeleteFolderTest()
         {
             // Arrange
             FolderController controller = new FolderController();
@@ -82,7 +83,7 @@ namespace WebApplication.Controllers.Tests
             int id = 1;
 
             // Act
-            ViewResult result = controller.ConfirmDeleteFolder(id) as ViewResult;
+            ViewResult result = await controller.ConfirmDeleteFolder(id) as ViewResult;
 
             // Assert
             Assert.IsTrue(true);

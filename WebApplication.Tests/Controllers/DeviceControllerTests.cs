@@ -15,13 +15,13 @@ namespace WebApplication.Controllers.Tests
     public class DeviceControllerTests
     {
         [TestMethod()]
-        public void DeviceControllerIndexTest()
+        public async void DeviceControllerIndexTest()
         {
             // Arrange
             DeviceController controller = new DeviceController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = await controller.Index() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
@@ -58,7 +58,7 @@ namespace WebApplication.Controllers.Tests
         }
 
         [TestMethod()]
-        public void DeviceControllerConfirmDeleteDeviceTest()
+        public async void DeviceControllerConfirmDeleteDeviceTest()
         {
             // Arrange
             DeviceController controller = new DeviceController();
@@ -68,7 +68,7 @@ namespace WebApplication.Controllers.Tests
             int id = 1;
 
             // Act
-            ViewResult result = controller.ConfirmDeleteDevice(id) as ViewResult;
+            ViewResult result = await controller.ConfirmDeleteDevice(id) as ViewResult;
 
             // Assert
             Assert.IsTrue(true);
