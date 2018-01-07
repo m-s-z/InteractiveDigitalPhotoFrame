@@ -44,7 +44,6 @@
     </Compile>
     <Compile Include="Models\AccountCloud.cs" />
     <Compile Include="Models\CloudFolder.cs" />
-    <Compile Include="Models\ConnectedAccount.cs" />
     <Compile Include="Models\ILocalStorageService.cs" />
     <Compile Include="Models\INetworkConnectionService.cs" />
     <Compile Include="Models\LocalStorageModel.cs" />

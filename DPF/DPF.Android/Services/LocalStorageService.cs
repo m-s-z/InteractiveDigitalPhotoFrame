@@ -39,12 +39,6 @@ namespace DPF.Droid.Services
             }
         }
 
-        public List<string> GetImagesList()
-        {
-            var st = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Personal)).ToList();
-            return st;
-        }
-
         public async void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
             try

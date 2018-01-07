@@ -24,11 +24,6 @@ namespace DPF.Models
             _service.CreateImagesFolder();
         }
 
-        public List<string> GetImagesList()
-        {
-            return _service.GetImagesList();
-        }
-
         public string GetConnectedAccounts()
         {
             return _service.GetConnectedAccounts();
