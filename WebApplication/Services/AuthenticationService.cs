@@ -16,7 +16,13 @@ namespace WebApplication.Services
         {
 
         }
-
+        /// <summary>
+        /// function used to authenticate into the service
+        /// </summary>
+        /// <param name="username">accounts username</param>
+        /// <param name="password">password assigned to account</param>
+        /// <returns>true on successfull authentication
+        /// false on unsucessfull authentication</returns>
         public async Task<bool> Login(string username, string password)
         {
             var foundUser = await db.Accounts.FirstOrDefaultAsync( u => u.Login.Equals(username.ToLower()));

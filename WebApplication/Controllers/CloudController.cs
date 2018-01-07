@@ -27,12 +27,17 @@ namespace WebApplication.Controllers
         {
 
         }
-        public CloudController(CloudService cs)
+        public CloudController(ICloudService cs)
         {
             cloudService = cs;
 
         }
-        // GET: Cloud
+        /// <summary>
+        /// method for preparing cloud view
+        /// </summary>
+        /// <returns>
+        /// cloud index view
+        /// </returns>
         public async Task<ActionResult> Index()
         {
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
@@ -41,6 +46,13 @@ namespace WebApplication.Controllers
 
             return View(model);
         }
+        /// <summary>
+        /// controller method used for deleting a cloud
+        /// </summary>
+        /// <param name="cloudId">cloud id indentifying the cloud to be removed</param>
+        /// <returns>
+        /// returns cloud view
+        /// </returns>
         public async Task<ActionResult> ConfirmDeleteCloud(int cloudId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -50,7 +62,13 @@ namespace WebApplication.Controllers
             await cloudService.removeCloud(cloudId);
             return Redirect("Index");
         }
-
+        /// <summary>
+        /// controller method responsible for displaying the delete cloud view. This method does not remove the cloud from the database
+        /// </summary>
+        /// <param name="cloudId">cloud Id of the cloud to be removed</param>
+        /// <returns>
+        /// returns confirm delete cloud view
+        /// </returns>
         public ActionResult DeleteCloud(int cloudId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -61,7 +79,12 @@ namespace WebApplication.Controllers
 
             return View(view);
         }
-
+        /// <summary>
+        /// controller method responsible for displaying new cloud view. This controller does not create a new cloud
+        /// </summary>
+        /// <returns>
+        /// returns new cloud view
+        /// </returns>
         public ActionResult NewCloud()
         {
             if (!authService.IsAuthenticated(Session))
@@ -79,6 +102,7 @@ namespace WebApplication.Controllers
             return View();
         }
 
+        /*
         public ActionResult ManageCloud(string cloud, int cloudId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -113,9 +137,14 @@ namespace WebApplication.Controllers
             }
             ChangeCloudPasswordViewModel view = new ChangeCloudPasswordViewModel(result);
             return View(view);
-        }
-
-        public  ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
+        }*/
+        /// <summary>
+        /// this controller method is the first step to connecting with a provider.
+        /// </summary>
+        /// <param name="Providers">type of provider a new connection is to be made</param>
+        /// <param name="accountName">custom name for cloud account</param>
+        /// <returns>redirects to appropriate authentication page</returns>
+        public ActionResult ConnectWithProvider(ProviderType Providers, string accountName)
         {
             if (!authService.IsAuthenticated(Session))
             {
@@ -142,6 +171,13 @@ namespace WebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a new Flickr cloud
+        /// </summary>
+        /// <param name="accountName">custom name for cloud</param>
+        /// <returns>
+        /// view with result of adding
+        /// </returns>
         public async Task<ActionResult> ConfirmFlickrConnection(string accountName)
         {
             if (!authService.IsAuthenticated(Session))
@@ -155,8 +191,19 @@ namespace WebApplication.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Adds a new Dropbox cloud
+        /// </summary>
+        /// <param name="accountName">custom name for cloud</param>
+        /// <returns>
+        /// view with result of adding
+        /// </returns>
         public async Task<ActionResult> ConfirmDropBoxConnection(string code, string state)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             string accountName = "Not Specified Name";
             if(Session["DropBoxState"] as String != state)
             {

@@ -8,13 +8,13 @@
     <ul class="list-group">
         @foreach (var cloud in Model.Clouds)
         {
-            <li class="list-group-item">
-                <span class="provider">@cloud.Provider.ToString()</span>
-                <span class="provider">@cloud.Login</span>
-                @Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.Id }, new { @class = "btn btn-default remove-button " })
-                @Html.ActionLink("Manage", "ManageCloud", "Cloud", new { cloud = cloud.Login, cloudId = cloud.Id }, new { @class = "btn btn-default remove-button" })
+        <li class="list-group-item">
+            <span class="provider">@cloud.Provider.ToString()</span>
+            <span class="provider">@cloud.Login</span>
+            @Html.ActionLink("Disconnect", "DeleteCloud", "Cloud", new { cloudId = cloud.Id }, new { @class = "btn btn-default remove-button " })
+            <!--@Html.ActionLink("Manage", "ManageCloud", "Cloud", new { cloud = cloud.Login, cloudId = cloud.Id }, new { @class = "btn btn-default remove-button" })-->
 
-            </li>
+        </li>
         }
     </ul>
     <p class="">@Html.ActionLink("Connect to a New Cloud", "NewCloud", "Cloud", new { area = "" }, new {@class = "btn btn-default center-block remove-link" })</p>
