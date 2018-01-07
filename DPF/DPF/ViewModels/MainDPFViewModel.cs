@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using DPF.Models;
 using DPF.Utils.Controls;
 using DPF.Views;
+using Dropbox.Api;
+using Dropbox.Api.FileProperties;
 using IDPFLibrary.DTO;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -827,6 +829,12 @@ namespace DPF.ViewModels
             {
                 OnErrorOccurred(this, exception.Message);
             }
+        }
+
+
+        private async void GetDropboxPhotos()
+        {
+
         }
 
         private void AssamblerAccountsList()
