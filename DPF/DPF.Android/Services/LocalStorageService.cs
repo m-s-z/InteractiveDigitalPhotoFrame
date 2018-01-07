@@ -17,8 +17,6 @@ namespace DPF.Droid.Services
 {
     public class LocalStorageService : ILocalStorageService
     {
-        private int counter = 0;
-
         private const string PATH_TO_PICTURES_TEMPLATE = "{0}/pictures{1}/{2}";
         private const string PATH_TO_DATA_TEMPLATE = "{0}/data/{1}";
 
@@ -70,9 +68,6 @@ namespace DPF.Droid.Services
                         await SaveImage(newPhotosetUrl);
                     }
                 }
-
-                Debug.WriteLine(counter);
-                SaveImage();
                 SynchronizationCompleted?.Invoke(this, newPhotoset);
             }
             catch (Exception exception)
@@ -121,8 +116,6 @@ namespace DPF.Droid.Services
 
         public async Task SaveImage(Urls imageToSave)
         {
-            counter++;
-
             try
             {
                 Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
@@ -146,27 +139,6 @@ namespace DPF.Droid.Services
             {
                 ErrorHandler(exception.Message);
             }
-        }
-
-        public void SaveImage()
-        {
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-
-            var directories = Directory.GetDirectories(string.Format(PATH_TO_PICTURES_TEMPLATE,
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
-            foreach (string dir in directories)
-            {
-                Debug.WriteLine(dir);
-
-                var files = Directory.GetFiles(dir);
-                foreach (string f in files)
-                {
-                    System.Diagnostics.Debug.WriteLine(f);
-                    System.Diagnostics.Debug.WriteLine("Directory: " + Directory.GetParent(f).Name + "  File: " +
-                                                       Path.GetFileName(f));
-                }
-            }
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
         }
 
         public string GetConnectedAccounts()

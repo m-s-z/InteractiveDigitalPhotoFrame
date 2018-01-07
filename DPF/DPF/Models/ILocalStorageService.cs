@@ -31,7 +31,5 @@ namespace DPF.Models
 
         void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
             GetAllFlickrPhotosURLResponseDTO oldPhotoset);
-
-        void SaveImage();
     }
 }

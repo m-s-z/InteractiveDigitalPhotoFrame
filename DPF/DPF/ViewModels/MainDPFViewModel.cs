@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -10,8 +9,6 @@ using System.Threading.Tasks;
 using DPF.Models;
 using DPF.Utils.Controls;
 using DPF.Views;
-using Dropbox.Api;
-using Dropbox.Api.FileProperties;
 using IDPFLibrary.DTO;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -20,6 +17,7 @@ namespace DPF.ViewModels
 {
     /// <summary>
     /// MainDPFViewModel class.
+    /// Provides methods which controls the presentation layer.
     /// </summary>
     public class MainDPFViewModel : ViewModelBase
     {
@@ -28,7 +26,7 @@ namespace DPF.ViewModels
         /// <summary>
         /// Indicates the length of the interval between refreshing (in minutes).
         /// </summary>
-        private const int REFRESH_TIMER = 5;
+        private const int REFRESH_TIMER = 20;
 
         /// <summary>
         /// Indicates the length of the interval between photo changing during slideshow (in tenths of a second).
@@ -54,6 +52,11 @@ namespace DPF.ViewModels
         /// Backing field of IsNetworkConnected property.
         /// </summary>
         private bool _isNetworkConnected;
+
+        /// <summary>
+        /// Flag indicating whether the refreshment process is on.
+        /// </summary>
+        private bool _isRefreshing;
 
         /// <summary>
         /// Backing field of IsSlideshow property.
@@ -280,6 +283,7 @@ namespace DPF.ViewModels
 
         /// <summary>
         /// Contains list of connected accounts.
+        /// Calls AssamblerAccountsList method whenever the value is set.
         /// </summary>
         public GetDeviceAccountsDTO GetDeviceAccounts
         {
@@ -304,9 +308,11 @@ namespace DPF.ViewModels
 
         #region methods
 
-        
-
-
+        /// <summary>
+        /// MainDPFViewModel class constructor.
+        /// Calls methods to initialize commands, _networkConnectionModel and _localStorageModel.
+        /// Starts timer to refresh photos automatically.
+        /// </summary>
         public MainDPFViewModel()
         {
             InitCommands();
@@ -321,6 +327,9 @@ namespace DPF.ViewModels
             });
         }
 
+        /// <summary>
+        /// Initilizes commands
+        /// </summary>
         private void InitCommands()
         {
             GoToAccountsListPageCommand = new Command(ExecuteGoToAccountsListPageCommand);
@@ -333,12 +342,19 @@ namespace DPF.ViewModels
             DisconnectAccountCommand = new Command(ExecuteDisconnectAccountCommand);
         }
 
+        /// <summary>
+        /// Initilizes instance of NetworkConnectionModel class.
+        /// </summary>
         private void InitNetworkConnectionModel()
         {
             _networkConnectionModel = new NetworkConnectionModel();
             _networkConnectionModel.ErrorOccured += OnErrorOccurred;
         }
 
+        /// <summary>
+        /// Initilizes instance of LocalStorageModel class.
+        /// Calls model to read saved files saved data and photos.
+        /// </summary>
         private void InitLocalStorageModel()
         {
             _localStorageModel = new LocalStorageModel();
@@ -401,19 +417,39 @@ namespace DPF.ViewModels
             
         }
 
+        /// <summary>
+        /// Calls methods to update list of connected accounts
+        /// and updates collection of synchronized photos.
+        /// </summary>
+        /// <returns>Returns void Task.</returns>
         private async Task GetUpdates()
         {
             await GetConnectedAccountsRequest();
             await GetAllPhotosUrl();
         }
 
+        /// <summary>
+        /// Handles execution of "RefreshCommand".
+        /// Updates _isRefresing flag.
+        /// Updates RefreshingColor property.
+        /// Calls method to update data.
+        /// </summary>
         private async void ExecuteRefreshCommand()
         {
-            RefreshingColor = new Color(255, 0, 0);
-            await GetUpdates();
-            RefreshingColor = new Color(0, 255, 0);
+            if (!_isRefreshing)
+            {
+                _isRefreshing = true;
+                RefreshingColor = new Color(255, 0, 0);
+                await GetUpdates();
+            }
         }
 
+        /// <summary>
+        /// Handles ErrorOccurred event.
+        /// Notifies the user about the error.
+        /// </summary>
+        /// <param name="sender">Instance of object which invoked the event.</param>
+        /// <param name="errorMessage">Message of the error.</param>
         private void OnErrorOccurred(object sender, string errorMessage)
         {
             try
@@ -422,31 +458,32 @@ namespace DPF.ViewModels
             }
             catch (Exception exception)
             {
-                Debug.WriteLine(exception);
+                return;
             }
 
         }
 
+        /// <summary>
+        /// Handles SynchronizationCompleted event.
+        /// Updates _isRefresing flag.
+        /// Updates RefreshingColor property.
+        /// </summary>
+        /// <param name="sender">Instance of object which invoked the event.</param>
+        /// <param name="newPhotoset">Collection of new photos.</param>
         private void OnSynchronizationCompleted(object sender, GetAllFlickrPhotosURLResponseDTO newPhotoset)
         {
-            //if (CurrentPhotoset.Urls.Count != 0)
-            //{
-            //    if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
-            //    {
-            //        _photoCounter = 0;
-            //        PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
-            //    }
-            //    else
-            //    {
-            //        PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
-            //    }
-            //}
-            //else
-            //{
-            //    PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
-            //}
+            _isRefreshing = false;
+            RefreshingColor = new Color(0, 255, 0);
         }
 
+        /// <summary>
+        /// Sends request to the server.
+        /// Receivies a response containing list with URLs to synchronized photos.
+        /// Updates CurrentPhotoset property.
+        /// Calls model to save list of synchronized photos in the storage.
+        /// Updates PhotoPath property.
+        /// </summary>
+        /// <returns>Returns void Task.</returns>
         private async Task GetAllPhotosUrl()
         {
             try
@@ -483,7 +520,6 @@ namespace DPF.ViewModels
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
-
                         var oldPhotoset = CurrentPhotoset;
                         CurrentPhotoset = getAllFlickrPhotosUrl;
                         var jsonPhotoset = JsonConvert.SerializeObject(CurrentPhotoset);
@@ -519,6 +555,12 @@ namespace DPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to the server.
+        /// Receivies a response containing list of connected accounts.
+        /// Calls model to save list of connected accounts in the storage.
+        /// </summary>
+        /// <returns>Returns void Task.</returns>
         private async Task GetConnectedAccountsRequest()
         {
             try
@@ -559,21 +601,39 @@ namespace DPF.ViewModels
             
         }
 
+        /// <summary>
+        /// Checks whether the device is connected to the Internet.
+        /// Creates new instance of ConnectedAccountsPage class.
+        /// Navigates to the new page with connected accounts.
+        /// Updates IsActive property.
+        /// </summary>
         private void ExecuteGoToAccountsListPageCommand()
         {
             CheckIfNetworkConnection();
-            var page = new ConnectedAccountsPage();
-            page.BindingContext = this;
+            var page = new ConnectedAccountsPage
+            {
+                BindingContext = this
+            };
             Application.Current.MainPage.Navigation.PushAsync(page);
             IsActive = false;
         }
 
+        /// <summary>
+        /// Handles execution of "NextPhotoCommand".
+        /// Udpates value of _keepActiveCounter field.
+        /// Calls ChangeNextPhoto method.
+        /// </summary>
         private async void ExecuteNextPhotoCommand()
         {
             _keepActiveCounter = 0;
             ChangeNextPhoto();
         }
 
+        /// <summary>
+        /// Updates value of _slideshowCounter and _photoCounter fields.
+        /// Calls model to get next photo to display.
+        /// Updates PhotoPath property.
+        /// </summary>
         private async void ChangeNextPhoto()
         {
 
@@ -592,6 +652,7 @@ namespace DPF.ViewModels
             }
 
             string path = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+
             if (path.Equals(""))
             {
                 if (CheckIfNetworkConnection())
@@ -621,13 +682,22 @@ namespace DPF.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Handles execution of "PreviousPhotoCommand".
+        /// Udpates value of _keepActiveCounter field.
+        /// Calls ChangePreviousPhoto method.
+        /// </summary>
         private void ExecutePreviousPhotoCommand()
         {
             _keepActiveCounter = 0;
             ChangePreviousPhoto();
         }
 
+        /// <summary>
+        /// Updates value of _slideshowCounter and _photoCounter fields.
+        /// Calls model to get previous photo to display.
+        /// Updates PhotoPath property.
+        /// </summary>
         private void ChangePreviousPhoto()
         {
             if (CurrentPhotoset.Urls.Count == 0)
@@ -674,6 +744,12 @@ namespace DPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of "TapToActiveCommand".
+        /// Updates IsActive property.
+        /// Updates value of _keepActiveCounter field.
+        /// If the DPF is in Active state, starts a timer which controls device state.
+        /// </summary>
         private void ExecuteTapToActiveCommand()
         {
             IsActive = !IsActive;
@@ -700,6 +776,13 @@ namespace DPF.ViewModels
 
         }
 
+        /// <summary>
+        /// Handles execution of "ShowCodeCommand".
+        /// Updates IsCodeVisible property.
+        /// Updates value of _keepActiveCounter field.
+        /// If IsCodeVisible flag is true, sends request to the server.
+        /// Receives response containing pairing code.
+        /// </summary>
         private async void ExecuteShowCodeCommand()
         {
             _keepActiveCounter = 0;
@@ -718,9 +801,7 @@ namespace DPF.ViewModels
                                 DeviceId = _deviceId,
                                 DeviceToken = _deviceToken
                             };
-
                             var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
-
                             string url = "https://idpf.azurewebsites.net/Device/GeneratePairCode";
                             var request = new HttpRequestMessage()
                             {
@@ -730,7 +811,6 @@ namespace DPF.ViewModels
                                     Encoding.UTF8,
                                     "application/json")
                             };
-
                             var response = await client.SendAsync(request);
                             var contents = await response.Content.ReadAsStringAsync();
                             Code = contents;
@@ -752,11 +832,17 @@ namespace DPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of "ControlSlideshowCommand".
+        /// Updates IsSlideshow property.
+        /// Updates value of _keepActiveCounter field.
+        /// If IsSlideshow flag is true, starts a timer which controls photos to display.
+        /// </summary>
         private void ExecuteControlSlideshowCommand()
         {
             _keepActiveCounter = 0;
-
             IsSlideshow = !IsSlideshow;
+
             Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
             {
                 if (IsSlideshow)
@@ -777,11 +863,18 @@ namespace DPF.ViewModels
             });
         }
 
+        /// <summary>
+        /// Handles execution of "DisconnectAccountCommand".
+        /// Display pop-up with confirmation of account (specified by command parameter) disconnection.
+        /// If confirmed, calls DisconnectAccount method.
+        /// </summary>
+        /// <param name="param">Object indicating account to disconnect.</param>
         private async void ExecuteDisconnectAccountCommand(object param)
         {
             if (param is VCListItem item)
             {
                 var result = await Application.Current.MainPage.DisplayAlert("Disconnect?", "Do you want to disconnect acconut: \"" + item.AccountName + "\" from this DPF?", "Disconnect", "Cancel");
+
                 if (result)
                 {
                     item.AccountName = "Disconnecting...";
@@ -790,6 +883,11 @@ namespace DPF.ViewModels
             }    
         }
 
+        /// <summary>
+        /// If connected to the Internet, sends request to the server to disconnect selected account.
+        /// Calls GetUpdate method. 
+        /// </summary>
+        /// <param name="accountId">ID of the account to disconnect.</param>
         private async void DisconnectAccount(int accountId)
         {
             try
@@ -805,9 +903,7 @@ namespace DPF.ViewModels
                             AccountId = accountId
 
                         };
-
-                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
-
+                        var json = JsonConvert.SerializeObject(requestDto);
                         string url = "https://idpf.azurewebsites.net/Device/UnpairDevice";
                         var request = new HttpRequestMessage()
                         {
@@ -817,7 +913,6 @@ namespace DPF.ViewModels
                                 Encoding.UTF8,
                                 "application/json")
                         };
-
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                     }
@@ -831,21 +926,24 @@ namespace DPF.ViewModels
             }
         }
 
-
-        private async void GetDropboxPhotos()
-        {
-
-        }
-
+        /// <summary>
+        /// Updates ConnectedAccountsCollection property.
+        /// </summary>
         private void AssamblerAccountsList()
         {
             ConnectedAccountsCollection = new ObservableCollection<VCListItem>();
+
             foreach (var account in GetDeviceAccounts.Accounts)
             {
                 ConnectedAccountsCollection.Add(new VCListItem(account.Name, account.AccountId, DisconnectAccountCommand));
             }
         }
 
+        /// <summary>
+        /// Calls model to check whether the device is connected to the Internet.
+        /// Upadtes IsNetworkConnected property.
+        /// </summary>
+        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
         private bool CheckIfNetworkConnection()
         {
             IsNetworkConnected = _networkConnectionModel.CheckIfNetworkConnected();

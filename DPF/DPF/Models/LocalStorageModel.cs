@@ -64,11 +64,6 @@ namespace DPF.Models
             _service.SavePhotoset(json);
         }
 
-        public void SaveImage()
-        {
-            _service.SaveImage();
-        }
-
         public void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset,
             GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
