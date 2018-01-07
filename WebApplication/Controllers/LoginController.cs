@@ -12,9 +12,12 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller for logging in/out nad registering
+    /// </summary>
     public class LoginController : Controller
     {
-        private ApplicationContext db = new ApplicationContext();
+
         IAuthenticationService authService = new AuthenticationService();
         // GET: Login
         public ActionResult Index()

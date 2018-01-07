@@ -19,7 +19,6 @@ namespace WebApplication.Controllers
     public class FolderController : Controller
     {
         #region fields
-        private ApplicationContext db = new ApplicationContext();
         IAuthenticationService authService = new AuthenticationService();
         IDeviceService deviceService = new DeviceService();
         IFolderService folderService = new FolderService();

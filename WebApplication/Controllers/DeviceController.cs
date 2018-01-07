@@ -14,9 +14,11 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller class responsible for manipulating and exposing devices
+    /// </summary>
     public class DeviceController : Controller
     {
-        private ApplicationContext db = new ApplicationContext();
         IAuthenticationService authService = new AuthenticationService();
         IDeviceService deviceService = new DeviceService();
         // GET: Device
@@ -32,6 +34,7 @@ namespace WebApplication.Controllers
             return View();
         }
 
+        /*
         //left as reference dont use this controller method
         [HttpGet]
         public async Task<ActionResult> GetUserAllDevices(int? user)
@@ -58,7 +61,7 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult> GeneratePairCode(int deviceId, string deviceToken)

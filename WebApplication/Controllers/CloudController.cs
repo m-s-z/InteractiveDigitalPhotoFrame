@@ -25,10 +25,6 @@ namespace WebApplication.Controllers
     {
         #region fields
         /// <summary>
-        /// context class, access point fro the database
-        /// </summary>
-        private ApplicationContext db = new ApplicationContext();
-        /// <summary>
         /// authentication service for authentication handling
         /// </summary>
         IAuthenticationService authService = new AuthenticationService();
