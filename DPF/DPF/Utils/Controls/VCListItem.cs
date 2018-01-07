@@ -11,6 +11,9 @@ namespace DPF.Utils.Controls
 {
     public class VCListItem : ViewModelBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private Command _additionalCommand;
         private string _accountName;
         private int _accountId;
