@@ -99,7 +99,7 @@ namespace WebApplication.Controllers.Tests
             var controllerContext = new Mock<ControllerContext>();
             controllerContext.SetupGet(p => p.HttpContext.Session["UserId"]).Returns("test");
             controller.ControllerContext = controllerContext.Object;
-            Assert.IsTrue(true);
+            
             // Act
             ViewResult result = controller.ConnectWithProvider(ProviderType.Flicker, "account name") as ViewResult;
 
