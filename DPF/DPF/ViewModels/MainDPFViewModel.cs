@@ -230,38 +230,46 @@ namespace DPF.ViewModels
             _localStorageModel.SynchronizationCompleted += OnSynchronizationCompleted;
             _localStorageModel.CreateImagesFolder();
 
-            string photosetJson = _localStorageModel.GetPhotoset();
-            if (photosetJson != null)
+            try
             {
-                CurrentPhotoset = JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(photosetJson);
-                if (CurrentPhotoset.Urls.Count != 0)
+                string photosetJson = _localStorageModel.GetPhotoset();
+                if (photosetJson != null)
                 {
-                    PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[0]);
+                    CurrentPhotoset = JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(photosetJson);
+                    if (CurrentPhotoset.Urls.Count != 0)
+                    {
+                        PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[0]);
+                    }
+                    else
+                    {
+                        PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                    }
                 }
                 else
                 {
+                    CurrentPhotoset = new GetAllFlickrPhotosURLResponseDTO(new List<Urls>());
                     PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
                 }
-            }
-            else
-            {
-                CurrentPhotoset = new GetAllFlickrPhotosURLResponseDTO(new List<Urls>());
-                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
-            }
 
-            string json = _localStorageModel.GetDeviceToken();
-            if (json != null)
-            {
-                CreateNewDeviceDTO newDeviceDto = (JsonConvert.DeserializeObject<CreateNewDeviceDTO>(json));
-                _deviceId = newDeviceDto.DeviceId;
-                _deviceToken = newDeviceDto.DeviceToken;
-            }
+                string json = _localStorageModel.GetDeviceToken();
+                if (json != null)
+                {
+                    CreateNewDeviceDTO newDeviceDto = (JsonConvert.DeserializeObject<CreateNewDeviceDTO>(json));
+                    _deviceId = newDeviceDto.DeviceId;
+                    _deviceToken = newDeviceDto.DeviceToken;
+                }
 
-            json = _localStorageModel.GetConnectedAccounts();
-            if (json != null)
-            {
-                GetDeviceAccounts = (JsonConvert.DeserializeObject<GetDeviceAccountsDTO>(json));
+                json = _localStorageModel.GetConnectedAccounts();
+                if (json != null)
+                {
+                    GetDeviceAccounts = (JsonConvert.DeserializeObject<GetDeviceAccountsDTO>(json));
+                }
             }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+            
         }
 
         private async Task GetUpdates()
@@ -277,116 +285,150 @@ namespace DPF.ViewModels
             RefreshingColor = new Color(0, 255, 0);
         }
 
-        private void OnErrorOccurred(object sedner, string errorMessage)
+        private void OnErrorOccurred(object sender, string errorMessage)
         {
-            Application.Current.MainPage.DisplayAlert("Error occurred", errorMessage, "OK");
+            try
+            {
+                Application.Current.MainPage.DisplayAlert("Error occurred", errorMessage, "OK");
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+
         }
 
         private void OnSynchronizationCompleted(object sender, GetAllFlickrPhotosURLResponseDTO newPhotoset)
         {
-            CurrentPhotoset = newPhotoset;
-            var json = JsonConvert.SerializeObject(CurrentPhotoset);
-            _localStorageModel.SavePhotoset(json);
-            _localStorageModel.SaveImage();
-            if (CurrentPhotoset.Urls.Count != 0)
-            {
-                if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
-                {
-                    _photoCounter = 0;
-                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
-                }
-                else
-                {
-                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
-                }
-            }
-            else
-            {
-                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
-            }
+            //if (CurrentPhotoset.Urls.Count != 0)
+            //{
+            //    if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
+            //    {
+            //        _photoCounter = 0;
+            //        PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+            //    }
+            //    else
+            //    {
+            //        PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+            //    }
+            //}
+            //else
+            //{
+            //    PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+            //}
         }
 
         private async Task GetAllPhotosUrl()
         {
-            if (GetDeviceAccounts.Accounts.Count == 0)
+            try
             {
-                PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
-                return;
-            }
-
-            if (CheckIfNetworkConnection())
-            {
-                using (var client = new HttpClient())
+                if (GetDeviceAccounts.Accounts.Count == 0)
                 {
-                    GetAllFlickrPhotosURLRequestDTO requestDto = new GetAllFlickrPhotosURLRequestDTO
-                    {
-                        DeviceId = _deviceId,
-                        DeviceToken = _deviceToken,
-                        AccountIds = GetDeviceAccounts.Accounts.Select(p => p.AccountId).ToList<int>()
-                    };
-
-                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
-
-                    string url = "https://idpf.azurewebsites.net/Device/GetAllFlickrPhotosUrl";
-                    var request = new HttpRequestMessage()
-                    {
-                        RequestUri = new Uri(url),
-                        Method = HttpMethod.Post,
-                        Content = new StringContent(json,
-                            Encoding.UTF8,
-                            "application/json")
-                    };
-
-                    var response = await client.SendAsync(request);
-                    var contents = await response.Content.ReadAsStringAsync();
-                    GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
-                    if (getAllFlickrPhotosUrl != null)
-                    {
-                        _localStorageModel.SynchronizeImages(getAllFlickrPhotosUrl, CurrentPhotoset);
-
-
-                        //ListOfImageNames.Clear();
-                        //foreach (var photoUrl in getAllFlickrPhotosUrl.Urls)
-                        //{
-                        //    ListOfImageNames.Add(photoUrl.Link);
-                        //}
-                        //PhotoPath = ListOfImageNames[0];
-                    }
-
-                    
+                    PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                    return;
                 }
+
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        GetAllFlickrPhotosURLRequestDTO requestDto = new GetAllFlickrPhotosURLRequestDTO
+                        {
+                            DeviceId = _deviceId,
+                            DeviceToken = _deviceToken,
+                            AccountIds = GetDeviceAccounts.Accounts.Select(p => p.AccountId).ToList<int>()
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Device/GetAllFlickrPhotosUrl";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        GetAllFlickrPhotosURLResponseDTO getAllFlickrPhotosUrl = (JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(contents));
+
+
+                        var oldPhotoset = CurrentPhotoset;
+                        CurrentPhotoset = getAllFlickrPhotosUrl;
+                        var jsonPhotoset = JsonConvert.SerializeObject(CurrentPhotoset);
+                        _localStorageModel.SavePhotoset(jsonPhotoset);
+
+                        if (CurrentPhotoset.Urls.Count != 0)
+                        {
+                            if (_photoCounter > CurrentPhotoset.Urls.Count - 1)
+                            {
+                                _photoCounter = 0;
+                                PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+                            }
+                            else
+                            {
+                                PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+                            }
+                        }
+                        else
+                        {
+                            PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                        }
+
+                        if (getAllFlickrPhotosUrl != null)
+                        {
+                            _localStorageModel.SynchronizeImages(getAllFlickrPhotosUrl, oldPhotoset);
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
             }
         }
 
         private async Task GetConnectedAccountsRequest()
         {
-            if (CheckIfNetworkConnection())
+            try
             {
-                using (var client = new HttpClient())
+                if (CheckIfNetworkConnection())
                 {
-                    CreateNewDeviceDTO requestDto = new CreateNewDeviceDTO
+                    using (var client = new HttpClient())
                     {
-                        DeviceId = _deviceId,
-                        DeviceToken = _deviceToken
-                    };
-                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+                        CreateNewDeviceDTO requestDto = new CreateNewDeviceDTO
+                        {
+                            DeviceId = _deviceId,
+                            DeviceToken = _deviceToken
+                        };
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                    string url = "https://idpf.azurewebsites.net/Device/GetDeviceAccounts";
-                    var request = new HttpRequestMessage()
-                    {
-                        RequestUri = new Uri(url),
-                        Method = HttpMethod.Post,
-                        Content = new StringContent(json,
-                            Encoding.UTF8,
-                            "application/json")
-                    };
+                        string url = "https://idpf.azurewebsites.net/Device/GetDeviceAccounts";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
 
-                    var response = await client.SendAsync(request);
-                    var contents = await response.Content.ReadAsStringAsync();
-                    GetDeviceAccounts = (JsonConvert.DeserializeObject<GetDeviceAccountsDTO>(contents));
-                    _localStorageModel.SaveConnectedAccounts(contents);
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        GetDeviceAccounts = (JsonConvert.DeserializeObject<GetDeviceAccountsDTO>(contents));
+                        _localStorageModel.SaveConnectedAccounts(contents);
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+
+            
         }
 
         private void ExecuteGoToAccountsListPageCommand()
@@ -475,43 +517,50 @@ namespace DPF.ViewModels
             _keepActiveCounter = 0;
             IsCodeVisible = !IsCodeVisible;
 
-            if (IsCodeVisible)
+            try
             {
-                if (CheckIfNetworkConnection())
+                if (IsCodeVisible)
                 {
-                    using (var client = new HttpClient())
+                    if (CheckIfNetworkConnection())
                     {
-                        CreateNewDeviceDTO requestDto = new CreateNewDeviceDTO
+                        using (var client = new HttpClient())
                         {
-                            DeviceId = _deviceId,
-                            DeviceToken = _deviceToken
-                        };
+                            CreateNewDeviceDTO requestDto = new CreateNewDeviceDTO
+                            {
+                                DeviceId = _deviceId,
+                                DeviceToken = _deviceToken
+                            };
 
-                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+                            var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                        string url = "https://idpf.azurewebsites.net/Device/GeneratePairCode";
-                        var request = new HttpRequestMessage()
-                        {
-                            RequestUri = new Uri(url),
-                            Method = HttpMethod.Post,
-                            Content = new StringContent(json,
-                                Encoding.UTF8,
-                                "application/json")
-                        };
+                            string url = "https://idpf.azurewebsites.net/Device/GeneratePairCode";
+                            var request = new HttpRequestMessage()
+                            {
+                                RequestUri = new Uri(url),
+                                Method = HttpMethod.Post,
+                                Content = new StringContent(json,
+                                    Encoding.UTF8,
+                                    "application/json")
+                            };
 
-                        var response = await client.SendAsync(request);
-                        var contents = await response.Content.ReadAsStringAsync();
-                        Code = contents;
+                            var response = await client.SendAsync(request);
+                            var contents = await response.Content.ReadAsStringAsync();
+                            Code = contents;
+                        }
+                    }
+                    else
+                    {
+                        Code = "Offline mode";
                     }
                 }
                 else
                 {
-                    Code = "Offline mode";
+                    Code = "Generating...";
                 }
             }
-            else
+            catch (Exception exception)
             {
-                Code = "Generating...";
+                OnErrorOccurred(this, exception.Message);
             }
         }
 
@@ -555,36 +604,43 @@ namespace DPF.ViewModels
 
         private async void DisconnectAccount(int accountId)
         {
-            if (CheckIfNetworkConnection())
+            try
             {
-                using (var client = new HttpClient())
+                if (CheckIfNetworkConnection())
                 {
-                    UnpairDeviceRequestDTO requestDto = new UnpairDeviceRequestDTO
+                    using (var client = new HttpClient())
                     {
-                        DeviceId = _deviceId,
-                        DeviceToken = _deviceToken,
-                        AccountId = accountId
+                        UnpairDeviceRequestDTO requestDto = new UnpairDeviceRequestDTO
+                        {
+                            DeviceId = _deviceId,
+                            DeviceToken = _deviceToken,
+                            AccountId = accountId
 
-                    };
+                        };
 
-                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                    string url = "https://idpf.azurewebsites.net/Device/UnpairDevice";
-                    var request = new HttpRequestMessage()
-                    {
-                        RequestUri = new Uri(url),
-                        Method = HttpMethod.Post,
-                        Content = new StringContent(json,
-                            Encoding.UTF8,
-                            "application/json")
-                    };
+                        string url = "https://idpf.azurewebsites.net/Device/UnpairDevice";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
 
-                    var response = await client.SendAsync(request);
-                    var contents = await response.Content.ReadAsStringAsync();
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                    }
+
+                    await GetUpdates();
+                    await GetAllPhotosUrl();
                 }
-
-                await GetUpdates();
-                await GetAllPhotosUrl();
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
             }
         }
 

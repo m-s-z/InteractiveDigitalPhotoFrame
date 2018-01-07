@@ -46,29 +46,34 @@ namespace DPF.Droid.Services
 
         public async void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
-            foreach (var newPhotosetUrl in newPhotoset.Urls)
+            try
             {
-                var temp = oldPhotoset.Urls.Find(p =>
-                    p.PhotoId == newPhotosetUrl.PhotoId && p.MyProperty == newPhotosetUrl.MyProperty);
-                if (temp == null)
+                foreach (var oldPhotosetUrl in oldPhotoset.Urls)
                 {
-                    await SaveImage(newPhotosetUrl);
+                    var temp = newPhotoset.Urls.Find(p =>
+                        p.PhotoId == oldPhotosetUrl.PhotoId && p.MyProperty == oldPhotosetUrl.MyProperty);
+                    if (temp == null)
+                    {
+                        DeleteImage(oldPhotosetUrl);
+                    }
                 }
+
+                foreach (var newPhotosetUrl in newPhotoset.Urls)
+                {
+                    var temp = oldPhotoset.Urls.Find(p =>
+                        p.PhotoId == newPhotosetUrl.PhotoId && p.MyProperty == newPhotosetUrl.MyProperty);
+                    if (temp == null)
+                    {
+                        await SaveImage(newPhotosetUrl);
+                    }
+                }
+
+                SynchronizationCompleted?.Invoke(this, newPhotoset);
             }
-
-            //SynchronizationCompleted?.Invoke(this, newPhotoset);
-
-            foreach (var oldPhotosetUrl in oldPhotoset.Urls)
+            catch (Exception exception)
             {
-                var temp = newPhotoset.Urls.Find(p =>
-                    p.PhotoId == oldPhotosetUrl.PhotoId && p.MyProperty == oldPhotosetUrl.MyProperty);
-                if (temp == null)
-                {
-                    DeleteImage(oldPhotosetUrl);
-                }
+                ErrorHandler(exception.Message);
             }
-
-            SynchronizationCompleted?.Invoke(this, newPhotoset);
         }
 
         private void DeleteImage(Urls imageToDelete)
@@ -103,6 +108,10 @@ namespace DPF.Droid.Services
                 if (File.Exists(path))
                 {
                     return path;
+                }
+                else
+                {
+                    return imageToShow.Link;
                 }
             }
             catch (Exception exception)
@@ -204,11 +213,18 @@ namespace DPF.Droid.Services
         {
             try
             {
-                return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ConnectedAccounts.txt"));
+                if (File.Exists(string.Format(PATH_TO_DATA_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ConnectedAccounts.txt")))
+                {
+                    return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ConnectedAccounts.txt"));
+                }
+
+                return null;
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }
 
@@ -218,11 +234,18 @@ namespace DPF.Droid.Services
         {
             try
             {
-                return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "DeviceToken.txt"));
+                if (File.Exists(string.Format(PATH_TO_DATA_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "DeviceToken.txt")))
+                {
+                    return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal), "DeviceToken.txt"));
+                }
+
+                return null;
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }  
         }
@@ -245,11 +268,18 @@ namespace DPF.Droid.Services
         {
             try
             {
-                return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Photoset.txt"));
+                if (File.Exists(string.Format(PATH_TO_DATA_TEMPLATE,
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Photoset.txt")))
+                {
+                    return File.ReadAllText(string.Format(PATH_TO_DATA_TEMPLATE,
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Photoset.txt"));
+                }
+
+                return null;
             }
             catch (Exception exception)
             {
+                ErrorHandler(exception.Message);
                 return null;
             }
         }
