@@ -17,8 +17,8 @@ namespace WebApplication.Controllers
     public class DeviceController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
-        DeviceService deviceService = new DeviceService();
+        IAuthenticationService authService = new AuthenticationService();
+        IDeviceService deviceService = new DeviceService();
         // GET: Device
         public async Task<ActionResult> Index()
         {

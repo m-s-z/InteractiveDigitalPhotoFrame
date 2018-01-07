@@ -14,7 +14,7 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Services
 {
-    public class FolderService
+    public class FolderService : IFolderService
     {
         private ApplicationContext db = new ApplicationContext();
         public FolderService()
@@ -72,7 +72,7 @@ namespace WebApplication.Services
                 }
             catch (Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -108,7 +108,7 @@ namespace WebApplication.Services
                 return oldFolders;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -137,7 +137,7 @@ namespace WebApplication.Services
                 return response;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -182,7 +182,7 @@ namespace WebApplication.Services
                 return response;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }

@@ -21,8 +21,8 @@ namespace WebApplication.Controllers
     public class CloudController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
-        CloudService cloudService = new CloudService();
+        IAuthenticationService authService = new AuthenticationService();
+        ICloudService cloudService = new CloudService();
         public CloudController()
         {
 
