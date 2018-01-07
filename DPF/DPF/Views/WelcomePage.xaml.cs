@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace DPF.Views
 {
+    /// <summary>
+    /// WelcomePage class.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WelcomePage : ContentPage
     {
+        #region methods
+
+        /// <summary>
+        /// WelcomePage class constructor.
+        /// </summary>
         public WelcomePage()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

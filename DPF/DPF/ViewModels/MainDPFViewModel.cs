@@ -17,7 +17,7 @@ namespace DPF.ViewModels
 {
     /// <summary>
     /// MainDPFViewModel class.
-    /// Provides methods which controls the presentation layer.
+    /// Provides methods and properties which control the presentation layer.
     /// </summary>
     public class MainDPFViewModel : ViewModelBase
     {
