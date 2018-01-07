@@ -328,7 +328,7 @@ namespace DPF.ViewModels
         }
 
         /// <summary>
-        /// Initilizes commands
+        /// Initilizes commands.
         /// </summary>
         private void InitCommands()
         {
@@ -348,7 +348,6 @@ namespace DPF.ViewModels
         private void InitNetworkConnectionModel()
         {
             _networkConnectionModel = new NetworkConnectionModel();
-            _networkConnectionModel.ErrorOccured += OnErrorOccurred;
         }
 
         /// <summary>
