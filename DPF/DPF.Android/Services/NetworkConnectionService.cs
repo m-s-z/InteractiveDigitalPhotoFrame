@@ -1,19 +1,24 @@
-﻿using System;
-using System.Net;
-using Android.Net;
+﻿using System.Net;
 using DPF.Droid.Services;
 using DPF.Models;
 using Xamarin.Forms;
-using Application = Android.App.Application;
 
 [assembly: Dependency(typeof(NetworkConnectionService))]
 
 namespace DPF.Droid.Services
 {
+    /// <summary>
+    /// Network connection service class.
+    /// Implements INetworkConnectionService interface.
+    /// </summary>
     public class NetworkConnectionService : INetworkConnectionService
     {
-        public event ErrorOccurredDelegate ErrorOccured;
+        #region methods
 
+        /// <summary>
+        /// Checks whether the device is connected to the Internet or not.
+        /// </summary>
+        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
         public bool CheckIfNetworkConnected()
         {
             string CheckUrl = "http://google.com";
@@ -24,9 +29,7 @@ namespace DPF.Droid.Services
                 iNetRequest.Timeout = 5000;
                 WebResponse iNetResponse = iNetRequest.GetResponse();
                 iNetResponse.Close();
-
                 return true;
-
             }
             catch (WebException ex)
             {
@@ -34,5 +37,6 @@ namespace DPF.Droid.Services
             }
         }
 
+        #endregion
     }
 }
