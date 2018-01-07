@@ -63,8 +63,6 @@ namespace WebApplication.Controllers
             return View(deviceModel);
         }
 
-        
-
         /*
          * for now kept as a reference to be deleted soon
          * [Route("folder/BindDevice/{Folderid:min(0)}/{DeviceId:min(0)}")]

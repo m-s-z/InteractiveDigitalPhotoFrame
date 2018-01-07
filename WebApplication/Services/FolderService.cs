@@ -87,7 +87,7 @@ namespace WebApplication.Services
             {
                 DropboxClient dbx = new DropboxClient(cloud.Token);
                 var list = await dbx.Files.ListFolderAsync(String.Empty, true);
-
+                
                 var newFolders = list.Entries.Where(i => i.IsFolder);
                 //deleting all folders that have been removed on the side of DropBox
                 List<String> toDelete = new List<string>();
@@ -163,6 +163,7 @@ namespace WebApplication.Services
                         List<FileMetadata> fileList = new List<FileMetadata>();
                         foreach (var f in folderList)
                         {
+                            
                             fileList.Add(f as FileMetadata);
                         }
                         DateTime updated = DateTime.Now;
@@ -211,6 +212,15 @@ namespace WebApplication.Services
             }
             return newfolders;
         }
+
+        public async Task<List<Folder>> GetDeviceDropboxFolders(int cloudId, int deviceId)
+        {
+
+            Cloud cloud = await db.Clouds.FindAsync(cloudId);
+            List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
+            return oldFolders;
+        }
+
 
         public async Task<bool> AddCloudFolders(List<string> folders, int cloudId, int deviceId)
         {

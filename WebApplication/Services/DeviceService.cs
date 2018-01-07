@@ -12,6 +12,7 @@ using FlickrNet;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Utils;
+using Dropbox.Api;
 
 namespace WebApplication.Services
 {
@@ -191,12 +192,15 @@ namespace WebApplication.Services
             return device.DeviceToken == deviceToken;
         }
 
-        public async Task<GetAllFlickrPhotosURLResponseDTO> GetAllFlickrPhotosUrl(List<int> accountIds, int deviceId)
+        public async Task<GetAllFlickrPhotosURLResponseDTO> GetAllPhotosUrl(List<int> accountIds, int deviceId)
         {
             // there is a need to handle if token has expired or has been revoked
             List<Urls> photoUrlList = new List<Urls>();
 
             FlickrManager flickrManager = new FlickrManager();
+
+            DropboxClient dbx;
+
 
             FolderService folderService = new FolderService();
 
@@ -210,18 +214,39 @@ namespace WebApplication.Services
                     {
                         try
                         {
-                            Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
-                        List<Photoset> photosetList = await folderService.GetDeviceFlickrFolders(cloud.Id, deviceId);
-                        foreach (var photoset in photosetList)
-                        {
-                           
-                                var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
-                                foreach (var photo in photoCollection)
+                            if (cloud.Provider == ProviderType.Flicker)
+                            {
+                                Flickr flickr = await flickrManager.GetAuthInstance(cloud.Id);
+                                List<Photoset> photosetList = await folderService.GetDeviceFlickrFolders(cloud.Id, deviceId);
+                                foreach (var photoset in photosetList)
                                 {
-                                    Urls url = new Urls(photo.LargeUrl, photo.PhotoId, IDPFLibrary.CloudProviderType.Flickr, photo.DateUploaded);
-                                    photoUrlList.Add(url);
+
+                                    var photoCollection = flickr.PhotosetsGetPhotos(photoset.PhotosetId);
+                                    foreach (var photo in photoCollection)
+                                    {
+                                        Urls url = new Urls(photo.LargeUrl, photo.PhotoId, IDPFLibrary.CloudProviderType.Flickr, photo.DateUploaded);
+                                        photoUrlList.Add(url);
+                                    }
                                 }
-                        }
+                            }else if(cloud.Provider == ProviderType.DropBox)
+                            {
+                                dbx = new DropboxClient(cloud.Token);
+                                List<Folder> folderList= await folderService.GetDeviceDropboxFolders(cloud.Id, deviceId);
+                                foreach (var folder in folderList)
+                                {
+                                    var list = await dbx.Files.ListFolderAsync(folder.Name, false);
+                                    foreach (var file in list.Entries.Where(i => i.IsFile))
+                                    {
+                                        if (PhotoChecker.IsImage(file.Name))
+                                        {
+                                            var dbxUrl = await dbx.Files.GetTemporaryLinkAsync(file.PathDisplay);
+                                            Urls url = new Urls(dbxUrl.Link, dbxUrl.Metadata.Id, IDPFLibrary.CloudProviderType.Dropbox, dbxUrl.Metadata.ClientModified);
+                                            photoUrlList.Add(url);
+                                        }
+                                    }
+                                    
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
