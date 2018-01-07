@@ -5,46 +5,126 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DPF.Models;
 using DPF.Utils.Controls;
 using DPF.Views;
+using Dropbox.Api;
+using Dropbox.Api.FileProperties;
 using IDPFLibrary.DTO;
-using IDPFLibrary.Utils;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace DPF.ViewModels
 {
+    /// <summary>
+    /// MainDPFViewModel class.
+    /// </summary>
     public class MainDPFViewModel : ViewModelBase
     {
-        private const string EMPTY_PHOTOSET_DEFAULT_PATH = "photos_96px.png";
 
+
+        /// <summary>
+        /// Indicates the length of the interval between refreshing (in minutes).
+        /// </summary>
         private const int REFRESH_TIMER = 5;
+
+        /// <summary>
+        /// Indicates the length of the interval between photo changing during slideshow (in tenths of a second).
+        /// </summary>
         private const int SLIDESHOW_TIMER = 40;
 
+        /// <summary>
+        /// Contains path to default photo to display.
+        /// </summary>
+        private const string EMPTY_PHOTOSET_DEFAULT_PATH = "photos_96px.png";
+        
+        /// <summary>
+        /// Flag indicating whether the device is in Active state or not.
+        /// </summary>
+        private bool _isActive;
+
+        /// <summary>
+        /// Flag indicating whether the paring code is visible or not.
+        /// </summary>
+        private bool _isCodeVisible;
+
+        /// <summary>
+        /// Flag indicating whether the device is connected to the network or not.
+        /// </summary>
         private bool _isNetworkConnected;
 
-        private int _deviceId;
-        private string _deviceToken;
-        private GetDeviceAccountsDTO _getDeviceAccounts;
+        /// <summary>
+        /// Flag indicating whether the slideshow is on or not.
+        /// </summary>
+        private bool _isSlideshow;
 
+        /// <summary>
+        /// This DPF device ID.
+        /// </summary>
+        private int _deviceId;
+
+        /// <summary>
+        /// Indicates how many photos where searched in storage while offline.
+        /// </summary>
+        private int _displayUnstoredPhotoCounter;
+
+        /// <summary>
+        /// Indicates how much time passed since the user's last activity (in tenths of a second).
+        /// </summary>
+        private int _keepActiveCounter;
+
+        /// <summary>
+        /// Number (in photoset) of currently displayed photo.
+        /// </summary>
+        private int _photoCounter;
+
+        /// <summary>
+        /// Indicates how much time passed since the last slide changing (in tenths of a second).
+        /// </summary>
+        private int _slideshowCounter;
+
+        /// <summary>
+        /// Indicates current pairing code.
+        /// </summary>
+        private string _code = "Generating...";
+
+        /// <summary>
+        /// This DPF device token.
+        /// </summary>
+        private string _deviceToken;
+
+        /// <summary>
+        /// Indicates path to the currently displayed photo.
+        /// </summary>
+        private string _photoPath;
+
+        /// <summary>
+        /// Contains list of photos synchronized with the DPF.
+        /// </summary>
         private GetAllFlickrPhotosURLResponseDTO _currentPhotoset;
 
+        /// <summary>
+        /// Contains list of connected accounts.
+        /// </summary>
+        private GetDeviceAccountsDTO _getDeviceAccounts;
+
+        /// <summary>
+        /// Instance of LocalStorageModel class.
+        /// </summary>
         private LocalStorageModel _localStorageModel;
+
+        /// <summary>
+        /// Instance of NetworkConnectionModel class.
+        /// </summary>
         private NetworkConnectionModel _networkConnectionModel;
 
         private List<String> _listOfImageNames;
-        private int _photoCounter;
-        private string _code = "Generating...";
-        private string _photoPath;
-        private bool _isActive;
-        private bool _isCodeVisible;
-        private bool _isSlideshow;
-        private int _slideshowCounter;
-        private int _keepActiveCounter;
+        
+       
+        
+        
         private ObservableCollection<VCListItem> _connectedAccountsCollection;
         private Color _refreshingColor;
 
@@ -238,7 +318,16 @@ namespace DPF.ViewModels
                     CurrentPhotoset = JsonConvert.DeserializeObject<GetAllFlickrPhotosURLResponseDTO>(photosetJson);
                     if (CurrentPhotoset.Urls.Count != 0)
                     {
-                        PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[0]);
+                        var path = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[0]);
+
+                        if (path.Equals(""))
+                        {
+                            PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                        }
+                        else
+                        {
+                            PhotoPath = path;
+                        }
                     }
                     else
                     {
@@ -440,13 +529,13 @@ namespace DPF.ViewModels
             IsActive = false;
         }
 
-        private void ExecuteNextPhotoCommand()
+        private async void ExecuteNextPhotoCommand()
         {
             _keepActiveCounter = 0;
             ChangeNextPhoto();
         }
 
-        private void ChangeNextPhoto()
+        private async void ChangeNextPhoto()
         {
 
             if (CurrentPhotoset.Urls.Count == 0)
@@ -463,13 +552,45 @@ namespace DPF.ViewModels
                 _photoCounter = 0;
             }
 
-            PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+            string path = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+            if (path.Equals(""))
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    _displayUnstoredPhotoCounter = 0;
+                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+                }
+                else
+                {
+                    if (_displayUnstoredPhotoCounter <= CurrentPhotoset.Urls.Count)
+                    {
+                        _displayUnstoredPhotoCounter++;
+                        ChangeNextPhoto();
+                    }
+                    else
+                    {
+                        _displayUnstoredPhotoCounter = 0;
+                        PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                    }
+                }
+            }
+            else
+            {
+                _displayUnstoredPhotoCounter = 0;
+                PhotoPath = path;
+            }
         }
+
+
 
         private void ExecutePreviousPhotoCommand()
         {
             _keepActiveCounter = 0;
+            ChangePreviousPhoto();
+        }
 
+        private void ChangePreviousPhoto()
+        {
             if (CurrentPhotoset.Urls.Count == 0)
             {
                 PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
@@ -478,12 +599,40 @@ namespace DPF.ViewModels
 
             _slideshowCounter = 0;
             _photoCounter--;
+
             if (_photoCounter < 0)
             {
                 _photoCounter = CurrentPhotoset.Urls.Count - 1;
             }
 
-            PhotoPath = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+            string path = _localStorageModel.GetImageToShow(CurrentPhotoset.Urls[_photoCounter]);
+
+            if (path.Equals(""))
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    _displayUnstoredPhotoCounter = 0;
+                    PhotoPath = CurrentPhotoset.Urls[_photoCounter].Link;
+                }
+                else
+                {
+                    if (_displayUnstoredPhotoCounter <= CurrentPhotoset.Urls.Count)
+                    {
+                        _displayUnstoredPhotoCounter++;
+                        ChangePreviousPhoto();
+                    }
+                    else
+                    {
+                        _displayUnstoredPhotoCounter = 0;
+                        PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                    }
+                }
+            }
+            else
+            {
+                _displayUnstoredPhotoCounter = 0;
+                PhotoPath = path;
+            }
         }
 
         private void ExecuteTapToActiveCommand()
@@ -642,6 +791,12 @@ namespace DPF.ViewModels
             {
                 OnErrorOccurred(this, exception.Message);
             }
+        }
+
+
+        private async void GetDropboxPhotos()
+        {
+
         }
 
         private void AssamblerAccountsList()

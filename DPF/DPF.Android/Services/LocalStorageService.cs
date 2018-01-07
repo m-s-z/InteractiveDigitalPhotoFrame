@@ -94,14 +94,6 @@ namespace DPF.Droid.Services
         {
             try
             {
-                var st = Directory.GetFiles(string.Format(PATH_TO_PICTURES_TEMPLATE,
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), ""));
-                foreach (string s in st)
-                {
-                    System.Diagnostics.Debug.WriteLine(s);
-                }
-
                 string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                     CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), imageToShow.PhotoId);
@@ -111,7 +103,7 @@ namespace DPF.Droid.Services
                 }
                 else
                 {
-                    return imageToShow.Link;
+                    return "";
                 }
             }
             catch (Exception exception)
