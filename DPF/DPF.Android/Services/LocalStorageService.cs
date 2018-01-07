@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,8 @@ namespace DPF.Droid.Services
 {
     public class LocalStorageService : ILocalStorageService
     {
+        private int counter = 0;
+
         private const string PATH_TO_PICTURES_TEMPLATE = "{0}/pictures{1}/{2}";
         private const string PATH_TO_DATA_TEMPLATE = "{0}/data/{1}";
 
@@ -68,6 +71,8 @@ namespace DPF.Droid.Services
                     }
                 }
 
+                Debug.WriteLine(counter);
+                SaveImage();
                 SynchronizationCompleted?.Invoke(this, newPhotoset);
             }
             catch (Exception exception)
@@ -94,14 +99,6 @@ namespace DPF.Droid.Services
         {
             try
             {
-                var st = Directory.GetFiles(string.Format(PATH_TO_PICTURES_TEMPLATE,
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), ""));
-                foreach (string s in st)
-                {
-                    System.Diagnostics.Debug.WriteLine(s);
-                }
-
                 string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                     CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), imageToShow.PhotoId);
@@ -111,7 +108,7 @@ namespace DPF.Droid.Services
                 }
                 else
                 {
-                    return imageToShow.Link;
+                    return "";
                 }
             }
             catch (Exception exception)
@@ -124,6 +121,8 @@ namespace DPF.Droid.Services
 
         public async Task SaveImage(Urls imageToSave)
         {
+            counter++;
+
             try
             {
                 Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
@@ -152,61 +151,22 @@ namespace DPF.Droid.Services
         public void SaveImage()
         {
             System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-            System.Diagnostics.Debug.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory());
-            
-            var st = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            foreach (string s in st)
+
+            var directories = Directory.GetDirectories(string.Format(PATH_TO_PICTURES_TEMPLATE,
+                Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
+            foreach (string dir in directories)
             {
-                System.Diagnostics.Debug.WriteLine(s);
-                System.Diagnostics.Debug.WriteLine("Directory: " + Directory.GetParent(s).Name + "  File: " +
-                                                   Path.GetFileName(s));
-                System.Diagnostics.Debug.WriteLineIf(
-                    (Directory.GetParent(s).Name.Equals("files")) && Path.GetFileName(s).Equals("downloaded.png"),
-                    "Yes, it is!");
+                Debug.WriteLine(dir);
+
+                var files = Directory.GetFiles(dir);
+                foreach (string f in files)
+                {
+                    System.Diagnostics.Debug.WriteLine(f);
+                    System.Diagnostics.Debug.WriteLine("Directory: " + Directory.GetParent(f).Name + "  File: " +
+                                                       Path.GetFileName(f));
+                }
             }
             System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-            st = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            foreach (string s in st)
-            {
-                System.Diagnostics.Debug.WriteLine(s);
-            }
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-            st = Directory.GetDirectories(string.Format(PATH_TO_PICTURES_TEMPLATE, Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
-            foreach (string s in st)
-            {
-                System.Diagnostics.Debug.WriteLine(s);
-            }
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-
-
-            //var webClient = new WebClient();
-            //webClient.DownloadDataCompleted += (s, e) =>
-            //{
-            //    var bytes = e.Result; // get the downloaded data
-            //    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-            //    string localFilename = "downloaded.png";
-            //    string localPath = Path.Combine(documentsPath, localFilename);
-            //    File.WriteAllBytes(localPath, bytes); // writes to local storage
-            //};
-
-            //var url = new Uri("https://3.bp.blogspot.com/-vLUGceSS8r4/V8knCEU569I/AAAAAAAAAcg/pK2uc4kBiPUe2t9KwsozXYhYVnmFjq4xQCLcB/s1600/Screenshot_2016-09-02-13-01-53.png");
-            //webClient.DownloadDataAsync(url);
-
-            //webClient = new WebClient();
-            //webClient.DownloadDataCompleted += (s, e) =>
-            //{
-            //    var bytes = e.Result; // get the downloaded data
-            //    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-            //    string localFilename = "downloaded2.png";
-            //    string localPath = Path.Combine(documentsPath, localFilename);
-            //    File.WriteAllBytes(localPath, bytes); // writes to local storage
-            //};
-
-            //url = new Uri("https://qph.ec.quoracdn.net/main-qimg-aa72bafd48ebfcb5b6e14006ab9c48be");
-            //webClient.DownloadDataAsync(url);
         }
 
         public string GetConnectedAccounts()
