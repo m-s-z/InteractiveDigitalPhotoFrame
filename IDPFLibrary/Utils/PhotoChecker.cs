@@ -8,12 +8,13 @@ namespace IDPFLibrary.Utils
 {
     public class PhotoChecker
     {
-        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG" };
+        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPEG", ".BMP", ".GIF", ".PNG" };
         public static bool IsImage(string name)
         {
             foreach (var extension in ImageExtensions)
             {
-                if (name.EndsWith(extension))
+                string tempName = name.ToLower(); 
+                if (name.EndsWith(extension.ToLower()))
                 {
                     return true;
                 }

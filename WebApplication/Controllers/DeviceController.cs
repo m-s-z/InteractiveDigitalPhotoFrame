@@ -183,7 +183,8 @@ namespace WebApplication.Controllers
 
         public async Task<ActionResult> Test()
         {
-            var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
+            //var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
+            var response = await deviceService.GetAllPhotosUrl(new List<int>() { 14 }, 6);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
