@@ -1,28 +1,41 @@
-﻿using System.Collections.Generic;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace DPF.Models
 {
+    /// <summary>
+    /// NetworkConnectionModel class.
+    /// Provides methods to check network connection. 
+    /// </summary>
     public class NetworkConnectionModel
     {
+        #region fields
+
+        /// <summary>
+        /// Instance of the NetworkConnectionService class.
+        /// </summary>
         private INetworkConnectionService _service;
 
-        public event ErrorOccurredDelegate ErrorOccured;
+        #endregion
 
+        #region methods
+
+        /// <summary>
+        /// NetworkConnectionModel class constructor.
+        /// </summary>
         public NetworkConnectionModel()
         {
             _service = DependencyService.Get<INetworkConnectionService>();
-            _service.ErrorOccured += ErrorOccuredEventHandler;
         }
 
+        /// <summary>
+        /// Calls service to check whether the device is connected to the Internet or not.
+        /// </summary>
+        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
         public bool CheckIfNetworkConnected()
         {
             return _service.CheckIfNetworkConnected();
         }
 
-        private void ErrorOccuredEventHandler(object sender, string errorMessage)
-        {
-            ErrorOccured?.Invoke(this, errorMessage);
-        }
+        #endregion
     }
 }

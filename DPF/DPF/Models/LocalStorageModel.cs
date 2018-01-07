@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using IDPFLibrary.DTO;
+﻿using IDPFLibrary.DTO;
 using Xamarin.Forms;
 
 namespace DPF.Models
