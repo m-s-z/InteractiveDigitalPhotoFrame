@@ -18,11 +18,26 @@ using IDPFLibrary.Utils;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller class responsible for manipulating and exposing clouds
+    /// </summary>
     public class CloudController : Controller
     {
+        #region fields
+        /// <summary>
+        /// context class, access point fro the database
+        /// </summary>
         private ApplicationContext db = new ApplicationContext();
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
+        /// <summary>
+        /// cloud service exposing cloud related database information
+        /// </summary>
         ICloudService cloudService = new CloudService();
+        #endregion fields
+
         public CloudController()
         {
 
@@ -32,6 +47,7 @@ namespace WebApplication.Controllers
             cloudService = cs;
 
         }
+        #region methods
         /// <summary>
         /// method for preparing cloud view
         /// </summary>
@@ -217,7 +233,7 @@ namespace WebApplication.Controllers
             OAuth2Response response = await DropboxOAuth2Helper.ProcessCodeFlowAsync(code, ApiKeys.DropBoxApiKey, ApiKeys.DropBoxApiKeySecret, redirectUrl);
             await cloudService.CreateDropBoxAccount(response.AccessToken, accountName, authService.getLoggedInUsername(Session), response.Uid);
             return View();
-
         }
+        #endregion methods
     }
 }
