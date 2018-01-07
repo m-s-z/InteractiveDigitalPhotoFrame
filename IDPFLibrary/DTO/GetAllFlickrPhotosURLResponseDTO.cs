@@ -18,13 +18,13 @@ namespace IDPFLibrary.DTO
         {
             Link = link;
             PhotoId = photoId;
-            MyProperty = myProperty;
+            CloudProvider = myProperty;
             UploadDate = uploadDate;
         }
 
         public String Link { get; set; }
         public String PhotoId { get; set; }
-        public CloudProviderType MyProperty { get; set; }
+        public CloudProviderType CloudProvider { get; set; }
         public DateTime UploadDate { get; set; }
     }
     public class GetAllFlickrPhotosURLResponseDTO

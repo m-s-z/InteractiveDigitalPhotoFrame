@@ -54,7 +54,7 @@ namespace DPF.Droid.Services
                 foreach (var oldPhotosetUrl in oldPhotoset.Urls)
                 {
                     var temp = newPhotoset.Urls.Find(p =>
-                        p.PhotoId == oldPhotosetUrl.PhotoId && p.MyProperty == oldPhotosetUrl.MyProperty);
+                        p.PhotoId == oldPhotosetUrl.PhotoId && p.CloudProvider == oldPhotosetUrl.CloudProvider);
                     if (temp == null)
                     {
                         DeleteImage(oldPhotosetUrl);
@@ -64,7 +64,7 @@ namespace DPF.Droid.Services
                 foreach (var newPhotosetUrl in newPhotoset.Urls)
                 {
                     var temp = oldPhotoset.Urls.Find(p =>
-                        p.PhotoId == newPhotosetUrl.PhotoId && p.MyProperty == newPhotosetUrl.MyProperty);
+                        p.PhotoId == newPhotosetUrl.PhotoId && p.CloudProvider == newPhotosetUrl.CloudProvider);
                     if (temp == null)
                     {
                         await SaveImage(newPhotosetUrl);
@@ -87,7 +87,7 @@ namespace DPF.Droid.Services
             {
                 File.Delete(string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    CloudProviderTypeToDirectoryNameConverter(imageToDelete.MyProperty), imageToDelete.PhotoId));
+                    CloudProviderTypeToDirectoryNameConverter(imageToDelete.CloudProvider), imageToDelete.PhotoId));
             }
             catch (Exception exception)
             {
@@ -101,7 +101,7 @@ namespace DPF.Droid.Services
             {
                 string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    CloudProviderTypeToDirectoryNameConverter(imageToShow.MyProperty), imageToShow.PhotoId);
+                    CloudProviderTypeToDirectoryNameConverter(imageToShow.CloudProvider), imageToShow.PhotoId);
                 if (File.Exists(path))
                 {
                     return path;
@@ -127,7 +127,7 @@ namespace DPF.Droid.Services
             {
                 Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    CloudProviderTypeToDirectoryNameConverter(imageToSave.MyProperty), ""));
+                    CloudProviderTypeToDirectoryNameConverter(imageToSave.CloudProvider), ""));
 
                 var webClient = new WebClient();
                 webClient.DownloadDataCompleted += (s, e) =>
@@ -135,7 +135,7 @@ namespace DPF.Droid.Services
                     var bytes = e.Result;
                     string imagePath = string.Format(PATH_TO_PICTURES_TEMPLATE,
                         Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                        CloudProviderTypeToDirectoryNameConverter(imageToSave.MyProperty), imageToSave.PhotoId);
+                        CloudProviderTypeToDirectoryNameConverter(imageToSave.CloudProvider), imageToSave.PhotoId);
                     File.WriteAllBytes(imagePath, bytes); // writes to local storage
                 };
 
