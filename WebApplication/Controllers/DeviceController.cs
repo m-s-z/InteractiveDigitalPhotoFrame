@@ -19,9 +19,15 @@ namespace WebApplication.Controllers
     /// </summary>
     public class DeviceController : Controller
     {
+        #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
         IDeviceService deviceService = new DeviceService();
-        // GET: Device
+        #endregion fields
+
+        #region methods
         public async Task<ActionResult> Index()
         {
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
@@ -173,7 +179,7 @@ namespace WebApplication.Controllers
             }
         }
 
-        
+        #endregion methods
 
         public async Task<ActionResult> Test()
         {

@@ -18,6 +18,9 @@ namespace WebApplication.Controllers
     public class LoginController : Controller
     {
         #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
         #endregion fields
 

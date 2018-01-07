@@ -19,9 +19,21 @@ namespace WebApplication.Controllers
     public class FolderController : Controller
     {
         #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
+        /// <summary>
+        /// device service exposing device related database information
+        /// </summary>
         IDeviceService deviceService = new DeviceService();
+        /// <summary>
+        /// folder service exposing folder related database information
+        /// </summary>
         IFolderService folderService = new FolderService();
+        /// <summary>
+        /// cloud service exposing cloud related database information
+        /// </summary>
         ICloudService cloudService = new CloudService();
         #endregion fields
         public FolderController()

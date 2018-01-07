@@ -39,6 +39,7 @@
       <Objects>
       </Objects>
     </PublishDatabaseSettings>
+    <DocumentationFile>bin\WebApplication.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
