@@ -24,7 +24,7 @@ namespace DPF.Models
         #region properties
 
         /// <summary>
-        /// Event invoked whenever error occured.
+        /// Event invoked whenever error occurred.
         /// </summary>
         event ErrorOccurredDelegate ErrorOccured;
 
