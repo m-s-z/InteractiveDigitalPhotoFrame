@@ -283,6 +283,10 @@
     <Compile Include="Services\CloudService.cs" />
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\FolderService.cs" />
+    <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\ICloudService.cs" />
+    <Compile Include="Services\IDeviceService.cs" />
+    <Compile Include="Services\IFolderService.cs" />
     <Compile Include="Utils\ApiKeys.cs" />
     <Compile Include="Utils\FlickrManager.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />

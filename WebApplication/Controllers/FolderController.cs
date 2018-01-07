@@ -16,10 +16,10 @@ namespace WebApplication.Controllers
     public class FolderController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
-        DeviceService deviceService = new DeviceService();
-        FolderService folderService = new FolderService();
-        CloudService cloudService = new CloudService();
+        IAuthenticationService authService = new AuthenticationService();
+        IDeviceService deviceService = new DeviceService();
+        IFolderService folderService = new FolderService();
+        ICloudService cloudService = new CloudService();
         // GET: Folder
         public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {

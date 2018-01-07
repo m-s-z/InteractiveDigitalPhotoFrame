@@ -15,7 +15,7 @@ namespace WebApplication.Controllers
     public class AccountController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
+        IAuthenticationService authService = new AuthenticationService();
         // GET: Account
         public ActionResult Index()
         {

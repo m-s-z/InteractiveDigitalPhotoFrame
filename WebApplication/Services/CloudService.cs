@@ -10,7 +10,7 @@ using WebApplication.Models;
 
 namespace WebApplication.Services
 {
-    public class CloudService
+    public class CloudService : ICloudService
     {
         private ApplicationContext db = new ApplicationContext();
         public CloudService()

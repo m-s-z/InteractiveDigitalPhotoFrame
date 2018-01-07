@@ -15,7 +15,7 @@ namespace WebApplication.Controllers
     public class LoginController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
+        IAuthenticationService authService = new AuthenticationService();
         // GET: Login
         public ActionResult Index()
         {

@@ -14,7 +14,7 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Services
 {
-    public class FolderService
+    public class FolderService : IFolderService
     {
         private ApplicationContext db = new ApplicationContext();
         public FolderService()
@@ -72,7 +72,7 @@ namespace WebApplication.Services
                 }
             catch (Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -108,7 +108,7 @@ namespace WebApplication.Services
                 return oldFolders;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -137,7 +137,7 @@ namespace WebApplication.Services
                 return response;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -182,7 +182,7 @@ namespace WebApplication.Services
                 return response;
             }catch(Exception e)
             {
-                CloudService cloudService = new CloudService();
+                ICloudService cloudService = new CloudService();
                 await cloudService.removeCloud(cloudId);
                 return null;
             }
@@ -215,9 +215,24 @@ namespace WebApplication.Services
 
         public async Task<List<Folder>> GetDeviceDropboxFolders(int cloudId, int deviceId)
         {
-
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
+
+            DropboxClient dbx = new DropboxClient(cloud.Token);
             List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId && f.DeviceId == deviceId).ToListAsync<Folder>();
+            var list = await dbx.Files.ListFolderAsync(String.Empty, true);
+            List<int> foldersToRemove = new List<int>();
+            foreach (var folder in oldFolders)
+            {
+                if (list.Entries.Where(i => i.IsFolder).FirstOrDefault(f => f.PathDisplay == folder.Name) == null)
+                {
+                    foldersToRemove.Add(folder.FolderId);
+                }
+            }
+            foreach(var folder in foldersToRemove)
+            {
+                var found = oldFolders.FirstOrDefault(i => i.FolderId == folder);
+                oldFolders.Remove(found);
+            }
             return oldFolders;
         }
 

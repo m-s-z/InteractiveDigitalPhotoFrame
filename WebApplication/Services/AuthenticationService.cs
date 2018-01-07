@@ -9,7 +9,7 @@ using WebApplication.Models;
 
 namespace WebApplication.Services
 {
-    public class AuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private ApplicationContext db = new ApplicationContext();
         public AuthenticationService()

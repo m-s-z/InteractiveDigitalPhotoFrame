@@ -21,8 +21,8 @@ namespace WebApplication.Controllers
     public class CloudController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
-        AuthenticationService authService = new AuthenticationService();
-        CloudService cloudService = new CloudService();
+        IAuthenticationService authService = new AuthenticationService();
+        ICloudService cloudService = new CloudService();
         public CloudController()
         {
 
@@ -71,7 +71,7 @@ namespace WebApplication.Controllers
 
             List<SelectListItem> items = new List<SelectListItem>();
 
-            items.Add(new SelectListItem { Text = "Drop Box", Value = ProviderType.DropBox.ToString() });
+            items.Add(new SelectListItem { Text = "Dropbox", Value = ProviderType.DropBox.ToString() });
 
             items.Add(new SelectListItem { Text = "Flickr", Value = ProviderType.Flicker.ToString(), Selected = true });
 

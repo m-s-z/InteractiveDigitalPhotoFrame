@@ -16,7 +16,7 @@ using Dropbox.Api;
 
 namespace WebApplication.Services
 {
-    public class DeviceService
+    public class DeviceService : IDeviceService
     {
         //number of characters in a pair code
         private const int CODESIZE = 7;
@@ -202,7 +202,7 @@ namespace WebApplication.Services
             DropboxClient dbx;
 
 
-            FolderService folderService = new FolderService();
+            IFolderService folderService = new FolderService();
 
             try
             {
@@ -251,7 +251,7 @@ namespace WebApplication.Services
                         catch (Exception e)
                         {
 
-                            CloudService cloudService = new CloudService();
+                            ICloudService cloudService = new CloudService();
                             await cloudService.removeCloud(cloud.Id);
                             return null;
                         }
