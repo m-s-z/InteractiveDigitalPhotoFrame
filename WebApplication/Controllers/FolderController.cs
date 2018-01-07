@@ -13,14 +13,57 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller class responsible for manipulating and exposing folders
+    /// </summary>
     public class FolderController : Controller
     {
+        #region fields
         private ApplicationContext db = new ApplicationContext();
         IAuthenticationService authService = new AuthenticationService();
         IDeviceService deviceService = new DeviceService();
         IFolderService folderService = new FolderService();
         ICloudService cloudService = new CloudService();
-        // GET: Folder
+        #endregion fields
+        public FolderController()
+        {
+            
+        }
+
+        public FolderController(IDeviceService dev, ICloudService cloud)
+        {
+            deviceService = dev;
+            cloudService = cloud;
+        }
+
+        public FolderController(ICloudService cloud)
+        {
+            cloudService = cloud;
+        }
+
+        public FolderController(IAuthenticationService auth)
+        {
+            authService = auth;
+        }
+
+        public FolderController(IAuthenticationService auth, IFolderService folders)
+        {
+            authService = auth;
+            folderService = folders;
+        }
+        public FolderController(IAuthenticationService auth, IFolderService folders, ICloudService cloud)
+        {
+            authService = auth;
+            folderService = folders;
+            cloudService = cloud;
+        }
+        #region methods
+
+        /// <summary>
+        /// Returns view of folders divided into devices 
+        /// </summary>
+        /// <param name="IdOfOpenDevice">optional parameter, if it is set the folders for given device will not be collapsed</param>
+        /// <returns>view for folders</returns>
         public async Task<ActionResult> Index(int? IdOfOpenDevice)
         {
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
@@ -70,6 +113,14 @@ namespace WebApplication.Controllers
         {
             return Content("fodler id = " + FolderId + " device ID " + DeviceId);
         }*/
+
+        /// <summary>
+        /// this method creates the view for creating a new folder. It pulls all clouds connected to Account and adds them to ViewBag cloud
+        /// </summary>
+        /// <param name="deviceId">id of device the method should add folders to</param>
+        /// <returns>
+        /// view for selecting folder
+        /// </returns>
         public async Task<ActionResult> NewFolder(int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -86,6 +137,16 @@ namespace WebApplication.Controllers
             NewFolderViewModel view = new NewFolderViewModel(deviceId);
             return View(view);
         }
+
+
+        /// <summary>
+        /// prepares a confirm delete folder view
+        /// </summary>
+        /// <param name="folderId">folderid to be removed</param>
+        /// <param name="folderName">folder name to be removed </param>
+        /// <returns>
+        /// confirm delete folder view
+        /// </returns>
         public ActionResult DeleteFolder(int folderId, String folderName)
         {
             if (!authService.IsAuthenticated(Session))
@@ -95,6 +156,15 @@ namespace WebApplication.Controllers
             ConfirmDeleteFolderViewModel view = new ConfirmDeleteFolderViewModel(folderId, folderName);
             return View(view);
         }
+
+
+        /// <summary>
+        /// deletes folder from database
+        /// </summary>
+        /// <param name="folderId">id of folder to be deleted</param>
+        /// <returns>
+        /// return foler view
+        /// </returns>
         public async Task<ActionResult> ConfirmDeleteFolder(int folderId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -105,6 +175,15 @@ namespace WebApplication.Controllers
             return Redirect("Index");
         }
 
+
+        /// <summary>
+        /// prepares view with folders that can be added to device
+        /// </summary>
+        /// <param name="Clouds">cloud id from which we will add folders</param>
+        /// <param name="deviceId">device id to which device we will add folder</param>
+        /// <returns>
+        /// select folder view model
+        /// </returns>
         public async Task<ActionResult> SelectFolder(int Clouds, int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -125,6 +204,16 @@ namespace WebApplication.Controllers
             SelectFolderViewModel view = new SelectFolderViewModel(cloud, folders, deviceId);
             return View(view);
         }
+
+        /// <summary>
+        /// method for adding list of folders
+        /// </summary>
+        /// <param name="model">list of folders to be added</param>
+        /// <param name="cloudId">cloud from which the folders will be added</param>
+        /// <param name="deviceId">device to which folders will be added</param>
+        /// <returns>
+        /// folder view
+        /// </returns>
         public async Task<ActionResult> ConfirmAddFolder(SelectFolderViewModel model, int cloudId, int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -137,6 +226,7 @@ namespace WebApplication.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion methods
 
     }
 }
