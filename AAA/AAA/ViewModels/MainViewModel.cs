@@ -68,7 +68,6 @@ namespace AAA.ViewModels
             set
             {
                 SetProperty(ref _newCloudType, value);
-                CloudConnectCommand?.ChangeCanExecute();
             }
         }
 
@@ -154,7 +153,6 @@ namespace AAA.ViewModels
             set
             {
                 SetProperty(ref _cloudEmail, value);
-                CloudConnectCommand?.ChangeCanExecute();
             }
         }
 
@@ -220,7 +218,7 @@ namespace AAA.ViewModels
         private void InitCommands()
         {
             ChangePageCommand = new Command(ExecuteChangePageCommand);
-            CloudConnectCommand = new Command(ExecuteCloudConnectCommand, CanExecuteCloudConnectCommand);
+            CloudConnectCommand = new Command(ExecuteCloudConnectCommand);
             CloudDisconnectCommand = new Command(ExecuteCloudDisconnectCommand);
             CloudModifyCommand = new Command(ExecuteCloudModifyCommand);
             DeviceUnpairCommand = new Command(ExecuteDeviceUnpairCommand);

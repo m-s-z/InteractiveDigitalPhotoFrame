@@ -39,10 +39,8 @@ namespace AAA.Models
         {
             LocalName = localName;
             FoldersCollection = new ObservableCollection<Folder>();
-            FoldersCollection.Add(new Folder(CloudTypeEnum.GoogleDrive));
-            FoldersCollection.Add(new Folder(CloudTypeEnum.Dropbox));
-            FoldersCollection.Add(new Folder(CloudTypeEnum.Dropbox));
-            FoldersCollection.Add(new Folder(CloudTypeEnum.GoogleDrive));
+            FoldersCollection.Add(new Folder(CloudTypeEnum.Flickr, "Holidays 2017"));
+            FoldersCollection.Add(new Folder(CloudTypeEnum.Dropbox, "Trip to France"));
             NumberOfFolders = CountFolders();
         }
 

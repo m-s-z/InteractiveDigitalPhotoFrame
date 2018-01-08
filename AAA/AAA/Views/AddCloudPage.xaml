@@ -36,7 +36,7 @@
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
-                    <Entry Grid.Row="2"
+                    <!--<Entry Grid.Row="2"
                            Margin="16, 8, 16, 8"
                            FontSize="20"
                            HorizontalTextAlignment="Start"
@@ -49,7 +49,7 @@
                            HorizontalTextAlignment="Start"
                            IsPassword="True"
                            Placeholder="Password"
-                           PlaceholderColor="DarkGray" />
+                           PlaceholderColor="DarkGray" />-->
                 </Grid>
             </ScrollView>
             <Button Command="{Binding CloudConnectCommand}"
