@@ -65,10 +65,10 @@ namespace AAA.Models
         {
             CloudsCollection = new ObservableCollection<CloudProvider>();
             CloudsCollection.Add(new CloudProvider(CloudTypeEnum.Dropbox, "dddddd@email.com"));
-            CloudsCollection.Add(new CloudProvider(CloudTypeEnum.GoogleDrive, "xxxxxx@gmail.com"));
+            CloudsCollection.Add(new CloudProvider(CloudTypeEnum.Flickr, "xxxxxx@gmail.com"));
             DevicesCollection = new ObservableCollection<Device>();
             DevicesCollection.Add(new Device("Grandparents' DPF", temp));
-            DevicesCollection.Add(new Device("Selfies", temp));
+            //DevicesCollection.Add(new Device("Selfies", temp));
             Login = "MSZ";
             AccountEmail = "mateusz@student.mini.pw.edu.pl";
             SetPassword("Password123");

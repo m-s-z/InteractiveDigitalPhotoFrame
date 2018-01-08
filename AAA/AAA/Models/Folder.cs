@@ -35,5 +35,13 @@ namespace AAA.Models
             PhotosNumber = random.Next(1, 20);
             CloudType = cloudType;
         }
+
+        public Folder(CloudTypeEnum cloudType, string folderName)
+        {
+            Random random = new Random();
+            FolderName = folderName;
+            PhotosNumber = random.Next(1, 20);
+            CloudType = cloudType;
+        }
     }
 }
