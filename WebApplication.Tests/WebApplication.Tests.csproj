@@ -120,6 +120,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IDPFLibrary\IDPFLibrary.csproj">
+      <Project>{5CAEA247-6AFD-4708-9999-8465EF59527E}</Project>
+      <Name>IDPFLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebApplication\WebApplication.csproj">
       <Project>{0027F8B6-0954-49FC-8F2F-411959904AF0}</Project>
       <Name>WebApplication</Name>
