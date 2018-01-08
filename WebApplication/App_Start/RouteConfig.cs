@@ -7,8 +7,16 @@ using System.Web.Routing;
 
 namespace WebApplication
 {
+    /// <summary>
+    /// Route config class
+    /// </summary>
     public class RouteConfig
     {
+        #region methods
+        /// <summary>
+        /// method for registering routes
+        /// </summary>
+        /// <param name="routes">Route collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -20,5 +28,6 @@ namespace WebApplication
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
+        #endregion methods
     }
 }

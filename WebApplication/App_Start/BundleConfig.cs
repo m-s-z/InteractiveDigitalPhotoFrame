@@ -3,9 +3,16 @@ using System.Web.Optimization;
 
 namespace WebApplication
 {
+    /// <summary>
+    /// bundle config class
+    /// </summary>
     public class BundleConfig
     {
-        // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
+        #region methods
+        /// <summary>
+        /// method for registering bundles
+        /// </summary>
+        /// <param name="bundles">bundle collection</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -24,5 +31,6 @@ namespace WebApplication
                       "~/Content/bootstrap-readable.css",
                       "~/Content/site.css"));
         }
+        #endregion methods
     }
 }
