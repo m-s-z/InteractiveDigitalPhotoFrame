@@ -8,18 +8,36 @@ using System.Web;
 
 namespace WebApplication.Models
 {
+    /// <summary>
+    /// Account model class
+    /// </summary>
     public class Account
     {
+        /// <summary>
+        /// constructor for Account
+        /// </summary>
         public Account()
         {
 
         }
+
+        /// <summary>
+        /// constructor for Account
+        /// </summary>
+        /// <param name="accountName">account name</param>
+        /// <param name="password">password, default value is ""</param>
         public Account(string accountName, string password = "")
         {
             Login = accountName;
             Password = password;
         }
 
+        /// <summary>
+        /// constructor for Account
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
         public Account(int id, string login, string password)
         {
             Id = id;
@@ -27,6 +45,12 @@ namespace WebApplication.Models
             Password = password;
         }
 
+        /// <summary>
+        /// constructor for Account
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <param name="devices">collection of devices</param>
         public Account(string login, string password, ICollection<Device> devices)
         {
             Login = login;
@@ -34,6 +58,13 @@ namespace WebApplication.Models
             Devices = devices;
         }
 
+        /// <summary>
+        /// constructor for Account
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <param name="devices">collection of devices</param>
         public Account(int id, string login, string password, ICollection<Device> devices)
         {
             Id = id;
@@ -42,13 +73,37 @@ namespace WebApplication.Models
             Devices = devices;
         }
 
+        #region properties
+        /// <summary>
+        /// id, has to be unique
+        /// max lenttgh 200 characters
+        /// </summary>
         public int Id { get; set; }
         [Index(IsUnique = true)]
         [StringLength(200)]
+        /// <summary>
+        /// login
+        /// </summary>
         public String Login { get; set; }
+        /// <summary>
+        /// password
+        /// </summary>
         public String Password { get; set; }
+        /// <summary>
+        /// collection of devices
+        /// </summary>
         public virtual ICollection<Device> Devices { get; set; }
-        //helper function to create hashed password. Store the result of this function in db
+        #endregion properties
+
+        #region methods
+
+        /// <summary>
+        /// helper function to create hashed password. Store the result of this function in db
+        /// </summary>
+        /// <param name="password">string to be hashed</param>
+        /// <returns>
+        /// returns string of with hashed value
+        /// </returns>
         public static string HashPassword(string password)
         {
             byte[] salt;
@@ -61,7 +116,15 @@ namespace WebApplication.Models
             string savedPasswordHash = Convert.ToBase64String(hashBytes);
             return savedPasswordHash;
         }
-        //helper function to compare passwords
+        /// <summary>
+        /// helper function to compare passwords
+        /// </summary>
+        /// <param name="password">first password (not hashed)</param>
+        /// <param name="hashedPassword">hashed password to compare to </param>
+        /// <returns>
+        /// true if strings have same hash value
+        /// false if strings have different hash value
+        /// </returns>
         public static bool PasswordEquals(string password, string hashedPassword)
         {
             //the try and catch will be removed later once i delete the initial accounts without hashed passwords (hotfix)
@@ -87,5 +150,6 @@ namespace WebApplication.Models
             }
             return true;
         }
-    }   
+        #endregion methods
+    }
 }

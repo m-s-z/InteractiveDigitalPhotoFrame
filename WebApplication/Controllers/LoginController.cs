@@ -12,15 +12,54 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller for logging in/out nad registering
+    /// </summary>
     public class LoginController : Controller
     {
-        private ApplicationContext db = new ApplicationContext();
+        #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
-        // GET: Login
+        #endregion fields
+
+        /// <summary>
+        /// constructor for LoginController
+        /// </summary>
+        public LoginController()
+        {
+
+        }
+
+        /// <summary>
+        /// constructor for LoginController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
+        public LoginController(IAuthenticationService auth)
+        {
+            authService = auth;
+        }
+
+        #region methods
+        /// <summary>
+        /// method for displaying login screen
+        /// </summary>
+        /// <returns>
+        /// Login view
+        /// </returns>
         public ActionResult Index()
         {
             return View();
         }
+
+        /// <summary>
+        /// Controller method for loggin accepting credentials. On succes it sets Session["UserId"]
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <returns>On success redirect to home
+        /// On failure returns login view</returns>
         [HttpPost]
         public async Task<ActionResult> Login(string login, string password)
         {
@@ -37,6 +76,12 @@ namespace WebApplication.Controllers
             
         }
 
+        /// <summary>
+        /// logs out of the service
+        /// </summary>
+        /// <returns>
+        /// login view
+        /// </returns>
         public ActionResult LogOut()
         {
             if (!authService.IsAuthenticated(Session))
@@ -46,11 +91,25 @@ namespace WebApplication.Controllers
             Session["UserId"] = null;
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// preperas view for registering
+        /// </summary>
+        /// <returns>
+        /// register view
+        /// </returns>
         public ActionResult Register()
         {
             return View();
         }
 
+        /// <summary>
+        /// registers a new account
+        /// </summary>
+        /// <param name="login">new login</param>
+        /// <param name="password">password</param>
+        /// <param name="password2">password repeated</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> RegisterConfirm(string login, string password, string password2)
         {
@@ -66,5 +125,6 @@ namespace WebApplication.Controllers
             RegisterConfirmViewModel view = new RegisterConfirmViewModel(registrationResult);
             return View(view);
         }
+        #endregion methods
     }
 }

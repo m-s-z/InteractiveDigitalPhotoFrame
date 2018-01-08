@@ -34,6 +34,10 @@ namespace IDPFLibrary.DTO
     }
     public class GetDeviceAccountsDTO
     {
+        public GetDeviceAccountsDTO()
+        {
+
+        }
         public GetDeviceAccountsDTO(List<SAccount> accounts)
         {
             Accounts = accounts;

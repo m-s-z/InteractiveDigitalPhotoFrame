@@ -14,12 +14,66 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller class responsible for manipulating and exposing devices
+    /// </summary>
     public class DeviceController : Controller
     {
-        private ApplicationContext db = new ApplicationContext();
+        #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
+        /// <summary>
+        /// folder service exposing folder related database information
+        /// </summary>
         IDeviceService deviceService = new DeviceService();
-        // GET: Device
+        #endregion fields
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        public DeviceController()
+        {
+
+        }
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="dev">instance of device service</param>
+        public DeviceController(IDeviceService dev)
+        {
+            deviceService = dev;
+        }
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
+        public DeviceController(IAuthenticationService auth)
+        {
+            authService = auth;
+        }
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="dev">instance of device service</param>
+        /// <param name="auth"> instance of authentication service</param>
+        public DeviceController(IDeviceService dev, IAuthenticationService auth)
+        {
+            deviceService = dev;
+            authService = auth;
+        }
+        #region methods
+
+        /// <summary>
+        /// prepares device view
+        /// </summary>
+        /// <returns>
+        /// device view
+        /// </returns>
         public async Task<ActionResult> Index()
         {
             List<DeviceName> devices = await deviceService.GetDevices(authService.getLoggedInUsername(Session));
@@ -27,11 +81,18 @@ namespace WebApplication.Controllers
             return View(deviceViewModel);
         }
         
+        /// <summary>
+        /// prepares new device view
+        /// </summary>
+        /// <returns>
+        /// device view
+        /// </returns>
         public ActionResult NewDevice()
         {
             return View();
         }
 
+        /*
         //left as reference dont use this controller method
         [HttpGet]
         public async Task<ActionResult> GetUserAllDevices(int? user)
@@ -58,8 +119,16 @@ namespace WebApplication.Controllers
                 return HttpNotFound();
             }
             return Json(sDevices, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
+        /// <summary>
+        /// generates a new paircode
+        /// </summary>
+        /// <param name="deviceId">device id for which the paircode will be generated</param>
+        /// <param name="deviceToken">device auhtentication token</param>
+        /// <returns>
+        /// string with paircode
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult> GeneratePairCode(int deviceId, string deviceToken)
         {
@@ -74,6 +143,14 @@ namespace WebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// prepares delete device view
+        /// </summary>
+        /// <param name="deviceId">device Id to be deleted</param>
+        /// <param name="deviceName">device name to be deleted</param>
+        /// <returns>
+        /// confirm delete device view
+        /// </returns>
         public ActionResult DeleteDevice(int deviceId, String deviceName)
         {
             if (!authService.IsAuthenticated(Session))
@@ -83,6 +160,14 @@ namespace WebApplication.Controllers
             ConfirmDeleteDeviceViewModel view = new ConfirmDeleteDeviceViewModel(deviceId, deviceName);
             return View(view);
         }
+
+        /// <summary>
+        /// deletes device
+        /// </summary>
+        /// <param name="deviceId">device id to be dedleted</param>
+        /// <returns>
+        /// device view
+        /// </returns>
         public async Task<ActionResult> ConfirmDeleteDevice(int deviceId)
         {
             if (!authService.IsAuthenticated(Session))
@@ -93,6 +178,15 @@ namespace WebApplication.Controllers
             return Redirect("Index");
         }
 
+
+        /// <summary>
+        /// pairs with device
+        /// </summary>
+        /// <param name="pairCode">paircode for pairing</param>
+        /// <param name="deviceName">device to paired with</param>
+        /// <returns>
+        /// pair device view
+        /// </returns>
         public async Task<ActionResult> PairDevice(String pairCode, string deviceName)
         {
             if (!authService.IsAuthenticated(Session))
@@ -104,6 +198,15 @@ namespace WebApplication.Controllers
             PairDeviceViewModel view = new PairDeviceViewModel(response);
             return View(view);
         }
+
+        /// <summary>
+        /// creates a new device
+        /// </summary>
+        /// <param name="key">secret application key</param>
+        /// <returns>
+        /// CreateNewDeviceDTO object on success
+        /// Forbidden if key is invalid
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult> CreateNewDevice(String key)
         {
@@ -117,6 +220,16 @@ namespace WebApplication.Controllers
                 return Json(dto, JsonRequestBehavior.DenyGet);
             }
         }
+
+        /// <summary>
+        /// gets all accounts connected to the device
+        /// </summary>
+        /// <param name="deviceId">device id for which the paircode will be generated</param>
+        /// <param name="deviceToken">device auhtentication token</param>
+        /// <returns>
+        /// GetDeviceAccountsDTO object on success 
+        /// http status Forbidden if token is invalid
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult> GetDeviceAccounts(int deviceId, string deviceToken)
         {
@@ -130,6 +243,19 @@ namespace WebApplication.Controllers
                 return Json(dto, JsonRequestBehavior.DenyGet);
             }
         }
+
+
+        /// <summary>
+        /// unpairs account from a given device
+        /// </summary>
+        /// <param name="deviceId">device id for which the paircode will be generated</param>
+        /// <param name="deviceToken">device auhtentication token</param>
+        /// <param name="accountId">account id to be unpaired</param>
+        /// <returns>
+        /// http status Ok on success
+        /// http status not found if account id cannot be found
+        /// http status Forbidden if token is invalid
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult> UnpairDevice(int deviceId, string deviceToken, int accountId)
         {
@@ -150,6 +276,17 @@ namespace WebApplication.Controllers
 
         }
 
+        /// <summary>
+        /// finds all photos connected to the device and and accounts
+        /// </summary>
+        /// <param name="deviceId">device id for which the paircode will be generated</param>
+        /// <param name="deviceToken">device auhtentication token</param>
+        /// <param name="accountIds">account ids to download photos from</param>
+        /// <returns>
+        /// GetAllFlickrPhotosURLResponseDTO object on success
+        /// internal server error if the cloud token has been revoked
+        /// Forbidden if device token is invalid
+        /// </returns>
         [HttpPost] public async Task<ActionResult> GetAllPhotosUrl(int deviceId, string deviceToken, List<int> accountIds)
         {
             if (await deviceService.DeviceIsAuthenticated(deviceId, deviceToken))
@@ -170,13 +307,14 @@ namespace WebApplication.Controllers
             }
         }
 
-        
-
+        #endregion methods
+        /*
         public async Task<ActionResult> Test()
         {
-            var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
+            //var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
+            var response = await deviceService.GetAllPhotosUrl(new List<int>() { 14 }, 6);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-
+        */
     }
 }

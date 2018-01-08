@@ -16,18 +16,38 @@ using Dropbox.Api;
 
 namespace WebApplication.Services
 {
+    /// <summary>
+    /// cloud service class for manipulating the database in regards to cloud
+    /// </summary>
     public class DeviceService : IDeviceService
     {
-        //number of characters in a pair code
-        private const int CODESIZE = 7;
+        #region fields
+        /// <summary>
+        /// instance of application context to manipulate the database
+        /// </summary>
         private ApplicationContext db = new ApplicationContext();
+        /// <summary>
+        /// number of characters in paircode
+        /// </summary>
+        private const int CODESIZE = 7;
+        #endregion fields
+        /// <summary>
+        /// contructor for DeviceService class
+        /// </summary>
         public DeviceService()
         {
                 
         }
-
-        //this method will return all devices connected to the user with names that are connected to this account
+        #region methods
         //there is a workaround with select here since either entity framework or linq is bugged and tends to return null in Account and device fields
+        /// <summary>
+        /// this method will return all devices connected to the user with names that are connected to this account
+        /// </summary>
+        /// <param name="username">username of account from which to retrieve devices</param>
+        /// <returns>
+        /// List of DeviceName model class
+        /// returns an empty list if account cannot be found
+        /// </returns>
         public async Task<List<DeviceName>> GetDevices(string username)
         {
             List<DeviceName> actualDdeviceNames = new List<DeviceName>();
@@ -39,7 +59,15 @@ namespace WebApplication.Services
             }
             return actualDdeviceNames;
         }
-
+        /// <summary>
+        /// method for unpairing a device from an account
+        /// </summary>
+        /// <param name="deviceId">dedvice id</param>
+        /// <param name="userName"> account username</param>
+        /// <returns>
+        /// true on success
+        /// false if either device or user cannot be found
+        /// </returns>
         public async Task<bool> UnpairDevice(int deviceId, string userName)
         {
             Device device = await db.Devices.FirstOrDefaultAsync(d => d.DeviceId == deviceId);
@@ -73,6 +101,15 @@ namespace WebApplication.Services
             return false;
         }
 
+        /// <summary>
+        /// method for conecting a device to an account
+        /// </summary>
+        /// <param name="code">pair code from device</param>
+        /// <param name="deviceName">custom device name specific to account</param>
+        /// <param name="userName">account username</param>
+        /// <returns>
+        /// string message based on result
+        /// </returns>
         public async Task<string> PairDevice(string code, string deviceName, string userName)
         {
             Device device = await db.Devices.FirstOrDefaultAsync(d => d.ConnectionCode == code);
@@ -94,7 +131,15 @@ namespace WebApplication.Services
             return "Failed to pair with device. We could not find a device with that pair code. You can generate a new code by pressing the pair device button on your digital photo frame";
         }
 
-        //returns new genreated code of lentght CODESIZE (7) on success. If the device cannot be found it returns an empty string
+        /// <summary>
+        /// method for generating a pair code of CODESIZE (7)
+        /// </summary>
+        /// <param name="deviceId">device id</param>
+        /// <param name="deviceToken">device token for authorization</param>
+        /// <returns>
+        /// string paircode on success
+        /// empty string token does not match the database (authorization failure)
+        /// </returns>
         public async Task<string> GeneratePairCode(int deviceId, string deviceToken)
         {
             string code = "";
@@ -111,6 +156,13 @@ namespace WebApplication.Services
             }
             return code;
         }
+        /// <summary>
+        /// method for creating a device
+        /// </summary>
+        /// <param name="code">secret application code</param>
+        /// <returns>
+        /// CreateNewDeviceDTO class
+        /// </returns>
         public async Task<CreateNewDeviceDTO> CreateDevice(string code)
         {
             CreateNewDeviceDTO dto = null;
@@ -140,6 +192,13 @@ namespace WebApplication.Services
             }
             return dto;
         }
+        /// <summary>
+        /// method for creating a true random string
+        /// </summary>
+        /// <param name="lenght">string length</param>
+        /// <returns>
+        /// randomly generated string
+        /// </returns>
         public string TrueRandomString(int lenght)
         {
             char[] chars = new char[62];
@@ -160,6 +219,14 @@ namespace WebApplication.Services
             return result.ToString();
         }
 
+        /// <summary>
+        /// method for getting all accounts connected to given device
+        /// </summary>
+        /// <param name="deviceId">device id</param>
+        /// <param name="deviceToken"> device token</param>
+        /// <returns>
+        /// GetDeviceAccountsDTO class
+        /// </returns>
         public async Task<GetDeviceAccountsDTO> GetDeviceAccounts(int deviceId, string deviceToken)
         {
             GetDeviceAccountsDTO dto = null;
@@ -186,12 +253,29 @@ namespace WebApplication.Services
             }
             return dto;
         }
+
+        /// <summary>
+        /// method for chekcing if device token matches the database. Used for device authorization
+        /// </summary>
+        /// <param name="deviceId">device id</param>
+        /// <param name="deviceToken">device token</param>
+        /// <returns>
+        /// true if token matches database token
+        /// false otherwise
+        /// </returns>
         public async Task<bool> DeviceIsAuthenticated(int deviceId, string deviceToken)
         {
             Device device = await db.Devices.FindAsync(deviceId);
             return device.DeviceToken == deviceToken;
         }
-
+        /// <summary>
+        /// method for getting all photo urls with thier respective metadata
+        /// </summary>
+        /// <param name="accountIds">list of accounts from which to extract photos from</param>
+        /// <param name="deviceId">target device</param>
+        /// <returns>
+        /// GetAllFlickrPhotosURLResponseDTO class
+        /// </returns>
         public async Task<GetAllFlickrPhotosURLResponseDTO> GetAllPhotosUrl(List<int> accountIds, int deviceId)
         {
             // there is a need to handle if token has expired or has been revoked
@@ -266,5 +350,6 @@ namespace WebApplication.Services
             GetAllFlickrPhotosURLResponseDTO response = new GetAllFlickrPhotosURLResponseDTO(photoUrlList);
             return response;
         }
+        #endregion methods
     }
 }
