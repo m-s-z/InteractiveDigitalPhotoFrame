@@ -106,7 +106,7 @@ namespace WebApplication.Models
         /// </summary>
         public String FlickrUserId { get; set; }
         /// <summary>
-        /// password
+        /// password depreciated field
         /// </summary>
         public String Password { get; set; }
         /// <summary>
@@ -122,15 +122,15 @@ namespace WebApplication.Models
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// instance of Account model class
+        /// instance of Account model class that the cloud is connected to
         /// </summary>
         public Account Account { get; set; }
         /// <summary>
-        /// token
+        /// token used to authenticate with provider
         /// </summary>
         public string Token { get; set; }
         /// <summary>
-        /// token secret
+        /// token secret used to authenticate with provider
         /// </summary>
         public string TokenSecret { get; set; }
 
