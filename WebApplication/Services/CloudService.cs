@@ -31,7 +31,6 @@ namespace WebApplication.Services
 
         }
         #region methods
-        //gets all clouds connected to account in case username has no clouds assigned it returns an empty list.
         /// <summary>
         /// method for obtaining all clouds connected to given username
         /// </summary>
@@ -54,7 +53,6 @@ namespace WebApplication.Services
 
         }
 
-        //deletes clodu with specified id and return true on success and false if the cloud cannot be found
         /// <summary>
         /// removes a cloud from the database based on id
         /// </summary>

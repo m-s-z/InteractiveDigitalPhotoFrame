@@ -214,7 +214,8 @@ namespace WebApplication.Controllers
         /// <summary>
         /// Adds a new Dropbox cloud
         /// </summary>
-        /// <param name="accountName">custom name for cloud</param>
+        /// <param name="code">code</param>
+        /// <param name="state">state</param>
         /// <returns>
         /// view with result of adding
         /// </returns>

@@ -131,7 +131,6 @@ namespace WebApplication.Services
             return "Failed to pair with device. We could not find a device with that pair code. You can generate a new code by pressing the pair device button on your digital photo frame";
         }
 
-        //returns new genreated code of lentght CODESIZE (7) on success. If the device cannot be found it returns an empty string
         /// <summary>
         /// method for generating a pair code of CODESIZE (7)
         /// </summary>
