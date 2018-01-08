@@ -9,13 +9,24 @@ using WebApplication.Models;
 
 namespace WebApplication.Services
 {
+    /// <summary>
+    /// authentication service class for session based authentication
+    /// </summary>
     public class AuthenticationService : IAuthenticationService
     {
+        #region fields
+        /// <summary>
+        /// instance of application context to manipulate the database
+        /// </summary>
         private ApplicationContext db = new ApplicationContext();
+        /// <summary>
+        /// constructor for AuthenticationService class
+        /// </summary>
         public AuthenticationService()
         {
 
         }
+        #region methods
         /// <summary>
         /// function used to authenticate into the service
         /// </summary>
@@ -36,6 +47,14 @@ namespace WebApplication.Services
             }
             return false;
         }
+        /// <summary>
+        /// checks if the session contains an uthenticated user
+        /// </summary>
+        /// <param name="Session">Http Session object</param>
+        /// <returns>
+        /// true if there is an authenticated instance
+        /// false if there is no authenticated instance
+        /// </returns>
         public bool IsAuthenticated(HttpSessionStateBase Session)
         {
             if (Session["UserId"] == null)
@@ -47,7 +66,14 @@ namespace WebApplication.Services
                 return true;
             }
         }
-
+        /// <summary>
+        /// method for retrieving username from session
+        /// </summary>
+        /// <param name="session">Http Session object</param>
+        /// <returns>
+        /// string with username on success
+        /// null if no user is authenticated
+        /// </returns>
         public string getLoggedInUsername(HttpSessionStateBase session)
         {
             if (session["UserId"] != null)
@@ -58,7 +84,14 @@ namespace WebApplication.Services
                 return null;
             }
         }
-
+        /// <summary>
+        /// method for registering a new account
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <returns>
+        /// returns a string with result message
+        /// </returns>
         public async Task<string> RegisterAccount(string login, string password)
         {
             string result = "success";
@@ -77,6 +110,17 @@ namespace WebApplication.Services
             }
             return result;
         }
+        /// <summary>
+        /// method for changing an accounts password
+        /// </summary>
+        /// <param name="oldPassword">old password</param>
+        /// <param name="newPassword">new password</param>
+        /// <param name="username">username</param>
+        /// <returns>
+        /// true on success
+        /// false account cannot befound
+        /// false if oldpassword does not match the database hash
+        /// </returns>
         public async Task<bool> ChangePassword(string oldPassword, string newPassword, string username)
         {
             Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username.ToLower());
@@ -92,10 +136,18 @@ namespace WebApplication.Services
             }
             return false;
         }
+        /// <summary>
+        /// method for getting account model class
+        /// </summary>
+        /// <param name="id">id of account</param>
+        /// <returns>
+        /// Account model class
+        /// </returns>
         public async Task<string> GetAccountLogin(int id)
         {
             Account account = await db.Accounts.FindAsync(id);
             return account.Login;
         }
+        #endregion methods
     }
 }
