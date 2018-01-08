@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using DPF.Droid.Services;
@@ -15,17 +12,45 @@ using IDPFLibrary.DTO;
 
 namespace DPF.Droid.Services
 {
+    /// <summary>
+    /// LocalStorageService class.
+    /// Implements ILocalStorageService interface.
+    /// </summary>
     public class LocalStorageService : ILocalStorageService
     {
-        private int counter = 0;
+        #region fields
 
+        /// <summary>
+        /// Template to the path where pictures are stored.
+        /// </summary>
         private const string PATH_TO_PICTURES_TEMPLATE = "{0}/pictures{1}/{2}";
+
+        /// <summary>
+        /// Template to the path where application data are stored.
+        /// </summary>
         private const string PATH_TO_DATA_TEMPLATE = "{0}/data/{1}";
 
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Event invoked whenever error occurred.
+        /// </summary>
         public event ErrorOccurredDelegate ErrorOccured;
 
+        /// <summary>
+        /// Event invoked when the synchronization process ends.
+        /// </summary>
         public event SynchronizationCompletedDelegate SynchronizationCompleted;
 
+        #endregion
+
+        #region methods
+
+        /// <summary>
+        /// Creates main directories where application data is stored.
+        /// </summary>
         public void CreateImagesFolder()
         {
             try
@@ -41,12 +66,13 @@ namespace DPF.Droid.Services
             }
         }
 
-        public List<string> GetImagesList()
-        {
-            var st = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Personal)).ToList();
-            return st;
-        }
-
+        /// <summary>
+        /// If photo is outdated, calls DeleteImage method.
+        /// If there is a new photo, calls SaveImage method.
+        /// Invokes "SynchronizationCompleted" event to other application's modules.
+        /// </summary>
+        /// <param name="newPhotoset">List of new photos.</param>
+        /// <param name="oldPhotoset">List of old photos.</param>
         public async void SynchronizeImages(GetAllFlickrPhotosURLResponseDTO newPhotoset, GetAllFlickrPhotosURLResponseDTO oldPhotoset)
         {
             try
@@ -55,6 +81,7 @@ namespace DPF.Droid.Services
                 {
                     var temp = newPhotoset.Urls.Find(p =>
                         p.PhotoId == oldPhotosetUrl.PhotoId && p.CloudProvider == oldPhotosetUrl.CloudProvider);
+
                     if (temp == null)
                     {
                         DeleteImage(oldPhotosetUrl);
@@ -65,14 +92,13 @@ namespace DPF.Droid.Services
                 {
                     var temp = oldPhotoset.Urls.Find(p =>
                         p.PhotoId == newPhotosetUrl.PhotoId && p.CloudProvider == newPhotosetUrl.CloudProvider);
+
                     if (temp == null)
                     {
                         await SaveImage(newPhotosetUrl);
                     }
                 }
 
-                Debug.WriteLine(counter);
-                SaveImage();
                 SynchronizationCompleted?.Invoke(this, newPhotoset);
             }
             catch (Exception exception)
@@ -81,6 +107,10 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Deletes the indicated photo from a device memory.
+        /// </summary>
+        /// <param name="imageToDelete">Photo to delete.</param>
         private void DeleteImage(Urls imageToDelete)
         {
             try
@@ -95,6 +125,11 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Gets path to the indicated photo.
+        /// </summary>
+        /// <param name="imageToShow">Photo to get path to.</param>
+        /// <returns>Path to the photo.</returns>
         public string GetImageToShow(Urls imageToShow)
         {
             try
@@ -102,14 +137,13 @@ namespace DPF.Droid.Services
                 string path = string.Format(PATH_TO_PICTURES_TEMPLATE,
                     Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                     CloudProviderTypeToDirectoryNameConverter(imageToShow.CloudProvider), imageToShow.PhotoId);
+
                 if (File.Exists(path))
                 {
                     return path;
                 }
-                else
-                {
-                    return "";
-                }
+
+                return "";
             }
             catch (Exception exception)
             {
@@ -119,10 +153,14 @@ namespace DPF.Droid.Services
             return null;
         }
 
+        /// <summary>
+        /// Creates new directory to store photos in if does not exist.
+        /// Downloads the indicated photo and saves in the device memory.
+        /// </summary>
+        /// <param name="imageToSave">Photo to save.</param>
+        /// <returns>Returns void task.</returns>
         public async Task SaveImage(Urls imageToSave)
         {
-            counter++;
-
             try
             {
                 Directory.CreateDirectory(string.Format(PATH_TO_PICTURES_TEMPLATE,
@@ -136,7 +174,7 @@ namespace DPF.Droid.Services
                     string imagePath = string.Format(PATH_TO_PICTURES_TEMPLATE,
                         Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                         CloudProviderTypeToDirectoryNameConverter(imageToSave.CloudProvider), imageToSave.PhotoId);
-                    File.WriteAllBytes(imagePath, bytes); // writes to local storage
+                    File.WriteAllBytes(imagePath, bytes);
                 };
 
                 var url = new Uri(imageToSave.Link);
@@ -148,27 +186,10 @@ namespace DPF.Droid.Services
             }
         }
 
-        public void SaveImage()
-        {
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-
-            var directories = Directory.GetDirectories(string.Format(PATH_TO_PICTURES_TEMPLATE,
-                Environment.GetFolderPath(Environment.SpecialFolder.Personal), "", ""));
-            foreach (string dir in directories)
-            {
-                Debug.WriteLine(dir);
-
-                var files = Directory.GetFiles(dir);
-                foreach (string f in files)
-                {
-                    System.Diagnostics.Debug.WriteLine(f);
-                    System.Diagnostics.Debug.WriteLine("Directory: " + Directory.GetParent(f).Name + "  File: " +
-                                                       Path.GetFileName(f));
-                }
-            }
-            System.Diagnostics.Debug.WriteLine("----------------------------------------------------------");
-        }
-
+        /// <summary>
+        /// Reads a list of connected accounts from the storage,
+        /// </summary>
+        /// <returns>Json with list of connected accounts.</returns>
         public string GetConnectedAccounts()
         {
             try
@@ -190,6 +211,10 @@ namespace DPF.Droid.Services
 
         }
 
+        /// <summary>
+        /// Reads a device token from the storage,
+        /// </summary>
+        /// <returns>Json with a device token.</returns>
         public string GetDeviceToken()
         {
             try
@@ -207,9 +232,13 @@ namespace DPF.Droid.Services
             {
                 ErrorHandler(exception.Message);
                 return null;
-            }  
+            }
         }
 
+        /// <summary>
+        /// Saves a list of connected accounts in the storage.
+        /// </summary>
+        /// <param name="json">Json with list of connected accounts.</param>
         public void SaveConnectedAccounts(string json)
         {
             try
@@ -224,6 +253,10 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Reads a list of synchronized photos from the storage,
+        /// </summary>
+        /// <returns>Json with list of synchronized photos.</returns>
         public string GetPhotoset()
         {
             try
@@ -244,6 +277,10 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Saves a list of synchronized photos in the storage.
+        /// </summary>
+        /// <param name="json">Json with list of synchronized photos.</param>
         public void SavePhotoset(string json)
         {
             try
@@ -258,6 +295,10 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Saves a device token in the storage.
+        /// </summary>
+        /// <param name="json">Json with a device token.</param>
         public void SaveDeviceToken(string json)
         {
             try
@@ -271,11 +312,11 @@ namespace DPF.Droid.Services
             }
         }
 
-        private bool CheckIfPhotoIsStillSynchronizing()
-        {
-            return false;
-        }
-
+        /// <summary>
+        /// Creates string depending on the type of cloud provider.
+        /// </summary>
+        /// <param name="cloudProviderType">Type of cloud provider.</param>
+        /// <returns>String with cloud provider name.</returns>
         private string CloudProviderTypeToDirectoryNameConverter(CloudProviderType cloudProviderType)
         {
             switch (cloudProviderType)
@@ -293,9 +334,15 @@ namespace DPF.Droid.Services
             }
         }
 
+        /// <summary>
+        /// Invokes "ErrorOccurred" event to other application's modules.
+        /// </summary>
+        /// <param name="errorMessage">Message of the error.</param>
         private void ErrorHandler(string errorMessage)
         {
             ErrorOccured?.Invoke(this, errorMessage);
         }
+
+        #endregion
     }
 }
