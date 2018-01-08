@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IDPFLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:IDPFLibrary.DTO.CreateNewDeviceDTO">
+            <summary>
+            CreateNewDeviceDTO class.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.CreateNewDeviceDTO.DeviceId">
+            <summary>
+            ID of the device.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.CreateNewDeviceDTO.DeviceToken">
+            <summary>
+            Token of the device.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.CreateNewDeviceDTO.#ctor">
+            <summary>
+            CreateNewDeviceDTO class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.CreateNewDeviceDTO.#ctor(System.Int32,System.String)">
+            <summary>
+            CreateNewDeviceDTO class constructor.
+            </summary>
+            <param name="deviceId">Device ID to set.</param>
+            <param name="deviceToken">Device Token to set.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.CreateNewDeviceRequestDTO">
+            <summary>
+            CreateNewDeviceRequestDTO class.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.DTO.CreateNewDeviceRequestDTO.key">
+            <summary>
+            Key needed to complete the process of new device creation.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.CreateNewDeviceRequestDTO.#ctor">
+            <summary>
+            CreateNewDeviceRequestDTO class constructor.
+            </summary>
+        </member>
+        <member name="T:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO">
+            <summary>
+            GetAllFlickrPhotosURLRequestDTO class.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO.DeviceId">
+            <summary>
+            Device ID.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO.DeviceToken">
+            <summary>
+            Device token.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO.AccountIds">
+            <summary>
+            List of all connected accounts.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO.#ctor">
+            <summary>
+            GetAllFlickrPhotosURLRequestDTO class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetAllFlickrPhotosURLRequestDTO.#ctor(System.Int32,System.String,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            GetAllFlickrPhotosURLRequestDTO class constructor.
+            </summary>
+            <param name="deviceId">Device ID to set.</param>
+            <param name="deviceToken">Device token to set.</param>
+            <param name="accountIds">List of connected accounts to set.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.Urls">
+            <summary>
+            Urls class.
+            Contains metadata of a photo.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.Urls.Link">
+            <summary>
+            Link to the photo.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.Urls.PhotoId">
+            <summary>
+            ID of the photo.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.Urls.CloudProvider">
+            <summary>
+            Cloud provider type.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.Urls.UploadDate">
+            <summary>
+            Upload date.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.Urls.#ctor">
+            <summary>
+            Urls class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.Urls.#ctor(System.String,System.String,IDPFLibrary.CloudProviderType,System.DateTime)">
+            <summary>
+            Urls class constructor.
+            </summary>
+            <param name="link">Link to the photo</param>
+            <param name="photoId">ID of the photo.</param>
+            <param name="myProperty">Cloud provider type.</param>
+            <param name="uploadDate">Upload date.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO">
+            <summary>
+            GetAllFlickrPhotosURLResponseDTO class.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO.Urls">
+            <summary>
+            List of Urls (metadata of photos).
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO.#ctor">
+            <summary>
+            GetAllFlickrPhotosURLResponseDTO class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO.#ctor(System.Collections.Generic.List{IDPFLibrary.DTO.Urls})">
+            <summary>
+            GetAllFlickrPhotosURLResponseDTO class constructor.
+            </summary>
+            <param name="urls">List of Urls (metadata of photos).</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.SCloud">
+            <summary>
+            SCloud class.
+            Contains information about cloud provider.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SCloud.CloudId">
+            <summary>
+            Cloud ID.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SCloud.Token">
+            <summary>
+            Auth token.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SCloud.TokenSecret">
+            <summary>
+            Secret token.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.SCloud.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            SCloud class constructor.
+            </summary>
+            <param name="cloudId">Cloud ID.</param>
+            <param name="token">Auth token.</param>
+            <param name="tokenSecret">Secret token.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.SAccount">
+            <summary>
+            SAccount class.
+            Contains information about an account.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SAccount.Name">
+            <summary>
+            Account name.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SAccount.clouds">
+            <summary>
+            List of connected clouds.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.SAccount.AccountId">
+            <summary>
+            Account ID.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.SAccount.#ctor(System.String,System.Collections.Generic.List{IDPFLibrary.DTO.SCloud},System.Int32)">
+            <summary>
+            SAccount class constructor.
+            </summary>
+            <param name="name">Account name.</param>
+            <param name="clouds">List of connected clouds.</param>
+            <param name="accountId">Account ID.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.GetDeviceAccountsDTO">
+            <summary>
+            GetDeviceAccountsDTO class.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.GetDeviceAccountsDTO.Accounts">
+            <summary>
+            List of connected accounts.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetDeviceAccountsDTO.#ctor">
+            <summary>
+            GetDeviceAccountsDTO class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.GetDeviceAccountsDTO.#ctor(System.Collections.Generic.List{IDPFLibrary.DTO.SAccount})">
+            <summary>
+            GetDeviceAccountsDTO class constructor.
+            </summary>
+            <param name="accounts">List of connected accounts.</param>
+        </member>
+        <member name="T:IDPFLibrary.DTO.UnpairDeviceRequestDTO">
+            <summary>
+            UnpairDeviceRequestDTO class.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.UnpairDeviceRequestDTO.DeviceId">
+            <summary>
+            Device ID.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.UnpairDeviceRequestDTO.DeviceToken">
+            <summary>
+            Device token.
+            </summary>
+        </member>
+        <member name="P:IDPFLibrary.DTO.UnpairDeviceRequestDTO.AccountId">
+            <summary>
+            Account ID.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.UnpairDeviceRequestDTO.#ctor">
+            <summary>
+            UnpairDeviceRequestDTO class constructor.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.DTO.UnpairDeviceRequestDTO.#ctor(System.Int32,System.String,System.Int32)">
+            <summary>
+            UnpairDeviceRequestDTO class constructor.
+            </summary>
+            <param name="deviceId">Device ID.</param>
+            <param name="deviceToken">Device token.</param>
+            <param name="accountId">Account ID.</param>
+        </member>
+        <member name="T:IDPFLibrary.CloudProviderType">
+            <summary>
+            CloudProviderType enum.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.CloudProviderType.Dropbox">
+            <summary>
+            Dropbox cloud provider.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.CloudProviderType.Flickr">
+            <summary>
+            Flickr cloud provider.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.CloudProviderType.GoogleDrive">
+            <summary>
+            Google cloud provider.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.CloudProviderType.OneDrive">
+            <summary>
+            Microsoft cloud provider.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.CloudProviderType.None">
+            <summary>
+            Cloud provider is not specified.
+            </summary>
+        </member>
+        <member name="T:IDPFLibrary.Utils.PhotoChecker">
+            <summary>
+            PhotoChecker class.
+            Provides method to check whether a file is an image or not.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.Utils.PhotoChecker.ImageExtensions">
+            <summary>
+            List of supported extensions.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.Utils.PhotoChecker.IsImage(System.String)">
+            <summary>
+            Checks whether a file is an image or not.
+            </summary>
+            <param name="name">Name of the image.</param>
+            <returns>True if is an image, false otherwise.</returns>
+        </member>
+        <member name="T:IDPFLibrary.Utils.RegistrationCode">
+            <summary>
+            RegistrationCode class.
+            </summary>
+        </member>
+        <member name="F:IDPFLibrary.Utils.RegistrationCode.CODE">
+            <summary>
+            DPF registration code.
+            </summary>
+        </member>
+        <member name="T:IDPFLibrary.ViewModelBase">
+            <summary>
+            ViewModelBase class.
+            Implements INotifyPropertyChanged interface.
+            </summary>
+        </member>
+        <member name="E:IDPFLibrary.ViewModelBase.PropertyChanged">
+            <summary>
+            PropertyChanged event handler.
+            </summary>
+        </member>
+        <member name="M:IDPFLibrary.ViewModelBase.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            Updates value of the "storage" argument with value given by the second argument.
+            Notifies the application about update of the property which has executed this method.
+            </summary>
+            <typeparam name="T">Property type.</typeparam>
+            <param name="storage">Storage field.</param>
+            <param name="value">New value of the property.</param>
+            <param name="propertyName">Property name.</param>
+            <returns>Returns true if storage is successfully updated, false otherwise.</returns>
+        </member>
+        <member name="M:IDPFLibrary.ViewModelBase.OnPropertyChanged(System.String)">
+            <summary>
+            Notifies the application about update of the property with name given as a parameter.
+            </summary>
+            <param name="propertyName">Property name.</param>
+        </member>
+    </members>
+</doc>

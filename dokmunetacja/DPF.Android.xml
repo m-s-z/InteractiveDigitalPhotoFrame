@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DPF.Android</name>
+    </assembly>
+    <members>
+        <member name="T:DPF.Droid.Services.LocalStorageService">
+            <summary>
+            LocalStorageService class.
+            Implements ILocalStorageService interface.
+            </summary>
+        </member>
+        <member name="F:DPF.Droid.Services.LocalStorageService.PATH_TO_PICTURES_TEMPLATE">
+            <summary>
+            Template to the path where pictures are stored.
+            </summary>
+        </member>
+        <member name="F:DPF.Droid.Services.LocalStorageService.PATH_TO_DATA_TEMPLATE">
+            <summary>
+            Template to the path where application data are stored.
+            </summary>
+        </member>
+        <member name="E:DPF.Droid.Services.LocalStorageService.ErrorOccured">
+            <summary>
+            Event invoked whenever error occurred.
+            </summary>
+        </member>
+        <member name="E:DPF.Droid.Services.LocalStorageService.SynchronizationCompleted">
+            <summary>
+            Event invoked when the synchronization process ends.
+            </summary>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.CreateImagesFolder">
+            <summary>
+            Creates main directories where application data is stored.
+            </summary>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.SynchronizeImages(IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO,IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO)">
+            <summary>
+            If photo is outdated, calls DeleteImage method.
+            If there is a new photo, calls SaveImage method.
+            Invokes "SynchronizationCompleted" event to other application's modules.
+            </summary>
+            <param name="newPhotoset">List of new photos.</param>
+            <param name="oldPhotoset">List of old photos.</param>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.DeleteImage(IDPFLibrary.DTO.Urls)">
+            <summary>
+            Deletes the indicated photo from a device memory.
+            </summary>
+            <param name="imageToDelete">Photo to delete.</param>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.GetImageToShow(IDPFLibrary.DTO.Urls)">
+            <summary>
+            Gets path to the indicated photo.
+            </summary>
+            <param name="imageToShow">Photo to get path to.</param>
+            <returns>Path to the photo.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.SaveImage(IDPFLibrary.DTO.Urls)">
+            <summary>
+            Creates new directory to store photos in if does not exist.
+            Downloads the indicated photo and saves in the device memory.
+            </summary>
+            <param name="imageToSave">Photo to save.</param>
+            <returns>Returns void task.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.GetConnectedAccounts">
+            <summary>
+            Reads a list of connected accounts from the storage,
+            </summary>
+            <returns>Json with list of connected accounts.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.GetDeviceToken">
+            <summary>
+            Reads a device token from the storage,
+            </summary>
+            <returns>Json with a device token.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.SaveConnectedAccounts(System.String)">
+            <summary>
+            Saves a list of connected accounts in the storage.
+            </summary>
+            <param name="json">Json with list of connected accounts.</param>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.GetPhotoset">
+            <summary>
+            Reads a list of synchronized photos from the storage,
+            </summary>
+            <returns>Json with list of synchronized photos.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.SavePhotoset(System.String)">
+            <summary>
+            Saves a list of synchronized photos in the storage.
+            </summary>
+            <param name="json">Json with list of synchronized photos.</param>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.SaveDeviceToken(System.String)">
+            <summary>
+            Saves a device token in the storage.
+            </summary>
+            <param name="json">Json with a device token.</param>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.CloudProviderTypeToDirectoryNameConverter(IDPFLibrary.CloudProviderType)">
+            <summary>
+            Creates string depending on the type of cloud provider.
+            </summary>
+            <param name="cloudProviderType">Type of cloud provider.</param>
+            <returns>String with cloud provider name.</returns>
+        </member>
+        <member name="M:DPF.Droid.Services.LocalStorageService.ErrorHandler(System.String)">
+            <summary>
+            Invokes "ErrorOccurred" event to other application's modules.
+            </summary>
+            <param name="errorMessage">Message of the error.</param>
+        </member>
+        <member name="T:DPF.Droid.Services.NetworkConnectionService">
+            <summary>
+            Network connection service class.
+            Implements INetworkConnectionService interface.
+            </summary>
+        </member>
+        <member name="M:DPF.Droid.Services.NetworkConnectionService.CheckIfNetworkConnected">
+            <summary>
+            Checks whether the device is connected to the Internet or not.
+            </summary>
+            <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        </member>
+    </members>
+</doc>

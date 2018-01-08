@@ -1,0 +1,869 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DPF</name>
+    </assembly>
+    <members>
+        <member name="T:DPF.App">
+            <summary>
+            Main application class.
+            </summary>
+        </member>
+        <member name="M:DPF.App.#ctor">
+            <summary>
+            Application class constructor.
+            Checks whether the device token has already been saved in the storage or not.
+            If yes - shows main page, otherwise - presents welcome page.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.AdditionalCommandProperty">
+            <summary>
+            Bindable property for AdditionalCommand.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.AdditionalCommandParameterProperty">
+            <summary>
+            Bindable property for AdditionalCommandParameter.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.AdditionalImageSourceProperty">
+            <summary>
+            Bindable property for AdditionalImageSource.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.MainCommandProperty">
+            <summary>
+            Bindable property for MainCommand.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.MainCommandParameterProperty">
+            <summary>
+            Bindable property for MainCommandParameter.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.MainImageSourceProperty">
+            <summary>
+            Bindable property for MainImageSource.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.MainTextProperty">
+            <summary>
+            Bindable property for MainText.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.SubimageSourceProperty">
+            <summary>
+            Bindable property for SubimageSource.
+            </summary>
+        </member>
+        <member name="F:DPF.Controls.ViewCellExtension.SubtextProperty">
+            <summary>
+            Bindable property for Subtext.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.AdditionalCommand">
+            <summary>
+            Additional command to execute on right side of item tap.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.MainCommand">
+            <summary>
+            Main command to execute on item tap.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.AdditionalCommandParameter">
+            <summary>
+            Object specified by a binding source used by AdditionalCommand.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.MainCommandParameter">
+            <summary>
+            Object specified by a binding source used by MainCommand.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.AdditionalImageSource">
+            <summary>
+            Source to additional image displayed on the cell.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.MainImageSource">
+            <summary>
+            Source to main image displayed on the cell.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.MainText">
+            <summary>
+            Main text displayed on the cell.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.SubimageSource">
+            <summary>
+            Source to subimage displayed on the cell.
+            </summary>
+        </member>
+        <member name="P:DPF.Controls.ViewCellExtension.Subtext">
+            <summary>
+            Subtext dispalyed on the cell.
+            </summary>
+        </member>
+        <member name="M:DPF.Controls.ViewCellExtension.#ctor">
+            <summary>
+            ViewCellExtension class constructor.
+            </summary>
+        </member>
+        <member name="T:DPF.Models.AccountCloud">
+            <summary>
+            AccountCloud class.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.FlickrUserId">
+            <summary>
+            Property indicating flickr user ID.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.CloudProvider">
+            <summary>
+            Property indicating type of cloud provider.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.Login">
+            <summary>
+            Property indicating login of the account.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.Id">
+            <summary>
+            Property indicating ID of the account.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.Token">
+            <summary>
+            Property indicating cloud token.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.AccountCloud.TokenSecret">
+            <summary>
+            Property indicating cloud secret token.
+            </summary>
+        </member>
+        <member name="F:DPF.Models.AccountCloud.FoldersCollection">
+            <summary>
+            Property with collection of folders to sync.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.AccountCloud.#ctor">
+            <summary>
+            AccountCloud class constructor.
+            </summary>
+        </member>
+        <member name="T:DPF.Models.CloudFolder">
+            <summary>
+            CloudFolder class.
+            </summary>
+        </member>
+        <member name="F:DPF.Models.CloudFolder._photosNumber">
+            <summary>
+            Backing field of PhotosNumber property.
+            </summary>
+        </member>
+        <member name="F:DPF.Models.CloudFolder._folderName">
+            <summary>
+            Backing field of FolderName property.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.CloudFolder.PhotosNumber">
+            <summary>
+            Property indicating number of photos in the folder.
+            </summary>
+        </member>
+        <member name="P:DPF.Models.CloudFolder.FolderName">
+            <summary>
+            Property indicating name of the folder.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.CloudFolder.#ctor(System.String,System.Int32)">
+            <summary>
+            CloudFolder class constructor.
+            Updates FolderName and PhotosNumber properties.
+            </summary>
+            <param name="folderName">Name of the folder.</param>
+            <param name="photosNumber">Number of photos in the folder.</param>
+        </member>
+        <member name="T:DPF.Models.ErrorOccurredDelegate">
+            <summary>
+            Delegate for the error occured event.
+            </summary>
+            <param name="sender">Instance of the object which invokes event.</param>
+            <param name="errorMessage">Message of the error.</param>
+        </member>
+        <member name="T:DPF.Models.SynchronizationCompletedDelegate">
+            <summary>
+            Delegate for the synchronization completed event.
+            </summary>
+            <param name="sender">Instance of the object which invokes event.</param>
+            <param name="newPhotoset">Collection of new photos.</param>
+        </member>
+        <member name="T:DPF.Models.ILocalStorageService">
+            <summary>
+            Local storage service interface.
+            </summary>
+        </member>
+        <member name="E:DPF.Models.ILocalStorageService.ErrorOccured">
+            <summary>
+            Event invoked whenever error occurred.
+            </summary>
+        </member>
+        <member name="E:DPF.Models.ILocalStorageService.SynchronizationCompleted">
+            <summary>
+            Event invoked when the synchronization process ends.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.CreateImagesFolder">
+            <summary>
+            Creates folders in the storage.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.GetConnectedAccounts">
+            <summary>
+            Reads a list of connected accounts from the storage,
+            </summary>
+            <returns>Json with list of connected accounts.</returns>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.GetDeviceToken">
+            <summary>
+            Reads a device token from the storage,
+            </summary>
+            <returns>Json with a device token.</returns>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.GetPhotoset">
+            <summary>
+            Reads a list of synchronized photos from the storage,
+            </summary>
+            <returns>Json with list of synchronized photos.</returns>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.GetImageToShow(IDPFLibrary.DTO.Urls)">
+            <summary>
+            Gets a path to a photo to display.
+            </summary>
+            <param name="imageToShow">Indicates the photo to find.</param>
+            <returns>Path to the photo to display.</returns>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.SaveConnectedAccounts(System.String)">
+            <summary>
+            Saves a list of connected accounts in the storage.
+            </summary>
+            <param name="json">Json with list of connected accounts.</param>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.SaveDeviceToken(System.String)">
+            <summary>
+            Saves a device token in the storage.
+            </summary>
+            <param name="json">Json with a device token.</param>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.SavePhotoset(System.String)">
+            <summary>
+            Saves a list of synchronized photos in the storage.
+            </summary>
+            <param name="json">Json with list of synchronized photos.</param>
+        </member>
+        <member name="M:DPF.Models.ILocalStorageService.SynchronizeImages(IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO,IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO)">
+            <summary>
+            Saves new photos and removes outdated ones.
+            </summary>
+            <param name="newPhotoset">List of new photos.</param>
+            <param name="oldPhotoset">List of old photos.</param>
+        </member>
+        <member name="T:DPF.Models.INetworkConnectionService">
+            <summary>
+            Network connection service interface.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.INetworkConnectionService.CheckIfNetworkConnected">
+            <summary>
+            Checks whether the device is connected to the Internet or not.
+            </summary>
+            <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        </member>
+        <member name="T:DPF.Models.LocalStorageModel">
+            <summary>
+            LocalStorageModel class.
+            Provides methods to read from and write to internal storage. 
+            </summary>
+        </member>
+        <member name="F:DPF.Models.LocalStorageModel._service">
+            <summary>
+            Instance of the LocalStorageService class.
+            </summary>
+        </member>
+        <member name="E:DPF.Models.LocalStorageModel.ErrorOccured">
+            <summary>
+            Event invoked whenever error occurred.
+            </summary>
+        </member>
+        <member name="E:DPF.Models.LocalStorageModel.SynchronizationCompleted">
+            <summary>
+            Event invoked when the synchronization process ends.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.#ctor">
+            <summary>
+            LocalStorageModel class constructor.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.CreateImagesFolder">
+            <summary>
+            Calls service to create folders in the storage.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.GetConnectedAccounts">
+            <summary>
+            Calls service to read a list of connected accounts from the storage,
+            </summary>
+            <returns>Json with list of connected accounts.</returns>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.GetDeviceToken">
+            <summary>
+            Calls service to read a device token from the storage,
+            </summary>
+            <returns>Json with a device token.</returns>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.GetPhotoset">
+            <summary>
+            Calls service to read a list of synchronized photos from the storage,
+            </summary>
+            <returns>Json with list of synchronized photos.</returns>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.GetImageToShow(IDPFLibrary.DTO.Urls)">
+            <summary>
+            Calls service to get a path to a photo to display.
+            </summary>
+            <param name="imageToShow">Indicates the photo to find.</param>
+            <returns>Path to the photo to display.</returns>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.SaveConnectedAccounts(System.String)">
+            <summary>
+            Calls service to save a list of connected accounts in the storage.
+            </summary>
+            <param name="json">Json with list of connected accounts.</param>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.SaveDeviceToken(System.String)">
+            <summary>
+            Calls service to save a device token in the storage.
+            </summary>
+            <param name="json">Json with a device token.</param>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.SavePhotoset(System.String)">
+            <summary>
+            Calls service to save a list of synchronized photos in the storage.
+            </summary>
+            <param name="json">Json with list of synchronized photos.</param>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.SynchronizeImages(IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO,IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO)">
+            <summary>
+            Calls service to save new photos and removes outdated ones.
+            </summary>
+            <param name="newPhotoset">List of new photos.</param>
+            <param name="oldPhotoset">List of old photos.</param>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.ErrorOccuredEventHandler(System.Object,System.String)">
+            <summary>
+            Handles "ErrorOccured" event of the ILocalStorageService object.
+            Invokes "ErrorOccured" event to other application's modules.
+            </summary>
+            <param name="sender">Instance of the LocalStorageService class.</param>
+            <param name="errorMessage">Message of the error.</param>
+        </member>
+        <member name="M:DPF.Models.LocalStorageModel.SynchronizationCompletedEventHandler(System.Object,IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO)">
+            <summary>
+            Handles "SynchronizationCompleted" event of the ILocalStorageService object.
+            Invokes "SynchronizationCompleted" event to other application's modules.
+            </summary>
+            <param name="sender">Instance of the LocalStorageService class.</param>
+            <param name="newPhotoset">Collection of new photos.</param>
+        </member>
+        <member name="T:DPF.Models.NetworkConnectionModel">
+            <summary>
+            NetworkConnectionModel class.
+            Provides methods to check network connection. 
+            </summary>
+        </member>
+        <member name="F:DPF.Models.NetworkConnectionModel._service">
+            <summary>
+            Instance of the NetworkConnectionService class.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.NetworkConnectionModel.#ctor">
+            <summary>
+            NetworkConnectionModel class constructor.
+            </summary>
+        </member>
+        <member name="M:DPF.Models.NetworkConnectionModel.CheckIfNetworkConnected">
+            <summary>
+            Calls service to check whether the device is connected to the Internet or not.
+            </summary>
+            <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        </member>
+        <member name="T:DPF.Utils.Controls.VCListItem">
+            <summary>
+            VCListItem class.
+            </summary>
+        </member>
+        <member name="F:DPF.Utils.Controls.VCListItem._additionalCommand">
+            <summary>
+            Backing field of AdditionalCommand property.
+            </summary>
+        </member>
+        <member name="F:DPF.Utils.Controls.VCListItem._accountName">
+            <summary>
+            Backing field of AccountName property.
+            </summary>
+        </member>
+        <member name="F:DPF.Utils.Controls.VCListItem._accountId">
+            <summary>
+            Backing field of AccountId property.
+            </summary>
+        </member>
+        <member name="P:DPF.Utils.Controls.VCListItem.AdditionalCommand">
+            <summary>
+            Additional command to execute on right side of item tap.
+            </summary>
+        </member>
+        <member name="P:DPF.Utils.Controls.VCListItem.AccountName">
+            <summary>
+            Name of the account.
+            </summary>
+        </member>
+        <member name="P:DPF.Utils.Controls.VCListItem.AccountId">
+            <summary>
+            ID of the account.
+            </summary>
+        </member>
+        <member name="M:DPF.Utils.Controls.VCListItem.#ctor(System.String,System.Int32,Xamarin.Forms.Command)">
+            <summary>
+            VCListItem class constructor.
+            </summary>
+            <param name="accountName">Name of the account.</param>
+            <param name="accountId">ID of the account.</param>
+            <param name="additionalCommand">Command to execute on tap.</param>
+        </member>
+        <member name="M:DPF.Utils.Controls.VCListItem.#ctor">
+            <summary>
+            VCListItem class constructor.
+            </summary>
+        </member>
+        <member name="T:DPF.ViewModels.MainDPFViewModel">
+            <summary>
+            MainDPFViewModel class.
+            Provides methods and properties which control the presentation layer.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel.REFRESH_TIMER">
+            <summary>
+            Indicates the length of the interval between refreshing (in minutes).
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel.SLIDESHOW_TIMER">
+            <summary>
+            Indicates the length of the interval between photo changing during slideshow (in tenths of a second).
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel.EMPTY_PHOTOSET_DEFAULT_PATH">
+            <summary>
+            Contains path to default photo to display.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._isActive">
+            <summary>
+            Backing field of IsActive property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._isCodeVisible">
+            <summary>
+            Backing field of IsCodeVisible property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._isNetworkConnected">
+            <summary>
+            Backing field of IsNetworkConnected property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._isRefreshing">
+            <summary>
+            Flag indicating whether the refreshment process is on.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._isSlideshow">
+            <summary>
+            Backing field of IsSlideshow property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._deviceId">
+            <summary>
+            This DPF device ID.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._displayUnstoredPhotoCounter">
+            <summary>
+            Indicates how many photos where searched in storage while offline.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._keepActiveCounter">
+            <summary>
+            Indicates how much time passed since the user's last activity (in tenths of a second).
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._photoCounter">
+            <summary>
+            Number (in photoset) of currently displayed photo.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._slideshowCounter">
+            <summary>
+            Indicates how much time passed since the last slide changing (in tenths of a second).
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._code">
+            <summary>
+            Backing field of Code property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._deviceToken">
+            <summary>
+            This DPF device token.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._photoPath">
+            <summary>
+            Backing field of PhotoPath property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._refreshingColor">
+            <summary>
+            Backing field of RefreshingColor property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._currentPhotoset">
+            <summary>
+            Backing field of CurrentPhotoset property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._getDeviceAccounts">
+            <summary>
+            Backing field of GetDeviceAccounts property.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._localStorageModel">
+            <summary>
+            Instance of LocalStorageModel class.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._networkConnectionModel">
+            <summary>
+            Instance of NetworkConnectionModel class.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.MainDPFViewModel._connectedAccountsCollection">
+            <summary>
+            Backing field of ConnectedAccountsCollection property.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.IsActive">
+            <summary>
+            Flag indicating whether the device is in Active state or not.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.IsCodeVisible">
+            <summary>
+            Flag indicating whether the paring code is visible or not.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.IsNetworkConnected">
+            <summary>
+            Flag indicating whether the device is connected to the network or not.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.IsSlideshow">
+            <summary>
+            Flag indicating whether the slideshow is on or not.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.Code">
+            <summary>
+            Indicates current pairing code.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.PhotoPath">
+            <summary>
+            Indicates path to the currently displayed photo.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.RefreshingColor">
+            <summary>
+            Color indicating the status of the refreshment.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.ControlSlideshowCommand">
+            <summary>
+            Command which starts/pauses the slideshow.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.DisconnectAccountCommand">
+            <summary>
+            Command which starts the process of account disconnecting.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.GoToAccountsListPageCommand">
+            <summary>
+            Command which goes to the page with list of accounts.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.NextPhotoCommand">
+            <summary>
+            Command which changes displayed photo to the next one.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.PreviousPhotoCommand">
+            <summary>
+            Command which changes displayed photo to the previous one.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.RefreshCommand">
+            <summary>
+            Command which starts the process of refreshment.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.ShowCodeCommand">
+            <summary>
+            Command which shows the pairing code container.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.TapToActiveCommand">
+            <summary>
+            Command which changes the DPF state to Active state.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.CurrentPhotoset">
+            <summary>
+            Contains list of photos synchronized with the DPF.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.GetDeviceAccounts">
+            <summary>
+            Contains list of connected accounts.
+            Calls AssamblerAccountsList method whenever the value is set.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.MainDPFViewModel.ConnectedAccountsCollection">
+            <summary>
+            Contains collection of accounts connected with the DPF.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.#ctor">
+            <summary>
+            MainDPFViewModel class constructor.
+            Calls methods to initialize commands, _networkConnectionModel and _localStorageModel.
+            Starts timer to refresh photos automatically.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.InitCommands">
+            <summary>
+            Initilizes commands.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.InitNetworkConnectionModel">
+            <summary>
+            Initilizes instance of NetworkConnectionModel class.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.InitLocalStorageModel">
+            <summary>
+            Initilizes instance of LocalStorageModel class.
+            Calls model to read saved files saved data and photos.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.GetUpdates">
+            <summary>
+            Calls methods to update list of connected accounts
+            and updates collection of synchronized photos.
+            </summary>
+            <returns>Returns void Task.</returns>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteRefreshCommand">
+            <summary>
+            Handles execution of "RefreshCommand".
+            Updates _isRefresing flag.
+            Updates RefreshingColor property.
+            Calls method to update data.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.OnErrorOccurred(System.Object,System.String)">
+            <summary>
+            Handles ErrorOccurred event.
+            Notifies the user about the error.
+            </summary>
+            <param name="sender">Instance of object which invoked the event.</param>
+            <param name="errorMessage">Message of the error.</param>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.OnSynchronizationCompleted(System.Object,IDPFLibrary.DTO.GetAllFlickrPhotosURLResponseDTO)">
+            <summary>
+            Handles SynchronizationCompleted event.
+            Updates _isRefresing flag.
+            Updates RefreshingColor property.
+            </summary>
+            <param name="sender">Instance of object which invoked the event.</param>
+            <param name="newPhotoset">Collection of new photos.</param>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.GetAllPhotosUrl">
+            <summary>
+            Sends request to the server.
+            Receivies a response containing list with URLs to synchronized photos.
+            Updates CurrentPhotoset property.
+            Calls model to save list of synchronized photos in the storage.
+            Updates PhotoPath property.
+            </summary>
+            <returns>Returns void Task.</returns>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.GetConnectedAccountsRequest">
+            <summary>
+            Sends request to the server.
+            Receivies a response containing list of connected accounts.
+            Calls model to save list of connected accounts in the storage.
+            </summary>
+            <returns>Returns void Task.</returns>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteGoToAccountsListPageCommand">
+            <summary>
+            Checks whether the device is connected to the Internet.
+            Creates new instance of ConnectedAccountsPage class.
+            Navigates to the new page with connected accounts.
+            Updates IsActive property.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteNextPhotoCommand">
+            <summary>
+            Handles execution of "NextPhotoCommand".
+            Udpates value of _keepActiveCounter field.
+            Calls ChangeNextPhoto method.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ChangeNextPhoto">
+            <summary>
+            Updates value of _slideshowCounter and _photoCounter fields.
+            Calls model to get next photo to display.
+            Updates PhotoPath property.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecutePreviousPhotoCommand">
+            <summary>
+            Handles execution of "PreviousPhotoCommand".
+            Udpates value of _keepActiveCounter field.
+            Calls ChangePreviousPhoto method.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ChangePreviousPhoto">
+            <summary>
+            Updates value of _slideshowCounter and _photoCounter fields.
+            Calls model to get previous photo to display.
+            Updates PhotoPath property.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteTapToActiveCommand">
+            <summary>
+            Handles execution of "TapToActiveCommand".
+            Updates IsActive property.
+            Updates value of _keepActiveCounter field.
+            If the DPF is in Active state, starts a timer which controls device state.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteShowCodeCommand">
+            <summary>
+            Handles execution of "ShowCodeCommand".
+            Updates IsCodeVisible property.
+            Updates value of _keepActiveCounter field.
+            If IsCodeVisible flag is true, sends request to the server.
+            Receives response containing pairing code.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteControlSlideshowCommand">
+            <summary>
+            Handles execution of "ControlSlideshowCommand".
+            Updates IsSlideshow property.
+            Updates value of _keepActiveCounter field.
+            If IsSlideshow flag is true, starts a timer which controls photos to display.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.ExecuteDisconnectAccountCommand(System.Object)">
+            <summary>
+            Handles execution of "DisconnectAccountCommand".
+            Display pop-up with confirmation of account (specified by command parameter) disconnection.
+            If confirmed, calls DisconnectAccount method.
+            </summary>
+            <param name="param">Object indicating account to disconnect.</param>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.DisconnectAccount(System.Int32)">
+            <summary>
+            If connected to the Internet, sends request to the server to disconnect selected account.
+            Calls GetUpdate method. 
+            </summary>
+            <param name="accountId">ID of the account to disconnect.</param>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.AssamblerAccountsList">
+            <summary>
+            Updates ConnectedAccountsCollection property.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.MainDPFViewModel.CheckIfNetworkConnection">
+            <summary>
+            Calls model to check whether the device is connected to the Internet.
+            Upadtes IsNetworkConnected property.
+            </summary>
+            <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        </member>
+        <member name="T:DPF.ViewModels.WelcomePageViewModel">
+            <summary>
+            WelcomePageViewModel class.
+            Provides methods and properties which control the welcome page.
+            </summary>
+        </member>
+        <member name="F:DPF.ViewModels.WelcomePageViewModel._isReadyToConnect">
+            <summary>
+            Backing field of IsReadyToConnect property.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.WelcomePageViewModel.IsReadyToConnect">
+            <summary>
+            Flag indicating whether the device is ready to start connecting to the server or not.
+            </summary>
+        </member>
+        <member name="P:DPF.ViewModels.WelcomePageViewModel.CreateNewDeviceCommand">
+            <summary>
+            Command which sends request to the server to create new DPF device.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.WelcomePageViewModel.#ctor">
+            <summary>
+            WelcomePageViewModel class constructor.
+            </summary>
+        </member>
+        <member name="M:DPF.ViewModels.WelcomePageViewModel.ExecuteCreateNewDeviceCommand">
+            <summary>
+            Handles execution of "CreateNewDeviceCommand".
+            Updates IsReadyToConnect property.
+            Sends request to the server to create new DPF device.
+            Receives response containing device token.
+            Calls dependency service to save device token in storage.
+            Navigates to the main page.
+            </summary>
+        </member>
+        <member name="T:DPF.Views.WelcomePage">
+            <summary>
+            WelcomePage class.
+            </summary>
+        </member>
+        <member name="M:DPF.Views.WelcomePage.#ctor">
+            <summary>
+            WelcomePage class constructor.
+            </summary>
+        </member>
+    </members>
+</doc>

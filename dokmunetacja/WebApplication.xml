@@ -1,0 +1,2024 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApplication</name>
+    </assembly>
+    <members>
+        <member name="T:WebApplication.BundleConfig">
+            <summary>
+            bundle config class
+            </summary>
+        </member>
+        <member name="M:WebApplication.BundleConfig.RegisterBundles(System.Web.Optimization.BundleCollection)">
+            <summary>
+            method for registering bundles
+            </summary>
+            <param name="bundles">bundle collection</param>
+        </member>
+        <member name="T:WebApplication.FilterConfig">
+            <summary>
+            Filter config class
+            </summary>
+        </member>
+        <member name="M:WebApplication.FilterConfig.RegisterGlobalFilters(System.Web.Mvc.GlobalFilterCollection)">
+            <summary>
+            method for registering global filters
+            </summary>
+            <param name="filters">filters</param>
+        </member>
+        <member name="T:WebApplication.RouteConfig">
+            <summary>
+            Route config class
+            </summary>
+        </member>
+        <member name="M:WebApplication.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            method for registering routes
+            </summary>
+            <param name="routes">Route collection</param>
+        </member>
+        <member name="T:WebApplication.WebApiConfig">
+            <summary>
+            Web Api config class
+            </summary>
+        </member>
+        <member name="M:WebApplication.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+            method for registering config routes
+            </summary>
+            <param name="config">Http configuartion</param>
+        </member>
+        <member name="T:WebApplication.Controllers.AccountController">
+            <summary>
+            Controller class responsible for manipulating and exposing folders
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.AccountController.authService">
+            <summary>
+            authentication service for authentication handling
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.AccountController.#ctor">
+            <summary>
+            Constructor for AccountController
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.AccountController.#ctor(WebApplication.Services.IAuthenticationService)">
+            <summary>
+            Constructor for AccountController
+            </summary>
+            <param name="auth">instacne of authentication service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.AccountController.Index">
+            <summary>
+            prepares the account view
+            </summary>
+            <returns>
+            account view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.AccountController.ChangePassword(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Changes password an account
+            </summary>
+            <param name="oldPassword">old password</param>
+            <param name="password">new password</param>
+            <param name="password2">new password repeated</param>
+            <param name="id">account id to be changed.</param>
+            <returns>
+            ChangePassword view 
+            </returns>
+        </member>
+        <member name="T:WebApplication.Controllers.CloudController">
+            <summary>
+            Controller class responsible for manipulating and exposing clouds
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.CloudController.authService">
+            <summary>
+            authentication service for authentication handling
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.CloudController.cloudService">
+            <summary>
+            cloud service exposing cloud related database information
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.#ctor">
+            <summary>
+            constructor for CloudController
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.#ctor(WebApplication.Services.ICloudService)">
+            <summary>
+            constructor for CloudController
+            </summary>
+            <param name="cs">instance of cloud service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.Index">
+            <summary>
+            method for preparing cloud view
+            </summary>
+            <returns>
+            cloud index view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.ConfirmDeleteCloud(System.Int32)">
+            <summary>
+            controller method used for deleting a cloud
+            </summary>
+            <param name="cloudId">cloud id indentifying the cloud to be removed</param>
+            <returns>
+            returns cloud view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.DeleteCloud(System.Int32)">
+            <summary>
+            controller method responsible for displaying the delete cloud view. This method does not remove the cloud from the database
+            </summary>
+            <param name="cloudId">cloud Id of the cloud to be removed</param>
+            <returns>
+            returns confirm delete cloud view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.NewCloud">
+            <summary>
+            controller method responsible for displaying new cloud view. This controller does not create a new cloud
+            </summary>
+            <returns>
+            returns new cloud view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.ConnectWithProvider(WebApplication.Models.ProviderType,System.String)">
+            <summary>
+            this controller method is the first step to connecting with a provider.
+            </summary>
+            <param name="Providers">type of provider a new connection is to be made</param>
+            <param name="accountName">custom name for cloud account</param>
+            <returns>redirects to appropriate authentication page</returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.ConfirmFlickrConnection(System.String)">
+            <summary>
+            Adds a new Flickr cloud
+            </summary>
+            <param name="accountName">custom name for cloud</param>
+            <returns>
+            view with result of adding
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.CloudController.ConfirmDropBoxConnection(System.String,System.String)">
+            <summary>
+            Adds a new Dropbox cloud
+            </summary>
+            <param name="code">code</param>
+            <param name="state">state</param>
+            <returns>
+            view with result of adding
+            </returns>
+        </member>
+        <member name="T:WebApplication.Controllers.DeviceController">
+            <summary>
+            Controller class responsible for manipulating and exposing devices
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.DeviceController.authService">
+            <summary>
+            authentication service for authentication handling
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.DeviceController.deviceService">
+            <summary>
+            folder service exposing folder related database information
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.#ctor">
+            <summary>
+            constructor for DeviceController
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.#ctor(WebApplication.Services.IDeviceService)">
+            <summary>
+            constructor for DeviceController
+            </summary>
+            <param name="dev">instance of device service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.#ctor(WebApplication.Services.IAuthenticationService)">
+            <summary>
+            constructor for DeviceController
+            </summary>
+            <param name="auth"> instance of authentication service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.#ctor(WebApplication.Services.IDeviceService,WebApplication.Services.IAuthenticationService)">
+            <summary>
+            constructor for DeviceController
+            </summary>
+            <param name="dev">instance of device service</param>
+            <param name="auth"> instance of authentication service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.Index">
+            <summary>
+            prepares device view
+            </summary>
+            <returns>
+            device view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.NewDevice">
+            <summary>
+            prepares new device view
+            </summary>
+            <returns>
+            device view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.GeneratePairCode(System.Int32,System.String)">
+            <summary>
+            generates a new paircode
+            </summary>
+            <param name="deviceId">device id for which the paircode will be generated</param>
+            <param name="deviceToken">device auhtentication token</param>
+            <returns>
+            string with paircode
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.DeleteDevice(System.Int32,System.String)">
+            <summary>
+            prepares delete device view
+            </summary>
+            <param name="deviceId">device Id to be deleted</param>
+            <param name="deviceName">device name to be deleted</param>
+            <returns>
+            confirm delete device view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.ConfirmDeleteDevice(System.Int32)">
+            <summary>
+            deletes device
+            </summary>
+            <param name="deviceId">device id to be dedleted</param>
+            <returns>
+            device view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.PairDevice(System.String,System.String)">
+            <summary>
+            pairs with device
+            </summary>
+            <param name="pairCode">paircode for pairing</param>
+            <param name="deviceName">device to paired with</param>
+            <returns>
+            pair device view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.CreateNewDevice(System.String)">
+            <summary>
+            creates a new device
+            </summary>
+            <param name="key">secret application key</param>
+            <returns>
+            CreateNewDeviceDTO object on success
+            Forbidden if key is invalid
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.GetDeviceAccounts(System.Int32,System.String)">
+            <summary>
+            gets all accounts connected to the device
+            </summary>
+            <param name="deviceId">device id for which the paircode will be generated</param>
+            <param name="deviceToken">device auhtentication token</param>
+            <returns>
+            GetDeviceAccountsDTO object on success 
+            http status Forbidden if token is invalid
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.UnpairDevice(System.Int32,System.String,System.Int32)">
+            <summary>
+            unpairs account from a given device
+            </summary>
+            <param name="deviceId">device id for which the paircode will be generated</param>
+            <param name="deviceToken">device auhtentication token</param>
+            <param name="accountId">account id to be unpaired</param>
+            <returns>
+            http status Ok on success
+            http status not found if account id cannot be found
+            http status Forbidden if token is invalid
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.DeviceController.GetAllPhotosUrl(System.Int32,System.String,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            finds all photos connected to the device and and accounts
+            </summary>
+            <param name="deviceId">device id for which the paircode will be generated</param>
+            <param name="deviceToken">device auhtentication token</param>
+            <param name="accountIds">account ids to download photos from</param>
+            <returns>
+            GetAllFlickrPhotosURLResponseDTO object on success
+            internal server error if the cloud token has been revoked
+            Forbidden if device token is invalid
+            </returns>
+        </member>
+        <member name="T:WebApplication.Controllers.FolderController">
+            <summary>
+            Controller class responsible for manipulating and exposing folders
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.FolderController.authService">
+            <summary>
+            authentication service for authentication handling
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.FolderController.deviceService">
+            <summary>
+            device service exposing device related database information
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.FolderController.folderService">
+            <summary>
+            folder service exposing folder related database information
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.FolderController.cloudService">
+            <summary>
+            cloud service exposing cloud related database information
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor">
+            <summary>
+            Constructor for FolderController
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor(WebApplication.Services.IDeviceService,WebApplication.Services.ICloudService)">
+            <summary>
+            Constructor for FolderController
+            </summary>
+            <param name="dev">instance of device service</param>
+            <param name="cloud">instance of cloud service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor(WebApplication.Services.ICloudService)">
+            <summary>
+            Constructor for FolderController
+            </summary>
+            <param name="cloud">instance of cloud service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor(WebApplication.Services.IAuthenticationService)">
+            <summary>
+            Constructor for FolderController
+            </summary>
+            <param name="auth"> instance of authentication service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor(WebApplication.Services.IAuthenticationService,WebApplication.Services.IFolderService)">
+            <summary>
+            constructor for FolderController
+            </summary>
+            <param name="auth"> instance of authentication service</param>
+            <param name="folders"> instacne of folderService</param>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.#ctor(WebApplication.Services.IAuthenticationService,WebApplication.Services.IFolderService,WebApplication.Services.ICloudService)">
+            <summary>
+            constructor for FolderController
+            </summary>
+            <param name="auth"> instance of authentication service</param>
+            <param name="cloud">instance of cloud service</param>
+            <param name="folders"> instacne of folderService</param>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.Index(System.Nullable{System.Int32})">
+            <summary>
+            Returns view of folders divided into devices 
+            </summary>
+            <param name="IdOfOpenDevice">optional parameter, if it is set the folders for given device will not be collapsed</param>
+            <returns>view for folders</returns>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.NewFolder(System.Int32)">
+            <summary>
+            this method creates the view for creating a new folder. It pulls all clouds connected to Account and adds them to ViewBag cloud
+            </summary>
+            <param name="deviceId">id of device the method should add folders to</param>
+            <returns>
+            view for selecting folder
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.DeleteFolder(System.Int32,System.String)">
+            <summary>
+            prepares a confirm delete folder view
+            </summary>
+            <param name="folderId">folderid to be removed</param>
+            <param name="folderName">folder name to be removed </param>
+            <returns>
+            confirm delete folder view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.ConfirmDeleteFolder(System.Int32)">
+            <summary>
+            deletes folder from database
+            </summary>
+            <param name="folderId">id of folder to be deleted</param>
+            <returns>
+            return foler view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.SelectFolder(System.Int32,System.Int32)">
+            <summary>
+            prepares view with folders that can be added to device
+            </summary>
+            <param name="Clouds">cloud id from which we will add folders</param>
+            <param name="deviceId">device id to which device we will add folder</param>
+            <returns>
+            select folder view model
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.FolderController.ConfirmAddFolder(WebApplication.ViewModels.SelectFolderViewModel,System.Int32,System.Int32)">
+            <summary>
+            method for adding list of folders
+            </summary>
+            <param name="model">list of folders to be added</param>
+            <param name="cloudId">cloud from which the folders will be added</param>
+            <param name="deviceId">device to which folders will be added</param>
+            <returns>
+            folder view
+            </returns>
+        </member>
+        <member name="T:WebApplication.Controllers.HomeController">
+            <summary>
+            Controller responsible for the home page
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.HomeController.Index">
+            <summary>
+            displays the home page
+            </summary>
+            <returns>
+            Home view
+            </returns>
+        </member>
+        <member name="T:WebApplication.Controllers.LoginController">
+            <summary>
+            Controller for logging in/out nad registering
+            </summary>
+        </member>
+        <member name="F:WebApplication.Controllers.LoginController.authService">
+            <summary>
+            authentication service for authentication handling
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.#ctor">
+            <summary>
+            constructor for LoginController
+            </summary>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.#ctor(WebApplication.Services.IAuthenticationService)">
+            <summary>
+            constructor for LoginController
+            </summary>
+            <param name="auth"> instance of authentication service</param>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.Index">
+            <summary>
+            method for displaying login screen
+            </summary>
+            <returns>
+            Login view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.Login(System.String,System.String)">
+            <summary>
+            Controller method for loggin accepting credentials. On succes it sets Session["UserId"]
+            </summary>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <returns>On success redirect to home
+            On failure returns login view</returns>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.LogOut">
+            <summary>
+            logs out of the service
+            </summary>
+            <returns>
+            login view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.Register">
+            <summary>
+            preperas view for registering
+            </summary>
+            <returns>
+            register view
+            </returns>
+        </member>
+        <member name="M:WebApplication.Controllers.LoginController.RegisterConfirm(System.String,System.String,System.String)">
+            <summary>
+            registers a new account
+            </summary>
+            <param name="login">new login</param>
+            <param name="password">password</param>
+            <param name="password2">password repeated</param>
+            <returns></returns>
+        </member>
+        <member name="T:WebApplication.Data.ApplicationContext">
+            <summary>
+            Application context class, represents the database. Based on this class the entity framework generates a database.
+            </summary>
+        </member>
+        <member name="P:WebApplication.Data.ApplicationContext.Devices">
+            <summary>
+            devices
+            </summary>
+        </member>
+        <member name="P:WebApplication.Data.ApplicationContext.Accounts">
+            <summary>
+            accounts
+            </summary>
+        </member>
+        <member name="P:WebApplication.Data.ApplicationContext.Clouds">
+            <summary>
+            clouds
+            </summary>
+        </member>
+        <member name="P:WebApplication.Data.ApplicationContext.Folders">
+            <summary>
+            folders
+            </summary>
+        </member>
+        <member name="P:WebApplication.Data.ApplicationContext.DeviceNames">
+            <summary>
+            DeviceNames
+            </summary>
+        </member>
+        <member name="M:WebApplication.Data.ApplicationContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            overriden onModelCreating method with our Application context
+            </summary>
+            <param name="modelBuilder">model builder</param>
+        </member>
+        <member name="T:WebApplication.Models.Account">
+            <summary>
+            Account model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Account.#ctor">
+            <summary>
+            constructor for Account
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Account.#ctor(System.String,System.String)">
+            <summary>
+            constructor for Account
+            </summary>
+            <param name="accountName">account name</param>
+            <param name="password">password, default value is ""</param>
+        </member>
+        <member name="M:WebApplication.Models.Account.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            constructor for Account
+            </summary>
+            <param name="id">id</param>
+            <param name="login">login</param>
+            <param name="password">password</param>
+        </member>
+        <member name="M:WebApplication.Models.Account.#ctor(System.String,System.String,System.Collections.Generic.ICollection{WebApplication.Models.Device})">
+            <summary>
+            constructor for Account
+            </summary>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <param name="devices">collection of devices</param>
+        </member>
+        <member name="M:WebApplication.Models.Account.#ctor(System.Int32,System.String,System.String,System.Collections.Generic.ICollection{WebApplication.Models.Device})">
+            <summary>
+            constructor for Account
+            </summary>
+            <param name="id">id</param>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <param name="devices">collection of devices</param>
+        </member>
+        <member name="P:WebApplication.Models.Account.Id">
+            <summary>
+            id, has to be unique
+            max lenttgh 200 characters
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Account.Password">
+            <summary>
+            password
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Account.Devices">
+            <summary>
+            collection of devices
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Account.HashPassword(System.String)">
+            <summary>
+            helper function to create hashed password. Store the result of this function in db
+            </summary>
+            <param name="password">string to be hashed</param>
+            <returns>
+            returns string of with hashed value
+            </returns>
+        </member>
+        <member name="M:WebApplication.Models.Account.PasswordEquals(System.String,System.String)">
+            <summary>
+            helper function to compare passwords
+            </summary>
+            <param name="password">first password (not hashed)</param>
+            <param name="hashedPassword">hashed password to compare to </param>
+            <returns>
+            true if strings have same hash value
+            false if strings have different hash value
+            </returns>
+        </member>
+        <member name="T:WebApplication.Models.ProviderType">
+            <summary>
+            enum with all providers
+            onedrive and google drive are depreciated
+            </summary>
+        </member>
+        <member name="F:WebApplication.Models.ProviderType.GoogleDrive">
+            <summary>
+            google drive depreciated
+            </summary>
+        </member>
+        <member name="F:WebApplication.Models.ProviderType.OneDrive">
+            <summary>
+            onedrive depreciated
+            </summary>
+        </member>
+        <member name="F:WebApplication.Models.ProviderType.DropBox">
+            <summary>
+            dropbox
+            </summary>
+        </member>
+        <member name="F:WebApplication.Models.ProviderType.Flicker">
+            <summary>
+            flickr
+            </summary>
+        </member>
+        <member name="T:WebApplication.Models.Cloud">
+            <summary>
+            Cloud model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Cloud.#ctor">
+            <summary>
+            constructor for Cloud
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Cloud.#ctor(WebApplication.Models.ProviderType,System.String)">
+            <summary>
+            constructor for Cloud
+            </summary>
+            <param name="provider">Provider type enum class</param>
+            <param name="login">login</param>
+        </member>
+        <member name="M:WebApplication.Models.Cloud.#ctor(System.String,WebApplication.Models.ProviderType,System.String,System.Int32)">
+            <summary>
+            constructor for Cloud class
+            </summary>
+            <param name="provider">Provider type enum class</param>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <param name="id">id</param>
+        </member>
+        <member name="M:WebApplication.Models.Cloud.#ctor(System.Int32,System.String,WebApplication.Models.ProviderType,System.String,System.Int32)">
+            <summary>
+            constructor for Cloud class
+            </summary>
+            <param name="provider">Provider type enum class</param>
+            <param name="login">login</param>
+            <param name="cloudId">cloud Id</param>
+            <param name="password">password</param>
+            <param name="id">id</param>
+        </member>
+        <member name="M:WebApplication.Models.Cloud.#ctor(WebApplication.Models.ProviderType,System.String,WebApplication.Models.Account,System.String,System.String,System.String)">
+            <summary>
+            constructor for Cloud class
+            </summary>
+            <param name="provider">Provider type enum class</param>
+            <param name="login">login</param>
+            <param name="account">instance of Account class</param>
+            <param name="token">token</param>
+            <param name="tokenSecret">token secret</param>
+            <param name="flickrUserId"> flickr userId</param>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.FlickrUserId">
+            <summary>
+            flickr user id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Password">
+            <summary>
+            password depreciated field
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Provider">
+            <summary>
+            instance of provider enum type
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Login">
+            <summary>
+            login
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Account">
+            <summary>
+            instance of Account model class that the cloud is connected to
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.Token">
+            <summary>
+            token used to authenticate with provider
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Cloud.TokenSecret">
+            <summary>
+            token secret used to authenticate with provider
+            </summary>
+        </member>
+        <member name="T:WebApplication.Models.Device">
+            <summary>
+            device model class
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Device.DeviceToken">
+            <summary>
+            device token
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Device.DeviceId">
+            <summary>
+            device id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Device.Name">
+            <summary>
+            name for device
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Device.Accounts">
+            <summary>
+            collection of Account model class
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Device.ConnectionCode">
+            <summary>
+            connection code, needed to conect with device
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor">
+            <summary>
+            constructor for Device model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor(System.Int32,System.String)">
+            <summary>
+            constructor for Device model class
+            </summary>
+            <param name="name">name</param>
+            <param name="id">id</param>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor(System.String,System.Collections.Generic.ICollection{WebApplication.Models.Account})">
+            <summary>
+            constructor for Device model class
+            </summary>
+            <param name="name">name</param>
+            <param name="accounts">Collection of account model class</param>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor(System.Int32,System.String,System.Collections.Generic.ICollection{WebApplication.Models.Account},System.String)">
+            <summary>
+            constructor for Device model class
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="name">name</param>
+            <param name="accounts">Collection of account model class</param>
+            <param name="connectionCode"> connection code</param>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor(System.String,System.String,System.Collections.Generic.ICollection{WebApplication.Models.Account},System.String)">
+            <summary>
+            constructor for Device model class
+            </summary>
+            <param name="deviceToken">device token</param>
+            <param name="name">name</param>
+            <param name="accounts">Collection of account model class</param>
+            <param name="connectionCode"> connection code</param>
+        </member>
+        <member name="M:WebApplication.Models.Device.#ctor(System.String,System.String,System.Collections.Generic.ICollection{WebApplication.Models.Account})">
+            <summary>
+            constructor for Device model class
+            </summary>
+            <param name="deviceToken">device token</param>
+            <param name="name">name</param>
+            <param name="accounts">Collection of account model class</param>
+        </member>
+        <member name="T:WebApplication.Models.DeviceName">
+            <summary>
+            device name model class, class connecting devices and accounts
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.DeviceName.#ctor">
+            <summary>
+            constructor for DeviceName model class
+            </summary>   
+        </member>
+        <member name="M:WebApplication.Models.DeviceName.#ctor(WebApplication.Models.Account,WebApplication.Models.Device,System.String)">
+            <summary>
+            constructor for DeviceName model class
+            </summary>
+            <param name="account">instance of Account model class</param>
+            <param name="device">instance of Device model class</param>
+            <param name="customDeviceName">custom name for device</param>
+        </member>
+        <member name="M:WebApplication.Models.DeviceName.#ctor(System.Int32,WebApplication.Models.Account,WebApplication.Models.Device,System.String)">
+            <summary>
+            constructor for DeviceName model class
+            </summary>
+            <param name="deviceNameId">id</param>
+            <param name="account">instance of Account model class</param>
+            <param name="device">instance of Device model class</param>
+            <param name="customDeviceName">custom name for device</param>
+        </member>
+        <member name="P:WebApplication.Models.DeviceName.DeviceNameId">
+            <summary>
+            id for entry
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.DeviceName.CustomDeviceName">
+            <summary>
+            custom name for device, specific to the account
+            </summary>
+        </member>
+        <member name="T:WebApplication.Models.Folder">
+            <summary>
+            Folder Model class
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.FolderId">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.Name">
+            <summary>
+            name
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.DeviceId">
+            <summary>
+            dedvice Id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.Device">
+            <summary>
+            instancec of Device model class
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.CloudId">
+            <summary>
+            cloud Id
+            </summary>
+        </member>
+        <member name="P:WebApplication.Models.Folder.Cloud">
+            <summary>
+            instance of Cloud model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Folder.#ctor">
+            <summary>
+            constructor for folder model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Models.Folder.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            constructor for folder model class
+            </summary>
+            <param name="name">name</param>
+            <param name="deviceId">device id</param>
+            <param name="cloudId">cloud id</param>
+        </member>
+        <member name="M:WebApplication.Models.Folder.#ctor(System.String,WebApplication.Models.Device,WebApplication.Models.Cloud)">
+            <summary>
+            constructor for folder model class
+            </summary>
+            <param name="name">name</param>
+            <param name="device">instance of device model class</param>
+            <param name="cloud">instance of cloud model class</param>
+        </member>
+        <member name="T:WebApplication.Services.AuthenticationService">
+            <summary>
+            authentication service class for session based authentication
+            </summary>
+        </member>
+        <member name="F:WebApplication.Services.AuthenticationService.db">
+            <summary>
+            instance of application context to manipulate the database
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.#ctor">
+            <summary>
+            constructor for AuthenticationService class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.Login(System.String,System.String)">
+            <summary>
+            function used to authenticate into the service
+            </summary>
+            <param name="username">accounts username</param>
+            <param name="password">password assigned to account</param>
+            <returns>true on successfull authentication
+            false on unsucessfull authentication</returns>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.IsAuthenticated(System.Web.HttpSessionStateBase)">
+            <summary>
+            checks if the session contains an uthenticated user
+            </summary>
+            <param name="Session">Http Session object</param>
+            <returns>
+            true if there is an authenticated instance
+            false if there is no authenticated instance
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.getLoggedInUsername(System.Web.HttpSessionStateBase)">
+            <summary>
+            method for retrieving username from session
+            </summary>
+            <param name="session">Http Session object</param>
+            <returns>
+            string with username on success
+            null if no user is authenticated
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.RegisterAccount(System.String,System.String)">
+            <summary>
+            method for registering a new account
+            </summary>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <returns>
+            returns a string with result message
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.ChangePassword(System.String,System.String,System.String)">
+            <summary>
+            method for changing an accounts password
+            </summary>
+            <param name="oldPassword">old password</param>
+            <param name="newPassword">new password</param>
+            <param name="username">username</param>
+            <returns>
+            true on success
+            false account cannot befound
+            false if oldpassword does not match the database hash
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.AuthenticationService.GetAccountLogin(System.Int32)">
+            <summary>
+            method for getting account model class
+            </summary>
+            <param name="id">id of account</param>
+            <returns>
+            Account model class
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.CloudService">
+            <summary>
+            cloud service class for manipulating the database in regards to cloud
+            </summary>
+        </member>
+        <member name="F:WebApplication.Services.CloudService.db">
+            <summary>
+            instance of application context to manipulate the database
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.#ctor">
+            <summary>
+            constructor for CloudService class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.GetClouds(System.String)">
+            <summary>
+            method for obtaining all clouds connected to given username
+            </summary>
+            <param name="username">username</param>
+            <returns>
+            List of clouds
+            in case no account was found an empty list  is returned
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.removeCloud(System.Int32)">
+            <summary>
+            removes a cloud from the database based on id
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <returns>
+            true on success
+            false if account cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.ChangePassword(System.String,System.String,System.Int32)">
+            <summary>
+            method for changing password. Dedpreciated do not use
+            </summary>
+            <param name="oldPassword">old password</param>
+            <param name="newPassword">new password</param>
+            <param name="cloudId">cloud id</param>
+            <returns>
+            true on success
+            false if cloud cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.CreateFlickerAccount(FlickrNet.OAuthAccessToken,System.String,System.String)">
+            <summary>
+            method for creating flickr cloud model and adding it to the database
+            </summary>
+            <param name="token">token later used to authenticate requests</param>
+            <param name="accountName">new custom cloud name</param>
+            <param name="username">username of account to which we should add the cloud</param>
+            <returns>
+            true on success
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.CreateDropBoxAccount(System.String,System.String,System.String,System.String)">
+            <summary>
+            method for creating dropbox cloud model and adding it to the database
+            </summary>
+            <param name="token">token later used to authenticate requests</param>
+            <param name="accountName">new custom cloud name</param>
+            <param name="username">username of account to which we should add the cloud</param>
+            <param name="userId">userid specific to dropbox</param>
+            <returns>
+            true on success
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.CloudService.GetCloud(System.Int32)">
+            <summary>
+            method for getting cloud model class instance
+            </summary>
+            <param name="cloudId">cloud id of the cloud to retrieve</param>
+            <returns>
+            Cloud model instance
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.DeviceService">
+            <summary>
+            cloud service class for manipulating the database in regards to cloud
+            </summary>
+        </member>
+        <member name="F:WebApplication.Services.DeviceService.db">
+            <summary>
+            instance of application context to manipulate the database
+            </summary>
+        </member>
+        <member name="F:WebApplication.Services.DeviceService.CODESIZE">
+            <summary>
+            number of characters in paircode
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.#ctor">
+            <summary>
+            contructor for DeviceService class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.GetDevices(System.String)">
+            <summary>
+            this method will return all devices connected to the user with names that are connected to this account
+            </summary>
+            <param name="username">username of account from which to retrieve devices</param>
+            <returns>
+            List of DeviceName model class
+            returns an empty list if account cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.UnpairDevice(System.Int32,System.String)">
+            <summary>
+            method for unpairing a device from an account
+            </summary>
+            <param name="deviceId">dedvice id</param>
+            <param name="userName"> account username</param>
+            <returns>
+            true on success
+            false if either device or user cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.PairDevice(System.String,System.String,System.String)">
+            <summary>
+            method for conecting a device to an account
+            </summary>
+            <param name="code">pair code from device</param>
+            <param name="deviceName">custom device name specific to account</param>
+            <param name="userName">account username</param>
+            <returns>
+            string message based on result
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.GeneratePairCode(System.Int32,System.String)">
+            <summary>
+            method for generating a pair code of CODESIZE (7)
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken">device token for authorization</param>
+            <returns>
+            string paircode on success
+            empty string token does not match the database (authorization failure)
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.CreateDevice(System.String)">
+            <summary>
+            method for creating a device
+            </summary>
+            <param name="code">secret application code</param>
+            <returns>
+            CreateNewDeviceDTO class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.TrueRandomString(System.Int32)">
+            <summary>
+            method for creating a true random string
+            </summary>
+            <param name="lenght">string length</param>
+            <returns>
+            randomly generated string
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.GetDeviceAccounts(System.Int32,System.String)">
+            <summary>
+            method for getting all accounts connected to given device
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken"> device token</param>
+            <returns>
+            GetDeviceAccountsDTO class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.DeviceIsAuthenticated(System.Int32,System.String)">
+            <summary>
+            method for chekcing if device token matches the database. Used for device authorization
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken">device token</param>
+            <returns>
+            true if token matches database token
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.DeviceService.GetAllPhotosUrl(System.Collections.Generic.List{System.Int32},System.Int32)">
+            <summary>
+            method for getting all photo urls with thier respective metadata
+            </summary>
+            <param name="accountIds">list of accounts from which to extract photos from</param>
+            <param name="deviceId">target device</param>
+            <returns>
+            GetAllFlickrPhotosURLResponseDTO class
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.FolderService">
+            <summary>
+            folder service class for manipulating the database in regards to folders
+            </summary>
+        </member>
+        <member name="F:WebApplication.Services.FolderService.db">
+            <summary>
+            instance of application context to manipulate the database
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.#ctor">
+            <summary>
+            constructor for FolderService class
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.getFolders(System.Int32)">
+            <summary>
+            method for retrieving all folders connected to device
+            </summary>
+            <param name="deviceId">device id</param>
+            <returns>
+            list of Folder model class
+            empty list if device cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.deleteFolder(System.Int32)">
+            <summary>
+            method for deleting folder
+            </summary>
+            <param name="folderId">folder id</param>
+            <returns>
+            true on success
+            false if folder cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.RefreshFlickrFolders(System.Int32)">
+            <summary>
+            method for checking if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+            </summary>
+            <param name="cloudId">cloud id from which we retrieve the folders</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.RefreshDropboxFolders(System.Int32)">
+            <summary>
+            method for checking if any of the Dropbox Folders have been removed if they have we delete them from our db and return the actual list of folders
+            </summary>
+            <param name="cloudId">cloud id from which we retrieve the folders</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.GetFlickrFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all Flickr folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of UniversalFolder object
+            null if token has been removed
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.GetDropboxFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all Dropbox folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of UniversalFolder object
+            null if token has been removed
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.GetDeviceFlickrFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all selected Flickr folders. If a folder has been removed on the side of the provider we do not return it
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of Photoset class (FlickrNet class)
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.GetDeviceDropboxFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all selected Dropbox folders. If a folder has been removed on the side of the provider we do not return it
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.FolderService.AddCloudFolders(System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
+            <summary>
+            method for adding folders
+            </summary>
+            <param name="folders">list of string (folder names)</param>
+            <param name="cloudId"> cloud id</param>
+            <param name="deviceId"> device id</param>
+            <returns>
+            true on succes
+            false otherwise
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.IAuthenticationService">
+            <summary>
+            interface for authentication service
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.ChangePassword(System.String,System.String,System.String)">
+            <summary>
+            method for changing an accounts password
+            </summary>
+            <param name="oldPassword">old password</param>
+            <param name="newPassword">new password</param>
+            <param name="username">username</param>
+            <returns>
+            true on success
+            false account cannot befound
+            false if oldpassword does not match the database hash
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.GetAccountLogin(System.Int32)">
+            <summary>
+            method for getting account model class
+            </summary>
+            <param name="id">id of account</param>
+            <returns>
+            Account model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.getLoggedInUsername(System.Web.HttpSessionStateBase)">
+            <summary>
+            method for retrieving username from session
+            </summary>
+            <param name="session">Http Session object</param>
+            <returns>
+            string with username on success
+            null if no user is authenticated
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.IsAuthenticated(System.Web.HttpSessionStateBase)">
+            <summary>
+            checks if the session contains an uthenticated user
+            </summary>
+            <param name="Session">Http Session object</param>
+            <returns>
+            true if there is an authenticated instance
+            false if there is no authenticated instance
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.Login(System.String,System.String)">
+            <summary>
+            function used to authenticate into the service
+            </summary>
+            <param name="username">accounts username</param>
+            <param name="password">password assigned to account</param>
+            <returns>true on successfull authentication
+            false on unsucessfull authentication</returns>
+        </member>
+        <member name="M:WebApplication.Services.IAuthenticationService.RegisterAccount(System.String,System.String)">
+            <summary>
+            method for registering a new account
+            </summary>
+            <param name="login">login</param>
+            <param name="password">password</param>
+            <returns>
+            returns a string with result message
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.ICloudService">
+            <summary>
+            interface for cloud service
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.ChangePassword(System.String,System.String,System.Int32)">
+            <summary>
+            method for changing password. Dedpreciated do not use
+            </summary>
+            <param name="oldPassword">old password</param>
+            <param name="newPassword">new password</param>
+            <param name="cloudId">cloud id</param>
+            <returns>
+            true on success
+            false if cloud cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.CreateDropBoxAccount(System.String,System.String,System.String,System.String)">
+            <summary>
+            method for creating dropbox cloud model and adding it to the database
+            </summary>
+            <param name="token">token later used to authenticate requests</param>
+            <param name="accountName">new custom cloud name</param>
+            <param name="username">username of account to which we should add the cloud</param>
+            <param name="userId">userid specific to dropbox</param>
+            <returns>
+            true on success
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.CreateFlickerAccount(FlickrNet.OAuthAccessToken,System.String,System.String)">
+            <summary>
+            method for creating flickr cloud model and adding it to the database
+            </summary>
+            <param name="token">token later used to authenticate requests</param>
+            <param name="accountName">new custom cloud name</param>
+            <param name="username">username of account to which we should add the cloud</param>
+            <returns>
+            true on success
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.GetCloud(System.Int32)">
+            <summary>
+            method for getting cloud model class instance
+            </summary>
+            <param name="cloudId">cloud id of the cloud to retrieve</param>
+            <returns>
+            Cloud model instance
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.GetClouds(System.String)">
+            <summary>
+            method for obtaining all clouds connected to given username
+            </summary>
+            <param name="username">username</param>
+            <returns>
+            List of clouds
+            in case no account was found an empty list  is returned
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.ICloudService.removeCloud(System.Int32)">
+            <summary>
+            removes a cloud from the database based on id
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <returns>
+            true on success
+            false if account cannot be found
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.IDeviceService">
+            <summary>
+            interface for device service
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.CreateDevice(System.String)">
+            <summary>
+            method for creating a device
+            </summary>
+            <param name="code">secret application code</param>
+            <returns>
+            CreateNewDeviceDTO class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.DeviceIsAuthenticated(System.Int32,System.String)">
+            <summary>
+            method for chekcing if device token matches the database. Used for device authorization
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken">device token</param>
+            <returns>
+            true if token matches database token
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.GeneratePairCode(System.Int32,System.String)">
+            <summary>
+            method for generating a pair code of CODESIZE (7)
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken">device token for authorization</param>
+            <returns>
+            string paircode on success
+            empty string token does not match the database (authorization failure)
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.GetAllPhotosUrl(System.Collections.Generic.List{System.Int32},System.Int32)">
+            <summary>
+            method for getting all photo urls with thier respective metadata
+            </summary>
+            <param name="accountIds">list of accounts from which to extract photos from</param>
+            <param name="deviceId">target device</param>
+            <returns>
+            GetAllFlickrPhotosURLResponseDTO class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.GetDeviceAccounts(System.Int32,System.String)">
+            <summary>
+            method for getting all accounts connected to given device
+            </summary>
+            <param name="deviceId">device id</param>
+            <param name="deviceToken"> device token</param>
+            <returns>
+            GetDeviceAccountsDTO class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.GetDevices(System.String)">
+            <summary>
+            this method will return all devices connected to the user with names that are connected to this account
+            </summary>
+            <param name="username">username of account from which to retrieve devices</param>
+            <returns>
+            List of DeviceName model class
+            returns an empty list if account cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.PairDevice(System.String,System.String,System.String)">
+            <summary>
+            method for conecting a device to an account
+            </summary>
+            <param name="code">pair code from device</param>
+            <param name="deviceName">custom device name specific to account</param>
+            <param name="userName">account username</param>
+            <returns>
+            string message based on result
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.TrueRandomString(System.Int32)">
+            <summary>
+            method for creating a true random string
+            </summary>
+            <param name="lenght">string length</param>
+            <returns>
+            randomly generated string
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IDeviceService.UnpairDevice(System.Int32,System.String)">
+            <summary>
+            method for unpairing a device from an account
+            </summary>
+            <param name="deviceId">dedvice id</param>
+            <param name="userName"> account username</param>
+            <returns>
+            true on success
+            false if either device or user cannot be found
+            </returns>
+        </member>
+        <member name="T:WebApplication.Services.IFolderService">
+            <summary>
+            interface for folder service
+            </summary>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.AddCloudFolders(System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
+            <summary>
+            method for adding folders
+            </summary>
+            <param name="folders">list of string (folder names)</param>
+            <param name="cloudId"> cloud id</param>
+            <param name="deviceId"> device id</param>
+            <returns>
+            true on succes
+            false otherwise
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.deleteFolder(System.Int32)">
+            <summary>
+            method for deleting folder
+            </summary>
+            <param name="folderId">folder id</param>
+            <returns>
+            true on success
+            false if folder cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.GetDeviceDropboxFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all selected Dropbox folders. If a folder has been removed on the side of the provider we do not return it
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.GetDeviceFlickrFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all selected Flickr folders. If a folder has been removed on the side of the provider we do not return it
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of Photoset class (FlickrNet class)
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.GetDropboxFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all Dropbox folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of UniversalFolder object
+            null if token has been removed
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.GetFlickrFolders(System.Int32,System.Int32)">
+            <summary>
+            returns all Flickr folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+            </summary>
+            <param name="cloudId">cloud id</param>
+            <param name="deviceId">device id</param>
+            <returns>
+            List of UniversalFolder object
+            null if token has been removed
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.getFolders(System.Int32)">
+            <summary>
+            method for retrieving all folders connected to device
+            </summary>
+            <param name="deviceId">device id</param>
+            <returns>
+            list of Folder model class
+            empty list if device cannot be found
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.RefreshDropboxFolders(System.Int32)">
+            <summary>
+            method for checking if any of the Dropbox Folders have been removed if they have we delete them from our db and return the actual list of folders
+            </summary>
+            <param name="cloudId">cloud id from which we retrieve the folders</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Services.IFolderService.RefreshFlickrFolders(System.Int32)">
+            <summary>
+            method for checking if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+            </summary>
+            <param name="cloudId">cloud id from which we retrieve the folders</param>
+            <returns>
+            List of Folder model class
+            </returns>
+        </member>
+        <member name="T:WebApplication.Utils.ApiKeys">
+            <summary>
+            class to store api keys
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.ApiKeys.DropBoxApiKey">
+            <summary>
+            dropbox api key
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.ApiKeys.DropBoxApiKeySecret">
+            <summary>
+            dropbox api key secret
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.ApiKeys.OneDriveApiKey">
+            <summary>
+            one drive api key depreciated
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.ApiKeys.OneDriveApiKeySecret">
+            <summary>
+            one drive api key secret depreciated
+            </summary>
+        </member>
+        <member name="T:WebApplication.Utils.FlickrManager">
+            <summary>
+            class to help create flickr class instances and store tokens
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.FlickrManager.db">
+            <summary>
+            instance database context
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.FlickrManager.ApiKey">
+            <summary>
+            Flickr key
+            </summary>
+        </member>
+        <member name="F:WebApplication.Utils.FlickrManager.SharedSecret">
+            <summary>
+            flickr key secret
+            </summary>
+        </member>
+        <member name="M:WebApplication.Utils.FlickrManager.#ctor">
+            <summary>
+            constructor for flickr manager
+            </summary>
+        </member>
+        <member name="M:WebApplication.Utils.FlickrManager.GetInstance">
+            <summary>
+            creates Flickr instance with initiated keys
+            </summary>
+            <returns>
+            Flickr class
+            </returns>
+        </member>
+        <member name="M:WebApplication.Utils.FlickrManager.GetAuthInstance(System.Int32)">
+            <summary>
+            creates authenticated instance of Flickr
+            </summary>
+            <param name="cloudId">cloudid from which we will take authentication toke from</param>
+            <returns>
+            Flickr object
+            </returns>
+        </member>
+        <member name="T:WebApplication.ViewModels.AccountViewModel">
+            <summary>
+            Account view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.AccountViewModel.#ctor(WebApplication.Models.Account)">
+            <summary>
+            constructor for Account View model class
+            </summary>
+            <param name="account">instance of Account model class</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.AccountViewModel.Account">
+            <summary>
+            instance of Account model class
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.ChangeCloudPasswordViewModel">
+            <summary>
+            change cloud password view model
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ChangeCloudPasswordViewModel.#ctor(System.String)">
+            <summary>
+            ChangeCloudPasswordViewModel class
+            </summary>
+            <param name="result">result</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.ChangeCloudPasswordViewModel.Result">
+            <summary>
+            string with result ot be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.ChangePasswordViewModel">
+            <summary>
+            Change Password view model class
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.ChangePasswordViewModel.Message">
+            <summary>
+            message to be displayed
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ChangePasswordViewModel.#ctor">
+            <summary>
+            constructor for ChangePasswordViewModel class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ChangePasswordViewModel.#ctor(System.String)">
+            <summary>
+            constructor for ChangePasswordViewModel class
+            </summary>
+            <param name="message">message</param>
+        </member>
+        <member name="T:WebApplication.ViewModels.CloudViewModel">
+            <summary>
+            cloud view model
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.CloudViewModel.#ctor(System.Collections.Generic.List{WebApplication.Models.Cloud})">
+            <summary>
+            constructor with CloudViewModel
+            </summary>
+            <param name="clouds"></param>
+        </member>
+        <member name="P:WebApplication.ViewModels.CloudViewModel.Clouds">
+            <summary>
+            List of cloud model class to be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.ConfirmDeleteCloudViewModel">
+            <summary>
+            Confirm delete cloud view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ConfirmDeleteCloudViewModel.#ctor(System.Int32)">
+            <summary>
+            constructor for ConfirmDeleteCloudViewModel
+            </summary>
+            <param name="cloudId"></param>
+        </member>
+        <member name="P:WebApplication.ViewModels.ConfirmDeleteCloudViewModel.CloudId">
+            <summary>
+            cloud id to be deleted
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.ConfirmDeleteDeviceViewModel">
+            <summary>
+            Confirm delete device view model
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ConfirmDeleteDeviceViewModel.#ctor(System.Int32,System.String)">
+            <summary>
+            constructor for ConfirmDeleteDeviceViewModel
+            </summary>
+            <param name="id">id</param>
+            <param name="name">name</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.ConfirmDeleteDeviceViewModel.Id">
+            <summary>
+            id of device to be removed
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.ConfirmDeleteDeviceViewModel.Name">
+            <summary>
+            name of device to be removed, only for display the device is being removed based on id
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.DeviceViewModel">
+            <summary>
+            device view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.DeviceViewModel.#ctor(System.Collections.Generic.List{WebApplication.Models.DeviceName})">
+            <summary>
+            constructor for DeviceViewModel
+            </summary>
+            <param name="devices">List of device model class</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.DeviceViewModel.Devices">
+            <summary>
+            list of device model class to be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.ConfirmDeleteFolderViewModel">
+            <summary>
+            Confirm delete folder view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.ConfirmDeleteFolderViewModel.#ctor(System.Int32)">
+            <summary>
+            constructor for ConfirmDeleteFolderViewModel class
+            </summary>
+            <param name="folderId">id</param>
+        </member>
+        <member name="M:WebApplication.ViewModels.ConfirmDeleteFolderViewModel.#ctor(System.Int32,System.String)">
+            <summary>
+            constructor for ConfirmDeleteFolderViewModel class
+            </summary>
+            <param name="folderId">id</param>
+            <param name="name">name</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.ConfirmDeleteFolderViewModel.FolderId">
+            <summary>
+            folder id to be removed
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.ConfirmDeleteFolderViewModel.Name">
+            <summary>
+            name of folder to be removed, only for display the folder is being removed based on id
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.FolderViewModel">
+            <summary>
+            folder view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.FolderViewModel.#ctor(System.Collections.Generic.List{WebApplication.Models.DeviceName},System.Collections.Generic.List{WebApplication.Models.Folder})">
+            <summary>
+            constructor for FolderViewModel
+            </summary>
+            <param name="devices">List of device model class</param>
+            <param name="folders">list of folder model class</param>
+        </member>
+        <member name="M:WebApplication.ViewModels.FolderViewModel.#ctor(System.Collections.Generic.List{WebApplication.Models.DeviceName},System.Collections.Generic.List{WebApplication.Models.Folder},System.Int32)">
+            <summary>
+            constructor for FolderViewModel
+            </summary>
+            <param name="devices">List of device model class</param>
+            <param name="folders">list of folder model class</param>
+            <param name="indexOfOpenDevice">index of device</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.FolderViewModel.Devices">
+            <summary>
+            list of device model class to be displayed
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.FolderViewModel.Folders">
+            <summary>
+            list of folder model class to be displayed
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.FolderViewModel.IndexOfOpenDevice">
+            <summary>
+            the folders for this id of divice will not be collapsed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.MangeCloudViewModel">
+            <summary>
+            manage cloud view model
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.MangeCloudViewModel.#ctor(System.String)">
+            <summary>
+            constructor for MangeCloudViewModel class
+            </summary>
+            <param name="name">name</param>
+        </member>
+        <member name="M:WebApplication.ViewModels.MangeCloudViewModel.#ctor(System.Int32,System.String)">
+            <summary>
+            constructor for MangeCloudViewModel class
+            </summary>
+            <param name="id">id</param>
+            <param name="login">login</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.MangeCloudViewModel.Id">
+            <summary>
+            id of cloud to be managed
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.MangeCloudViewModel.Login">
+            <summary>
+            custom name for cloud to be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.NewFolderViewModel">
+            <summary>
+            new folder view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.NewFolderViewModel.#ctor">
+            <summary>
+            constructor for NewFolderViewModel class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.NewFolderViewModel.#ctor(System.Int32)">
+            <summary>
+            constructor for NewFolderViewModel class
+            </summary>
+            <param name="deviceId">id</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.NewFolderViewModel.DeviceId">
+            <summary>
+            device of id to add the folder to
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.PairDeviceViewModel">
+            <summary>
+            pair device view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.PairDeviceViewModel.#ctor(System.String)">
+            <summary>
+            constructor for PairDeviceViewModel
+            </summary>
+            <param name="result">result</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.PairDeviceViewModel.Result">
+            <summary>
+            result string to be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.RegisterConfirmViewModel">
+            <summary>
+            register confirm view model
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.RegisterConfirmViewModel.#ctor(System.String)">
+            <summary>
+            constructor for RegisterConfirmViewModel
+            </summary>
+            <param name="message">message</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.RegisterConfirmViewModel.Message">
+            <summary>
+            message to be displayed
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.UniversalFolder">
+            <summary>
+            universal folder class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.UniversalFolder.#ctor">
+            <summary>
+            constructor for UniversalFolder class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.UniversalFolder.#ctor(System.String,System.Int32,System.DateTime)">
+            <summary>
+            constructor for UniversalFolder class
+            </summary>
+            <param name="title">title</param>
+            <param name="numberOfPhotos">number of photos</param>
+            <param name="dateUpdated">last updated date</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.UniversalFolder.Title">
+            <summary>
+            title of folder, in case of dropbox the full path
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.UniversalFolder.NumberOfPhotos">
+            <summary>
+            number of photos in folder
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.UniversalFolder.DateUpdated">
+            <summary>
+            date that the file was last updated
+            </summary>
+        </member>
+        <member name="T:WebApplication.ViewModels.SelectFolderViewModel">
+            <summary>
+            select folder view model class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.SelectFolderViewModel.#ctor">
+            <summary>
+            constructor for SelectFolderViewModel class
+            </summary>
+        </member>
+        <member name="M:WebApplication.ViewModels.SelectFolderViewModel.#ctor(WebApplication.Models.Cloud,System.Collections.Generic.List{WebApplication.ViewModels.UniversalFolder},System.Int32)">
+            <summary>
+            constructor for SelectFolderViewModel class
+            </summary>
+            <param name="selectedCloud">instance of cloud model</param>
+            <param name="folders">list of universal folder class</param>
+            <param name="deviceId">id</param>
+        </member>
+        <member name="P:WebApplication.ViewModels.SelectFolderViewModel.DeviceId">
+            <summary>
+            device id to which we will select folders
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.SelectFolderViewModel.SelectedFolders">
+            <summary>
+            list of strings (folder names that where selected. This field gets filled in the view
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.SelectFolderViewModel.SelectedCloud">
+            <summary>
+            instance of cloud model from which we pull folders to display
+            </summary>
+        </member>
+        <member name="P:WebApplication.ViewModels.SelectFolderViewModel.Folders">
+            <summary>
+            list of folders from which one can select foder names
+            </summary>
+        </member>
+    </members>
+</doc>
