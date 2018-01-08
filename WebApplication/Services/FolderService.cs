@@ -14,22 +14,48 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Services
 {
+    /// <summary>
+    /// folder service class for manipulating the database in regards to folders
+    /// </summary>
     public class FolderService : IFolderService
     {
+        #region fields
+        /// <summary>
+        /// instance of application context to manipulate the database
+        /// </summary>
         private ApplicationContext db = new ApplicationContext();
+        #endregion fields
+        /// <summary>
+        /// constructor for FolderService class
+        /// </summary>
         public FolderService()
         {
 
         }
+        #region methods
 
-        //gets all folders asssigned to given device if device id cannot be found it returns an empty list
+        /// <summary>
+        /// method for retrieving all folders connected to device
+        /// </summary>
+        /// <param name="deviceId">device id</param>
+        /// <returns>
+        /// list of Folder model class
+        /// empty list if device cannot be found
+        /// </returns>
         public async Task<List<Folder>> getFolders(int deviceId)
         {
             List<Folder> folders = await db.Folders.Where(f => f.DeviceId == deviceId).ToListAsync();
             return folders;
         }
 
-        //deletes folder with specified id and return true on success and false if the folder cannot be found
+        /// <summary>
+        /// method for deleting folder
+        /// </summary>
+        /// <param name="folderId">folder id</param>
+        /// <returns>
+        /// true on success
+        /// false if folder cannot be found
+        /// </returns>
         public async Task<bool> deleteFolder(int folderId)
         {
             Folder folder = await db.Folders.FindAsync(folderId);
@@ -41,7 +67,13 @@ namespace WebApplication.Services
             }
             return false;
         }
-        //checks if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+        /// <summary>
+        /// method for checking if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+        /// </summary>
+        /// <param name="cloudId">cloud id from which we retrieve the folders</param>
+        /// <returns>
+        /// List of Folder model class
+        /// </returns>
         public async Task<List<Folder>> RefreshFlickrFolders(int cloudId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
@@ -78,7 +110,13 @@ namespace WebApplication.Services
             }
         }
 
-        //checks if any of the Flickr Folders have been removed if they have we delete them from our db and return the actual list of folders
+        /// <summary>
+        /// method for checking if any of the Dropbox Folders have been removed if they have we delete them from our db and return the actual list of folders
+        /// </summary>
+        /// <param name="cloudId">cloud id from which we retrieve the folders</param>
+        /// <returns>
+        /// List of Folder model class
+        /// </returns>
         public async Task<List<Folder>> RefreshDropboxFolders(int cloudId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
@@ -113,6 +151,15 @@ namespace WebApplication.Services
                 return null;
             }
         }
+        /// <summary>
+        /// returns all Flickr folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+        /// </summary>
+        /// <param name="cloudId">cloud id</param>
+        /// <param name="deviceId">device id</param>
+        /// <returns>
+        /// List of UniversalFolder object
+        /// null if token has been removed
+        /// </returns>
         public async Task<List<UniversalFolder>> GetFlickrFolders(int cloudId, int deviceId)
         {
 
@@ -143,6 +190,15 @@ namespace WebApplication.Services
             }
 
         }
+        /// <summary>
+        /// returns all Dropbox folders that have not been choosen yet. If token to cloud has been revoked we remove the cloud
+        /// </summary>
+        /// <param name="cloudId">cloud id</param>
+        /// <param name="deviceId">device id</param>
+        /// <returns>
+        /// List of UniversalFolder object
+        /// null if token has been removed
+        /// </returns>
         public async Task<List<UniversalFolder>> GetDropboxFolders(int cloudId, int deviceId)
         {
             try
@@ -188,6 +244,14 @@ namespace WebApplication.Services
             }
 
         }
+        /// <summary>
+        /// returns all selected Flickr folders. If a folder has been removed on the side of the provider we do not return it
+        /// </summary>
+        /// <param name="cloudId">cloud id</param>
+        /// <param name="deviceId">device id</param>
+        /// <returns>
+        /// List of Photoset class (FlickrNet class)
+        /// </returns>
         public async Task<List<Photoset>> GetDeviceFlickrFolders(int cloudId, int deviceId)
         {
 
@@ -212,7 +276,14 @@ namespace WebApplication.Services
             }
             return newfolders;
         }
-
+        /// <summary>
+        /// returns all selected Dropbox folders. If a folder has been removed on the side of the provider we do not return it
+        /// </summary>
+        /// <param name="cloudId">cloud id</param>
+        /// <param name="deviceId">device id</param>
+        /// <returns>
+        /// List of Folder model class
+        /// </returns>
         public async Task<List<Folder>> GetDeviceDropboxFolders(int cloudId, int deviceId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
@@ -236,7 +307,16 @@ namespace WebApplication.Services
             return oldFolders;
         }
 
-
+        /// <summary>
+        /// method for adding folders
+        /// </summary>
+        /// <param name="folders">list of string (folder names)</param>
+        /// <param name="cloudId"> cloud id</param>
+        /// <param name="deviceId"> device id</param>
+        /// <returns>
+        /// true on succes
+        /// false otherwise
+        /// </returns>
         public async Task<bool> AddCloudFolders(List<string> folders, int cloudId, int deviceId)
         {
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
@@ -259,6 +339,7 @@ namespace WebApplication.Services
             }
             return false;
         }
+        #endregion methods
 
     }
 }
