@@ -12,17 +12,50 @@ using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    /// <summary>
+    /// Controller class responsible for manipulating and exposing folders
+    /// </summary>
     public class AccountController : Controller
     {
-        private ApplicationContext db = new ApplicationContext();
+        #region fields
+        /// <summary>
+        /// authentication service for authentication handling
+        /// </summary>
         IAuthenticationService authService = new AuthenticationService();
-        // GET: Account
+        #endregion fields
+        public AccountController()
+        {
+
+        }
+
+        public AccountController(IAuthenticationService auth)
+        {
+            authService = auth;
+        }
+        #region methods
+        /// <summary>
+        /// prepares the account view
+        /// </summary>
+        /// <returns>
+        /// account view
+        /// </returns>
         public ActionResult Index()
         {
             Account account = new Account((string) Session["UserId"]);
             AccountViewModel model = new AccountViewModel(account);
             return View(model);
         }
+
+        /// <summary>
+        /// Changes password an account
+        /// </summary>
+        /// <param name="oldPassword">old password</param>
+        /// <param name="password">new password</param>
+        /// <param name="password2">new password repeated</param>
+        /// <param name="id">account id to be changed.</param>
+        /// <returns>
+        /// ChangePassword view 
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult> ChangePassword(string oldPassword, string password, string password2, int id)
         {
@@ -50,6 +83,8 @@ namespace WebApplication.Controllers
             return View(view);
         }
 
+        #endregion
+        /*
         [HttpGet]
         public async Task<ActionResult> GetAccount()
         {
@@ -61,5 +96,6 @@ namespace WebApplication.Controllers
             var account = db.Accounts.FirstOrDefault(a => a.Login == (string) sessionAccount);
             return Json(account.Login, JsonRequestBehavior.AllowGet);
         }
+        */
     }
 }
