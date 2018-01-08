@@ -23,11 +23,19 @@ namespace WebApplication.Controllers
         /// </summary>
         IAuthenticationService authService = new AuthenticationService();
         #endregion fields
+
+        /// <summary>
+        /// Constructor for AccountController
+        /// </summary>
         public AccountController()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for AccountController
+        /// </summary>
+        /// <param name="auth">instacne of authentication service</param>
         public AccountController(IAuthenticationService auth)
         {
             authService = auth;

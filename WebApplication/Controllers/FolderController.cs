@@ -36,32 +36,61 @@ namespace WebApplication.Controllers
         /// </summary>
         ICloudService cloudService = new CloudService();
         #endregion fields
+
+        /// <summary>
+        /// Constructor for FolderController
+        /// </summary>
         public FolderController()
         {
             
         }
 
+        /// <summary>
+        /// Constructor for FolderController
+        /// </summary>
+        /// <param name="dev">instance of device service</param>
+        /// <param name="cloud">instance of cloud service</param>
         public FolderController(IDeviceService dev, ICloudService cloud)
         {
             deviceService = dev;
             cloudService = cloud;
         }
 
+        /// <summary>
+        /// Constructor for FolderController
+        /// </summary>
+        /// <param name="cloud">instance of cloud service</param>
         public FolderController(ICloudService cloud)
         {
             cloudService = cloud;
         }
 
+        /// <summary>
+        /// Constructor for FolderController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
         public FolderController(IAuthenticationService auth)
         {
             authService = auth;
         }
 
+        /// <summary>
+        /// constructor for FolderController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
+        /// <param name="folders"> instacne of folderService</param>
         public FolderController(IAuthenticationService auth, IFolderService folders)
         {
             authService = auth;
             folderService = folders;
         }
+
+        /// <summary>
+        /// constructor for FolderController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
+        /// <param name="cloud">instance of cloud service</param>
+        /// <param name="folders"> instacne of folderService</param>
         public FolderController(IAuthenticationService auth, IFolderService folders, ICloudService cloud)
         {
             authService = auth;

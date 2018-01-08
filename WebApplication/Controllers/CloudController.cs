@@ -34,10 +34,18 @@ namespace WebApplication.Controllers
         ICloudService cloudService = new CloudService();
         #endregion fields
 
+        /// <summary>
+        /// constructor for CloudController
+        /// </summary>
         public CloudController()
         {
 
         }
+
+        /// <summary>
+        /// constructor for CloudController
+        /// </summary>
+        /// <param name="cs">instance of cloud service</param>
         public CloudController(ICloudService cs)
         {
             cloudService = cs;

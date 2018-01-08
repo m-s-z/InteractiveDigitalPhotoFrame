@@ -29,20 +29,38 @@ namespace WebApplication.Controllers
         /// </summary>
         IDeviceService deviceService = new DeviceService();
         #endregion fields
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
         public DeviceController()
         {
 
         }
 
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="dev">instance of device service</param>
         public DeviceController(IDeviceService dev)
         {
             deviceService = dev;
         }
 
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="auth"> instance of authentication service</param>
         public DeviceController(IAuthenticationService auth)
         {
             authService = auth;
         }
+
+        /// <summary>
+        /// constructor for DeviceController
+        /// </summary>
+        /// <param name="dev">instance of device service</param>
+        /// <param name="auth"> instance of authentication service</param>
         public DeviceController(IDeviceService dev, IAuthenticationService auth)
         {
             deviceService = dev;
