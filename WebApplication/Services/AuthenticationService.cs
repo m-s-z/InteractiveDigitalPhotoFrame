@@ -22,6 +22,7 @@ namespace WebApplication.Services
         /// <summary>
         /// constructor for AuthenticationService class
         /// </summary>
+        #endregion fields
         public AuthenticationService()
         {
 

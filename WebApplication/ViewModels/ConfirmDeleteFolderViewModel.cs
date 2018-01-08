@@ -28,7 +28,7 @@ namespace WebApplication.ViewModels
             FolderId = folderId;
             Name = name;
         }
-        #region parameters
+        #region properties
         /// <summary>
         /// folder id to be removed
         /// </summary>
@@ -37,6 +37,6 @@ namespace WebApplication.ViewModels
         /// name of folder to be removed, only for display the folder is being removed based on id
         /// </summary>
         public String Name { get; set; }
-        #endregion parameters
+        #endregion properties
     }
 }
