@@ -1,5 +1,8 @@
 ﻿namespace IDPFLibrary
 {
+    /// <summary>
+    /// CloudProviderType enum.
+    /// </summary>
     public enum CloudProviderType
     {
         /// <summary>
