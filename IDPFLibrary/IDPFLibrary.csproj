@@ -42,6 +42,10 @@
     <Compile Include="DTO\AAA\Device\Request\AppPairDeviceRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppGetDevicesResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppPairDeviceResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Login\Request\AppLoginRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Login\Request\AppRegisterRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Login\Response\AppLoginResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Login\Response\AppRegisterResponseDTO.cs" />
     <Compile Include="DTO\CreateNewDeviceDTO.cs" />
     <Compile Include="DTO\CreateNewDeviceRequestDTO.cs" />
     <Compile Include="DTO\GetAllFlickrPhotosURLRequestDTO.cs" />

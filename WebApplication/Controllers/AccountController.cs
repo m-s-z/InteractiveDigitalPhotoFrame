@@ -112,7 +112,7 @@ namespace WebApplication.Controllers
             }
             if (password == password2)
             {
-                if (await authService.ChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
+                if (await authService.AppChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
                 {
                     result = "Success";
                 }

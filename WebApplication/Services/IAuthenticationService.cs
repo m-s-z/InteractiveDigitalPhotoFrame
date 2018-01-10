@@ -22,6 +22,18 @@ namespace WebApplication.Services
         /// </returns>
         Task<bool> ChangePassword(string oldPassword, string newPassword, string username);
         /// <summary>
+        /// method for changing an accounts password
+        /// </summary>
+        /// <param name="oldPassword">old password</param>
+        /// <param name="newPassword">new password</param>
+        /// <param name="username">username</param>
+        /// <returns>
+        /// true on success
+        /// false account cannot befound
+        /// false if oldpassword does not match the database hash
+        /// </returns>
+        Task<bool> AppChangePassword(string oldPassword, string newPassword, string username);
+        /// <summary>
         /// method for getting account model class
         /// </summary>
         /// <param name="id">id of account</param>
@@ -56,6 +68,14 @@ namespace WebApplication.Services
         /// false on unsucessfull authentication</returns>
         Task<bool> Login(string username, string password);
         /// <summary>
+        /// function used to authenticate into the service
+        /// </summary>
+        /// <param name="username">accounts username</param>
+        /// <param name="password">password assigned to account</param>
+        /// <returns>true on successfull authentication
+        /// false on unsucessfull authentication</returns>
+        Task<bool> AppLogin(string username, string password);
+        /// <summary>
         /// method for registering a new account
         /// </summary>
         /// <param name="login">login</param>
@@ -64,6 +84,15 @@ namespace WebApplication.Services
         /// returns a string with result message
         /// </returns>
         Task<string> RegisterAccount(string login, string password);
+        /// <summary>
+        /// method for registering a new account
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <returns>
+        /// returns a string with result message
+        /// </returns>
+        Task<string> AppRegisterAccount(string login, string password);
         #endregion methods
     }
 }
