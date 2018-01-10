@@ -1,4 +1,6 @@
 ﻿using IDPFLibrary.DTO;
+using IDPFLibrary.DTO.AAA.Device.Request;
+using IDPFLibrary.DTO.AAA.Device.Response;
 using IDPFLibrary.Utils;
 using System;
 using System.Collections.Generic;
@@ -200,6 +202,27 @@ namespace WebApplication.Controllers
         }
 
         /// <summary>
+        /// pairs with device
+        /// </summary>
+        /// <param name="pairCode">paircode for pairing</param>
+        /// <param name="deviceName">device to paired with</param>
+        /// <returns>
+        /// string with result
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult> AppPairDevice(String pairCode, string deviceName)
+        {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            pairCode = pairCode.ToUpper();
+            AppPairDeviceResponseDTO dto = new AppPairDeviceResponseDTO();
+            dto.Message = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
+            return Json(dto);
+        }
+
+        /// <summary>
         /// creates a new device
         /// </summary>
         /// <param name="key">secret application key</param>
@@ -273,7 +296,6 @@ namespace WebApplication.Controllers
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
-
         }
 
         /// <summary>
@@ -287,7 +309,8 @@ namespace WebApplication.Controllers
         /// internal server error if the cloud token has been revoked
         /// Forbidden if device token is invalid
         /// </returns>
-        [HttpPost] public async Task<ActionResult> GetAllPhotosUrl(int deviceId, string deviceToken, List<int> accountIds)
+        [HttpPost]
+        public async Task<ActionResult> GetAllPhotosUrl(int deviceId, string deviceToken, List<int> accountIds)
         {
             if (await deviceService.DeviceIsAuthenticated(deviceId, deviceToken))
             {
@@ -305,6 +328,32 @@ namespace WebApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "invalid device token");
             }
+        }
+
+        /// <summary>
+        /// method for AAA to get devices. Used to get all devices connected to given account
+        /// </summary>
+        /// <param name="accountId">account id</param>
+        /// <returns>
+        /// AppGetDevicesResponseDTO
+        /// </returns>
+        [HttpGet]
+        public async Task<ActionResult> AppGetDevices(int accountId)
+        {
+
+            AppGetDevicesResponseDTO dto = new AppGetDevicesResponseDTO();
+            string acc = await authService.GetAccountLogin(accountId);
+            List<DeviceName> devices = await deviceService.GetDevices(acc);
+            List<SDeviceName> sDevices = new List<SDeviceName>();
+            foreach(var dev in devices)
+            {
+                SDeviceName sDevice = new SDeviceName();
+                sDevice.DeviceId = dev.Device.DeviceId;
+                sDevice.Name = dev.CustomDeviceName;
+                sDevices.Add(sDevice);
+            }
+            dto.Devices = sDevices;
+            return Json(sDevices);
         }
 
         #endregion methods

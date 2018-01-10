@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDPFLibrary.DTO.AAA.Account.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -90,6 +91,45 @@ namespace WebApplication.Controllers
             ChangePasswordViewModel view = new ChangePasswordViewModel(result);
             return View(view);
         }
+
+        /// <summary>
+        /// Changes password an account
+        /// </summary>
+        /// <param name="oldPassword">old password</param>
+        /// <param name="password">new password</param>
+        /// <param name="password2">new password repeated</param>
+        /// <param name="id">account id to be changed.</param>
+        /// <returns>
+        /// AppChangePasswordResponseDTO
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult> AppChangePassword(string oldPassword, string password, string password2, int accountId)
+        {
+            string result = "";
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            if (password == password2)
+            {
+                if (await authService.ChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
+                {
+                    result = "Success";
+                }
+                else
+                {
+                    result = "Old password does not match";
+                }
+            }
+            else
+            {
+                result = "new passwords do not match";
+            }
+            AppChangePasswordResponseDTO dto = new AppChangePasswordResponseDTO();
+            dto.Message = result;
+            return Json(dto);
+        }
+
 
         #endregion
         /*

@@ -36,6 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DTO\AAA\Account\Request\AppChangePasswordRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Account\Response\AppChangePasswordResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Request\AppGetDevicesRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Request\AppPairDeviceRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Response\AppGetDevicesResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Response\AppPairDeviceResponseDTO.cs" />
     <Compile Include="DTO\CreateNewDeviceDTO.cs" />
     <Compile Include="DTO\CreateNewDeviceRequestDTO.cs" />
     <Compile Include="DTO\GetAllFlickrPhotosURLRequestDTO.cs" />
