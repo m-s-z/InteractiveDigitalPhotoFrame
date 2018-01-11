@@ -340,7 +340,10 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<ActionResult> AppGetDevices(int accountId)
         {
-
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             AppGetDevicesResponseDTO dto = new AppGetDevicesResponseDTO();
             string acc = await authService.GetAccountLogin(accountId);
             List<DeviceName> devices = await deviceService.GetDevices(acc);

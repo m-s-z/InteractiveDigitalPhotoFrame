@@ -256,6 +256,10 @@ namespace WebApplication.Controllers
         [HttpPut]
         public async Task<ActionResult> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             AppCreateCloudResponseDTO dto = new AppCreateCloudResponseDTO();
             dto.Message = await cloudService.AppCreateCloud(accountId, cloudName, provider, token, tokenSecret, userId);
             return Json(dto);
@@ -269,6 +273,10 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<ActionResult> AppGetClouds()
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             AppGetCloudsResponseDTO dto = new AppGetCloudsResponseDTO();
             List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
             List<RCloud> rClouds = new List<RCloud>();

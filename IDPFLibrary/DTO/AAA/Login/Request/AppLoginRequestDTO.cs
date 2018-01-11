@@ -20,10 +20,10 @@ namespace IDPFLibrary.DTO.AAA.Login.Request
         /// string with hashed password
         /// </summary>
         public string Password { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for AppLoginRequestDTO class
         /// </summary>
-        #endregion properties
         public AppLoginRequestDTO()
         {
 

@@ -307,7 +307,35 @@ namespace WebApplication.Controllers
         /// <returns>AppGetDeviceFoldersResponseDTO</returns>
         public async Task<ActionResult> AppGetDeviceFolders(int deviceId, int accountId)
         {
-            List<Folder> folders = await folderService.getFolders(deviceId);
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            List<Folder> folders = new List<Folder>();
+            //searching by cloud
+            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            foreach (var cloud in clouds)
+            {
+                List<Folder> cloudFolders = new List<Folder>();
+                switch (cloud.Provider)
+                {
+                    case ProviderType.Flicker:
+                        cloudFolders = await folderService.RefreshFlickrFolders(cloud.Id);
+                        break;
+                    case ProviderType.DropBox:
+                        cloudFolders = await folderService.RefreshDropboxFolders(cloud.Id);
+                        break;
+                    default:
+                        break;
+                }
+                if (cloudFolders != null)
+                {
+                    foreach (var fold in cloudFolders)
+                    {
+                        folders.Add(fold);
+                    }
+                }
+            }
             List<SFolder> sFolders = new List<SFolder>();
             foreach(var f in folders)
             {
