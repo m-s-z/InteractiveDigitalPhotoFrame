@@ -1,4 +1,5 @@
 ﻿using FlickrNet;
+using IDPFLibrary;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -162,6 +163,44 @@ namespace WebApplication.Services
                 return false;
             }
             return true;
+        }
+        /// <summary>
+        /// Method for adding a new cloud to the Database
+        /// </summary>
+        /// <param name="accountId">account id</param>
+        /// <param name="cloudName">coustom cloud name</param>
+        /// <param name="provider">provider of type CloudProviderType</param>
+        /// <param name="token">token</param>
+        /// <param name="tokenSecret">token secret</param>
+        /// <param name="userId">user id</param>
+        /// <returns>
+        /// string response
+        /// </returns>
+        public async Task<string> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId)
+        {
+            Cloud cloud = new Cloud();
+            Account account = await db.Accounts.FindAsync(accountId);
+            if(account == null)
+            {
+                return "Account couldnt be found";
+            }
+            if(provider == CloudProviderType.Flickr)
+            {
+                cloud = new Cloud(ProviderType.Flicker, cloudName, account, token, tokenSecret, userId);
+            }
+            else if(provider == CloudProviderType.Dropbox)
+            {
+                cloud = new Cloud(ProviderType.DropBox, cloudName, account, token, tokenSecret, userId);
+            }
+            db.Clouds.Add(cloud);
+            try
+            {
+                await db.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                return "Cloud could not be added";
+            }
+            return "Success";
         }
 
         /// <summary>

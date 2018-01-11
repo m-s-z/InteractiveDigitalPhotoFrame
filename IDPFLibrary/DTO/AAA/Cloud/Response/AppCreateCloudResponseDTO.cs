@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDPFLibrary.DTO.AAA.Login.Response
+namespace IDPFLibrary.DTO.AAA.Cloud.Response
 {
     /// <summary>
-    /// response class for AppRegister controller method
+    /// response class for AppCreateCloud controller method
     /// </summary>
-    public class AppRegisterResponseDTO
+    public class AppCreateCloudResponseDTO
     {
         /// <summary>
-        /// string message
+        /// response message string
         /// </summary>
         public string Message { get; set; }
         /// <summary>
-        /// constructor for AppRegisterResponseDTO class
+        /// contructor for AppCreateCloudResponseDTO class
         /// </summary>
-        public AppRegisterResponseDTO()
+        public AppCreateCloudResponseDTO()
         {
 
         }

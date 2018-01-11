@@ -15,6 +15,8 @@ using WebApplication.Services;
 using WebApplication.Utils;
 using WebApplication.ViewModels;
 using IDPFLibrary.Utils;
+using IDPFLibrary;
+using IDPFLibrary.DTO.AAA.Cloud.Response;
 
 namespace WebApplication.Controllers
 {
@@ -238,6 +240,56 @@ namespace WebApplication.Controllers
             OAuth2Response response = await DropboxOAuth2Helper.ProcessCodeFlowAsync(code, ApiKeys.DropBoxApiKey, ApiKeys.DropBoxApiKeySecret, redirectUrl);
             await cloudService.CreateDropBoxAccount(response.AccessToken, accountName, authService.getLoggedInUsername(Session), response.Uid);
             return View();
+        }
+        /// <summary>
+        /// method for adding a cloud to the database
+        /// </summary>
+        /// <param name="accountId">account id</param>
+        /// <param name="cloudName">custom cloud name</param>
+        /// <param name="provider">provider of type CloudProviderType</param>
+        /// <param name="token">token</param>
+        /// <param name="tokenSecret">token secret</param>
+        /// <param name="userId">user id</param>
+        /// <returns>
+        /// AppCreateCloudResponseDTO
+        /// </returns>
+        [HttpPut]
+        public async Task<ActionResult> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId)
+        {
+            AppCreateCloudResponseDTO dto = new AppCreateCloudResponseDTO();
+            dto.Message = await cloudService.AppCreateCloud(accountId, cloudName, provider, token, tokenSecret, userId);
+            return Json(dto);
+        }
+        /// <summary>
+        /// returns all clouds connected to account
+        /// </summary>
+        /// <returns>
+        /// AppGetCloudsResponseDTO
+        /// </returns>
+        [HttpGet]
+        public async Task<ActionResult> AppGetClouds()
+        {
+            AppGetCloudsResponseDTO dto = new AppGetCloudsResponseDTO();
+            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            List<RCloud> rClouds = new List<RCloud>();
+            foreach(var c in clouds)
+            {
+                RCloud rCloud = new RCloud();
+                rCloud.CloudName = c.Login;
+                if(c.Provider == ProviderType.DropBox)
+                {
+                    rCloud.provider = CloudProviderType.Dropbox;
+                }else if(c.Provider == ProviderType.Flicker)
+                {
+                    rCloud.provider = CloudProviderType.Flickr;
+                }
+                rCloud.Token = c.Token;
+                rCloud.TokenSecret = c.TokenSecret;
+                rCloud.UserId = c.FlickrUserId;
+                rClouds.Add(rCloud);
+            }
+            dto.clouds = rClouds;
+            return Json(rClouds);
         }
         #endregion methods
     }

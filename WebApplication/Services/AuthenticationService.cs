@@ -132,6 +132,32 @@ namespace WebApplication.Services
             return result;
         }
         /// <summary>
+        /// method for registering a new account
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <returns>
+        /// returns a string with result message
+        /// </returns>
+        public async Task<string> RegisterAccount(string login, string password)
+        {
+            string result = "success";
+            string hashedPassword = Account.HashPassword(password);
+            string lowerCaseLogin = login.ToLower();
+            List<Device> devices = new List<Device>();
+            Account account = new Account(lowerCaseLogin, hashedPassword, devices);
+            try
+            {
+                db.Accounts.Add(account);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                result = "An account with that username already exists please try another";
+            }
+            return result;
+        }
+        /// <summary>
         /// method for changing an accounts password
         /// </summary>
         /// <param name="oldPassword">old password</param>
