@@ -363,6 +363,10 @@ namespace WebApplication.Controllers
         /// </returns>
         public async Task<ActionResult> AppGetCloudFolders(int cloudId, int deviceId)
         {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
             List<UniversalFolder> folders = new List<UniversalFolder>();
             List<SUniversalFolder> sFolders = new List<SUniversalFolder>();
             Cloud cloud = await cloudService.GetCloud(cloudId);
