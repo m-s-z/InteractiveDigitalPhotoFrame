@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDPFLibrary.DTO.AAA.Login.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -72,8 +73,32 @@ namespace WebApplication.Controllers
                 TempData["LoginFailed"] = true;
                 return RedirectToAction("Index");
             }
-            
-            
+        }
+
+        /// <summary>
+        /// Controller method for loggin accepting credentials. On succes it sets Session["UserId"]
+        /// </summary>
+        /// <param name="login">login</param>
+        /// <param name="password">password</param>
+        /// <returns>
+        /// AppLoginResponseDTO
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult> AppLogin(string login, string password)
+        {
+            if (await authService.AppLogin(login, Account.HashPassword(password)))
+            {
+                Session["UserId"] = login;
+                AppLoginResponseDTO dto = new AppLoginResponseDTO();
+                dto.Message = "Success";
+                return Json(dto);
+            }
+            else
+            {
+                AppLoginResponseDTO dto = new AppLoginResponseDTO();
+                dto.Message = "Failed to login";
+                return Json(dto);
+            }
         }
 
         /// <summary>
@@ -124,6 +149,32 @@ namespace WebApplication.Controllers
             }
             RegisterConfirmViewModel view = new RegisterConfirmViewModel(registrationResult);
             return View(view);
+        }
+
+        /// <summary>
+        /// registers a new account
+        /// </summary>
+        /// <param name="login">new login</param>
+        /// <param name="password">password</param>
+        /// <param name="password2">password repeated</param>
+        /// <returns>
+        /// AppRegisterResponseDTO
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult> AppRegister(string login, string password, string password2)
+        {
+            string registrationResult = "";
+            if (password != password2)
+            {
+                registrationResult = "passwords do not match";
+            }
+            else
+            {
+                registrationResult = await authService.AppRegisterAccount(login, Account.HashPassword(password));
+            }
+            AppRegisterResponseDTO dto = new AppRegisterResponseDTO();
+            dto.Message = registrationResult;
+            return Json(dto);
         }
         #endregion methods
     }

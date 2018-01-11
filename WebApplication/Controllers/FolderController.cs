@@ -1,4 +1,5 @@
 ﻿using FlickrNet;
+using IDPFLibrary.DTO.AAA.Folder.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -214,7 +215,22 @@ namespace WebApplication.Controllers
             await folderService.deleteFolder(folderId);
             return Redirect("Index");
         }
-
+        /// <summary>
+        /// deletes folder from database
+        /// </summary>
+        /// <param name="folderId">id of folder to be deleted</param>
+        /// <returns>
+        /// Http status code result
+        /// </returns>
+        [HttpDelete]
+        public ActionResult AppDeleteFolder(int folderId)
+        {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK, "cloud was successfuly created");
+        }
 
         /// <summary>
         /// prepares view with folders that can be added to device
@@ -265,6 +281,83 @@ namespace WebApplication.Controllers
                 await folderService.AddCloudFolders(model.SelectedFolders.ToList<String>(), cloudId, deviceId);
             }
             return RedirectToAction("Index");
+        }
+        /// <summary>
+        /// method for adding list of folders
+        /// </summary>
+        /// <param name="model">list of folders to be added</param>
+        /// <param name="cloudId">cloud from which the folders will be added</param>
+        /// <param name="deviceId">device to which folders will be added</param>
+        /// <returns>
+        /// HttpStatusCodeResult
+        /// </returns>
+        public async Task<ActionResult> AppAddFolder(List<string> folders, int cloudId, int deviceId)
+        {
+            if (!authService.IsAuthenticated(Session))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+            }
+            await folderService.AddCloudFolders(folders, cloudId, deviceId);
+            return new HttpStatusCodeResult(HttpStatusCode.OK, "Folders Added");
+        }
+        /// <summary>
+        /// Method for obtaining all folders conected to given device
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns>AppGetDeviceFoldersResponseDTO</returns>
+        public async Task<ActionResult> AppGetDeviceFolders(int deviceId, int accountId)
+        {
+            List<Folder> folders = await folderService.getFolders(deviceId);
+            List<SFolder> sFolders = new List<SFolder>();
+            foreach(var f in folders)
+            {
+                if (f.Cloud.Account.Id == accountId)
+                {
+                    SFolder sFolder = new SFolder();
+                    sFolder.CloudId = f.CloudId;
+                    sFolder.DeviceId = f.DeviceId;
+                    sFolder.Name = f.Name;
+                    sFolder.FolderId = f.FolderId;
+                    sFolders.Add(sFolder);
+                }
+            }
+            AppGetDeviceFoldersResponseDTO dto = new AppGetDeviceFoldersResponseDTO();
+            dto.Folders = sFolders;
+            return Json(dto);
+        }
+        /// <summary>
+        /// method for getting folders pulled from the provider's side, we ommit folders that were already assigned to the device.
+        /// </summary>
+        /// <param name="cloudId"></param>
+        /// <param name="deviceId"></param>
+        /// <returns>
+        /// AppGetCloudFoldersResponseDTO
+        /// </returns>
+        public async Task<ActionResult> AppGetCloudFolders(int cloudId, int deviceId)
+        {
+            List<UniversalFolder> folders = new List<UniversalFolder>();
+            List<SUniversalFolder> sFolders = new List<SUniversalFolder>();
+            Cloud cloud = await cloudService.GetCloud(cloudId);
+            switch (cloud.Provider)
+            {
+                case ProviderType.Flicker:
+                    folders = await folderService.GetFlickrFolders(cloud.Id, deviceId);
+                    break;
+                case ProviderType.DropBox:
+                    folders = await folderService.GetDropboxFolders(cloud.Id, deviceId);
+                    break;
+            }
+            AppGetCloudFoldersResponseDTO dto = new AppGetCloudFoldersResponseDTO();
+            foreach(var f in folders)
+            {
+                SUniversalFolder sFolder = new SUniversalFolder();
+                sFolder.DateUpdated = f.DateUpdated;
+                sFolder.NumberOfPhotos = f.NumberOfPhotos;
+                sFolder.Title = f.Title;
+                sFolders.Add(sFolder);
+            }
+            dto.folders = sFolders;
+            return Json(dto);
         }
         #endregion methods
 

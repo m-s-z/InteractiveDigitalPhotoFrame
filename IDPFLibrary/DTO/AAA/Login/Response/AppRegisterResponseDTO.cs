@@ -4,24 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDPFLibrary.DTO.AAA.Device.Request
+namespace IDPFLibrary.DTO.AAA.Login.Response
 {
-    
     /// <summary>
-    /// Request dto for AppGetDevices controller method
+    /// response class for AppRegister controller method
     /// </summary>
-    public class AppGetDevicesRequestDTO
+    public class AppRegisterResponseDTO
     {
         #region properties
         /// <summary>
-        /// account id
+        /// string message
         /// </summary>
-        public int AccountId { get; set; }
+        public string Message { get; set; }
         #endregion properties
         /// <summary>
-        /// constructor for AppGetDevicesRequestDTO class
+        /// constructor for AppRegisterResponseDTO class
         /// </summary>
-        public AppGetDevicesRequestDTO()
+        public AppRegisterResponseDTO()
         {
 
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FlickrNet;
+using IDPFLibrary;
 using WebApplication.Models;
 
 namespace WebApplication.Services
@@ -71,6 +72,20 @@ namespace WebApplication.Services
         /// false if account cannot be found
         /// </returns>
         Task<bool> removeCloud(int cloudId);
+        /// <summary>
+        /// Method for adding a new cloud to the Database
+        /// </summary>
+        /// <param name="accountId">account id</param>
+        /// <param name="cloudName">coustom cloud name</param>
+        /// <param name="provider">provider of type CloudProviderType</param>
+        /// <param name="token">token</param>
+        /// <param name="tokenSecret">token secret</param>
+        /// <param name="userId">user id</param>
+        /// <returns>
+        /// string response
+        /// </returns>
+        Task<string> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId);
+
         #endregion methods
     }
 }
