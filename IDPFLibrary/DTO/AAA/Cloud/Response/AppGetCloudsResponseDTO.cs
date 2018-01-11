@@ -11,6 +11,7 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
     /// </summary>
     public class RCloud
     {
+        #region properties
         /// <summary>
         /// custom cloud name
         /// </summary>
@@ -31,6 +32,7 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
         /// user id
         /// </summary>
         public string  UserId { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for Rcloud class
         /// </summary>
@@ -44,10 +46,12 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
     /// </summary>
     public class AppGetCloudsResponseDTO
     {
+        #region properties
         /// <summary>
         /// returned clouds
         /// </summary>
         public List<RCloud> clouds { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for AppGetCloudsResponseDTO class
         /// </summary>

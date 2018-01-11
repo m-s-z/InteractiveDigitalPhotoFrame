@@ -11,10 +11,12 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
     /// </summary>
     public class AppCreateCloudResponseDTO
     {
+        #region properties
         /// <summary>
         /// response message string
         /// </summary>
         public string Message { get; set; }
+        #endregion properties
         /// <summary>
         /// contructor for AppCreateCloudResponseDTO class
         /// </summary>

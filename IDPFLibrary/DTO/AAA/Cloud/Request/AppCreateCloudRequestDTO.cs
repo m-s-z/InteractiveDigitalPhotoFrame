@@ -11,6 +11,7 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Request
     /// </summary>
     public class AppCreateCloudRequestDTO
     {
+        #region properties
         /// <summary>
         /// account id
         /// </summary>
@@ -35,6 +36,7 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Request
         /// provider user id
         /// </summary>
         public string UserId { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for AppCreateCloudRequestDTO class
         /// </summary>

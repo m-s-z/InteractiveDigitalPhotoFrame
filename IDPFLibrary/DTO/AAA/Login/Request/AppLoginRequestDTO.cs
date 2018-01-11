@@ -11,6 +11,7 @@ namespace IDPFLibrary.DTO.AAA.Login.Request
     /// </summary>
     public class AppLoginRequestDTO
     {
+        #region properties
         /// <summary>
         /// login for the account
         /// </summary>
@@ -22,6 +23,7 @@ namespace IDPFLibrary.DTO.AAA.Login.Request
         /// <summary>
         /// constructor for AppLoginRequestDTO class
         /// </summary>
+        #endregion properties
         public AppLoginRequestDTO()
         {
 

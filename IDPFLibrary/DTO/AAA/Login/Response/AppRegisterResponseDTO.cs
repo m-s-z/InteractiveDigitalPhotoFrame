@@ -11,10 +11,12 @@ namespace IDPFLibrary.DTO.AAA.Login.Response
     /// </summary>
     public class AppRegisterResponseDTO
     {
+        #region properties
         /// <summary>
         /// string message
         /// </summary>
         public string Message { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for AppRegisterResponseDTO class
         /// </summary>
