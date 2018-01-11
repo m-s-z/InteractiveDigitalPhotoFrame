@@ -28,10 +28,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Response
         /// cloud id
         /// </summary>
         public int CloudId { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for SFolder class
         /// </summary>
-        #endregion properties
         public SFolder()
         {
 

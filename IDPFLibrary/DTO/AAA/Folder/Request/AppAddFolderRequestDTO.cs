@@ -24,10 +24,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// device id
         /// </summary>
         public int DeviceId { get; set; }
+        #endregion properties
         /// <summary>
         /// constructor for AppAddFolderRequestDTO class
         /// </summary>
-        #endregion properties
         public AppAddFolderRequestDTO()
         {
 
