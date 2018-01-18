@@ -14,12 +14,11 @@
             
             <!--List of all paired devices-->
             <ListView ItemsSource="{Binding DevicesCollection}"
-                      SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:ViewCellExtension MainCommand="{Binding MainCommand}"
-                                                    MainCommandParameter="{x:Type views:DevicePage}"
+                                                    MainCommandParameter="{Binding .}"
                                                     MainImageSource="tablet_96px.png"
                                                     MainText="{Binding Device.LocalName}"
                                                     Subtext="{Binding Device.NumberOfFolders, StringFormat='Assigned folders: {0}'}" />

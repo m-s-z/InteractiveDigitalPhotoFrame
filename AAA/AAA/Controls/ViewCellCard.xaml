@@ -46,10 +46,11 @@
                 <!--Button with main action-->
                 <Button BackgroundColor="#2196F3"
                         Command="{Binding CardMainActionCommand}"
+                        CommandParameter="{Binding CardMainActionCommandParameter}"
                         Margin="0, 0, 0, 0" 
                         Text="{Binding CardMainActionName}"
                         TextColor="White" />
-                
+
                 <!--Button with second action-->
                 <Button BackgroundColor="Red"
                         Command="{Binding CardSecondActionCommand}"

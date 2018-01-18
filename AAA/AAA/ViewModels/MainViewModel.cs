@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using AAA.Models;
 using AAA.Utils;
@@ -79,6 +80,8 @@ namespace AAA.ViewModels
         public Command DeviceUnpairCommand { get; set; }
         public Command GoBackPageCommand { get; set; }
         public Command GoToCloudsListPageCommand { get; set; }
+
+        public Command GoToDevicePageCommand { get; set; }
 
         public Command GoToDevicesListPageCommand { get; set; }
 
@@ -230,6 +233,7 @@ namespace AAA.ViewModels
             DeviceUnpairCommand = new Command(ExecuteDeviceUnpairCommand);
             DevicePairCommand = new Command(ExecuteDevicePairCommand, CanExecuteDevicePairCommand);
             GoBackPageCommand = new Command(ExecuteGoBackPageCommand);
+            GoToDevicePageCommand = new Command(ExecuteGoToDevicePageCommand);
             GoToDevicesListPageCommand = new Command(ExecuteGoToDevicesListPageCommand);
             GoToFoldersListPageCommand = new Command(ExecuteGoToFoldersListPageCommand);
             GoToCloudsListPageCommand = new Command(ExecuteGoToCloudsListPageCommand);
@@ -260,7 +264,7 @@ namespace AAA.ViewModels
 
             foreach (var device in UserAccount.DevicesCollection)
             {
-                DevicesCollection.Add(new VCListItem(device, ChangePageCommand));
+                DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
 
                 foreach (var folder in device.FoldersCollection)
                 {
@@ -274,7 +278,7 @@ namespace AAA.ViewModels
 
             foreach (var cloud in UserAccount.CloudsCollection)
             {
-                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortTwoActions, cloud, CloudModifyCommand, CloudDisconnectCommand));
+                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
                 CloudChooseCollection.Add(new VCListItem(cloud, null));
             }
 
@@ -348,16 +352,17 @@ namespace AAA.ViewModels
             UpdateAllInformation();
             ExecuteGoBackPageCommand();
         }
-        private void ExecuteCloudDisconnectCommand()
+        private void ExecuteCloudDisconnectCommand(object item)
         {
-            if (SelectedCloudProvider == null)
+            Debug.WriteLine("Remove1 Cloud");
+            if (item is VCCardListItem selectedCloud)
             {
-                return;
-            }
-
-            UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
-            UpdateAllInformation();
-            SelectedCloudProvider = null;
+                Debug.WriteLine("Remove2 Cloud");
+                SelectedCloudProvider = selectedCloud;
+                UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
+                UpdateAllInformation();
+                SelectedCloudProvider = null;
+            } 
         }
 
         private void ExecuteCloudModifyCommand()
@@ -389,6 +394,17 @@ namespace AAA.ViewModels
         private void ExecuteGoToCloudsListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new CloudsListPage(this));
+        }
+
+        private void ExecuteGoToDevicePageCommand(object item)
+        {
+            if (item is VCListItem selectedDevice)
+            {
+                SelectedDevice = selectedDevice;
+                var newPage = new DevicePage();
+                newPage.BindingContext = this;
+                Application.Current.MainPage.Navigation.PushAsync(newPage);
+            }
         }
 
         private void ExecuteGoToDevicesListPageCommand()
