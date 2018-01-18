@@ -7,17 +7,8 @@
              x:Class="AAA.Views.MainAppPage"
              Title="Home"
              x:Name="Root">
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="user_96px.png"
-                     Order="Primary"
-                     Command="{Binding ChangePageCommand}"
-                     CommandParameter="{x:Type views:ProfilPage}"/>
-    </ContentPage.ToolbarItems>
         
-    <ContentPage.BindingContext>
-        <viewModel:MainViewModel />
-    </ContentPage.BindingContext>
+    
 
     <ContentPage.Content>
         <Grid>

@@ -1,10 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AAA.ViewModels;assembly=AAA"
              x:Class="AAA.Views.LoginPage"
-             Title="Clouds">
+             Title="Clouds"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel />
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
         
+
         <!--Main container-->
         <Grid>
 
@@ -12,49 +20,51 @@
             <Image Aspect="AspectFill"
                    Source="aaa_background.jpg"/>
 
-            <StackLayout VerticalOptions="Center"
+            <ScrollView>
+                <StackLayout VerticalOptions="Center"
                          BackgroundColor="#E6FFFFFF"
                          Margin="20">
-                <Label HorizontalOptions="Center"
+                    <Label HorizontalOptions="Center"
                        Text="Digital Photo Frame"
                        Margin="20, 20, 20, 5"
                        Font="Bold, 25"
                        TextColor="#333333" />
-                <Label HorizontalOptions="Center"
+                    <Label HorizontalOptions="Center"
                        Text="Administrative Application"
                        Margin="20, 5, 20, 10"
                        Font="Bold, 20"
                        TextColor="#2196F3" />
-                <Label HorizontalOptions="Center"
+                    <Label HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
                        Margin="20, 10, 20, 20"
                        FontSize="18"
                        TextColor="#333333"
                        Text="Manage your paired devices, assigned folders and connected cloud accounts." />
 
-                <Entry Margin="20, 10, 20, 5"  Placeholder="Login" Text="{Binding PairCode, Mode=TwoWay}"/>
-                <Entry Margin="20, 0, 20, 20"  IsPassword="True" Placeholder="Password" Text="{Binding DeviceName, Mode=TwoWay}"/>
+                    <Entry Margin="20, 10, 20, 5"  Placeholder="Login" Text="{Binding PairCode, Mode=TwoWay}"/>
+                    <Entry Margin="20, 0, 20, 20"  IsPassword="True" Placeholder="Password" Text="{Binding DeviceName, Mode=TwoWay}"/>
 
-                <!--Pair code conatiner-->
-                <Button BackgroundColor="#2196F3"
+                    <!--Pair code conatiner-->
+                    <Button BackgroundColor="#2196F3"
                         IsEnabled="{Binding IsReadyToConnect}"
                         TextColor="White"
                         HeightRequest="60"
                         HorizontalOptions="FillAndExpand"
                         Margin="20, 60, 20, 20"
                         Text="Log in"
-                        Command="{Binding CreateNewDeviceCommand}" />
-                <Label HorizontalOptions="Center"
+                        Command="{Binding GoToMainPageCommand}" />
+                    <Label HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"
                        Margin="20, 20, 20, 20"
                        FontSize="18"
                        TextColor="#2196F3"
                        Text="Register">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer />
-                    </Label.GestureRecognizers>    
-                </Label>
-            </StackLayout>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToSignUpPageCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </ScrollView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

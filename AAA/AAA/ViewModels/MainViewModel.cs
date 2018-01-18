@@ -83,7 +83,13 @@ namespace AAA.ViewModels
         public Command GoToDevicesListPageCommand { get; set; }
 
         public Command GoToFoldersListPageCommand { get; set; }
-        
+
+        public Command GoToMainPageCommand { get; set; }
+
+        public Command GoToProfilePageCommand { get; set; }
+
+        public Command GoToSignUpPageCommand { get; set; }
+
         public Command DeviceUnassignCommand { get; set; }
         public Command FolderUnassignCommand { get; set; }
 
@@ -227,6 +233,9 @@ namespace AAA.ViewModels
             GoToDevicesListPageCommand = new Command(ExecuteGoToDevicesListPageCommand);
             GoToFoldersListPageCommand = new Command(ExecuteGoToFoldersListPageCommand);
             GoToCloudsListPageCommand = new Command(ExecuteGoToCloudsListPageCommand);
+            GoToMainPageCommand = new Command(ExecuteGoToMainPageCommand);
+            GoToProfilePageCommand = new Command(ExecuteGoToProfilePageCommand);
+            GoToSignUpPageCommand = new Command(ExecuteGoToSignUpPageCommand);
             DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
             FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
         }
@@ -236,10 +245,10 @@ namespace AAA.ViewModels
             MainPageCards = new ObservableCollection<CardListItem>();
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "DEVICES", GoToDevicesListPageCommand,
                 "MANAGE", "tablet_card_96px.png", "Paired devices: " + NumberOfDevices));
-            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "FOLDERS", GoToFoldersListPageCommand,
-                "MANAGE", "folder_card_96px.png", "Assigned folders: " + NumberOfFolders));
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "CLOUDS", GoToCloudsListPageCommand,
                 "MANAGE", "cloud_card_96px.png", "Connected clouds: " + NumberOfClouds));
+            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "PROFILE", GoToProfilePageCommand,
+                "MANAGE", "user_card_96px.png", "Your login"));
         }
 
         private void InitCollections()
@@ -390,6 +399,21 @@ namespace AAA.ViewModels
         private void ExecuteGoToFoldersListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
+        }
+
+        private void ExecuteGoToMainPageCommand()
+        {
+            Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
+        }
+
+        private void ExecuteGoToProfilePageCommand()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
+        }
+
+        private void ExecuteGoToSignUpPageCommand()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new SignUpPage(this));
         }
 
         private void ExecuteDeviceUnassignCommand(object param)
