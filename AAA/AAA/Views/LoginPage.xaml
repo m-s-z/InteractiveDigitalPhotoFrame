@@ -41,8 +41,8 @@
                        TextColor="#333333"
                        Text="Manage your paired devices, assigned folders and connected cloud accounts." />
 
-                    <Entry Margin="20, 10, 20, 5"  Placeholder="Login" Text="{Binding PairCode, Mode=TwoWay}"/>
-                    <Entry Margin="20, 0, 20, 20"  IsPassword="True" Placeholder="Password" Text="{Binding DeviceName, Mode=TwoWay}"/>
+                    <Entry Margin="20, 10, 20, 5"  Placeholder="Login" Text="{Binding Username, Mode=TwoWay}"/>
+                    <Entry Margin="20, 0, 20, 20"  IsPassword="True" Placeholder="Password" Text="{Binding Password, Mode=TwoWay}"/>
 
                     <!--Pair code conatiner-->
                     <Button BackgroundColor="#2196F3"

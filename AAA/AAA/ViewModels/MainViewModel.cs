@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using AAA.Models;
 using AAA.Utils;
 using AAA.Utils.CloudProvider;
 using AAA.Utils.Controls;
 using AAA.Views;
+using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
+using System.Net.Http;
+using System.Text;
+using IDPFLibrary.DTO.AAA.Login.Response;
+using Newtonsoft.Json;
 
 namespace AAA.ViewModels
 {
@@ -39,6 +45,9 @@ namespace AAA.ViewModels
         private ObservableCollection<VCListItem> _foldersCollection;
 
         private ObservableCollection<CardListItem> _mainPageCards;
+
+        private string _username;
+        private string _password;
 
         private string _cloudEmail;
         private string _deviceName;
@@ -154,6 +163,24 @@ namespace AAA.ViewModels
         {
             get => _mainPageCards;
             set => SetProperty(ref _mainPageCards, value);
+        }
+
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                SetProperty(ref _username, value);
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                SetProperty(ref _password, value);
+            }
         }
 
         public string CloudEmail
@@ -354,10 +381,8 @@ namespace AAA.ViewModels
         }
         private void ExecuteCloudDisconnectCommand(object item)
         {
-            Debug.WriteLine("Remove1 Cloud");
             if (item is VCCardListItem selectedCloud)
             {
-                Debug.WriteLine("Remove2 Cloud");
                 SelectedCloudProvider = selectedCloud;
                 UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
                 UpdateAllInformation();
@@ -417,9 +442,12 @@ namespace AAA.ViewModels
             Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
         }
 
-        private void ExecuteGoToMainPageCommand()
+        private async void ExecuteGoToMainPageCommand()
         {
-            Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
+            if (await LoginTask())
+            {
+                Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
+            }
         }
 
         private void ExecuteGoToProfilePageCommand()
@@ -455,8 +483,86 @@ namespace AAA.ViewModels
             InitFolderDevicesCollection();
         }
 
+        private async Task<bool> LoginTask()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppLoginRequestDTO requestDto = new AppLoginRequestDTO
+                        {
+                            Login = Username,
+                            Password = Password,
+                        };
 
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
+                        string url = "https://idpf.azurewebsites.net/Login/AppLogin";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppLoginResponseDTO>(contents));
+                        if (result.IsSuccess)
+                        {
+                            return result.IsSuccess;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using DPF", "OK");
+                    return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Calls model to check whether the device is connected to the Internet.
+        /// Upadtes IsNetworkConnected property.
+        /// </summary>
+        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        private bool CheckIfNetworkConnection()
+        {
+            return DependencyService.Get<INetworkConnectionService>().CheckIfNetworkConnected();
+        }
+
+        /// <summary>
+        /// Handles ErrorOccurred event.
+        /// Notifies the user about the error.
+        /// </summary>
+        /// <param name="sender">Instance of object which invoked the event.</param>
+        /// <param name="errorMessage">Message of the error.</param>
+        private void OnErrorOccurred(object sender, string errorMessage)
+        {
+            try
+            {
+                Application.Current.MainPage.DisplayAlert("Error occurred", errorMessage, "OK");
+            }
+            catch (Exception exception)
+            {
+                return;
+            }
+        }
 
         #endregion
     }
