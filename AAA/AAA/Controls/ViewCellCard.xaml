@@ -8,7 +8,7 @@
     <ViewCell.View>
         
         <!--Main container-->
-        <Grid BackgroundColor="White"
+        <Grid BackgroundColor="#E6FFFFFF"
               BindingContext="{x:Reference Name=Root}"
               Margin="0, 0, 0, 8">
             

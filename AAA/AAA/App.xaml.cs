@@ -10,7 +10,7 @@ namespace AAA
         {
             InitializeComponent();
 
-            //MainPage = new MainAppPage();
+            // MainPage = new SignUpPage();
             MainPage = new NavigationPage(new MainAppPage());
 
             //MainPage = new NavigationPage(new FolderPage());

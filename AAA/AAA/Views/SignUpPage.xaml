@@ -3,10 +3,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AAA.Views.SignUpPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <!--Photo in background-->
+            <Image Aspect="AspectFill"
+                       Source="aaa_background.jpg"/>
+
+            <Grid BackgroundColor="#E6FFFFFF"
+                  Margin="20"
+                  VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                       Margin="20"
+                       HorizontalOptions="CenterAndExpand" 
+                       HorizontalTextAlignment="Center"
+                       Text="Create new account. Set your username and password. &#10;"
+                       VerticalOptions="CenterAndExpand" />
+                <Entry Grid.Row="1"
+                       Margin="16, 16, 16, 8"
+                       FontSize="20"
+                       HorizontalTextAlignment="Start"
+                       Placeholder="Username"
+                       PlaceholderColor="DarkGray" />
+                <Entry Grid.Row="2"
+                       Margin="16, 8, 16, 8"
+                       FontSize="20"
+                       HorizontalTextAlignment="Start"
+                       IsPassword="True"
+                       Placeholder="Password"
+                       PlaceholderColor="DarkGray" />
+                <Entry Grid.Row="3"
+                       Margin="16, 8, 16, 8"
+                       FontSize="20"
+                       HorizontalTextAlignment="Start"
+                       IsPassword="True"
+                       Placeholder="Repeat password"
+                       PlaceholderColor="DarkGray" />
+                <Button BackgroundColor="#32CD32"
+                        Command="{Binding GoBackPageCommand}"
+                        Grid.Row="5"
+                        Text="SAVE PASSWORD"
+                        TextColor="White"
+                        VerticalOptions="End" />
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

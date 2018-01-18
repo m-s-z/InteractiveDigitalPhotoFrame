@@ -415,6 +415,9 @@ namespace AAA.ViewModels
             InitFolderDevicesCollection();
         }
 
+
+
+
         #endregion
     }
 }
