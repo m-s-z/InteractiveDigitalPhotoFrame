@@ -92,7 +92,7 @@ namespace WebApplication.Services
         /// <returns>
         /// returns a string with result message
         /// </returns>
-        Task<string> AppRegisterAccount(string login, string password);
+        Task<bool> AppRegisterAccount(string login, string password);
         #endregion methods
     }
 }

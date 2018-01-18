@@ -61,7 +61,7 @@ namespace WebApplication.Services
             if (foundUser != null)
             {
                 //if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
-                if (password == foundUser.Password && foundUser.Login == username.ToLower())
+                if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
                     return true;
                 }
@@ -113,9 +113,9 @@ namespace WebApplication.Services
         /// <returns>
         /// returns a string with result message
         /// </returns>
-        public async Task<string> AppRegisterAccount(string login, string password)
+        public async Task<bool> AppRegisterAccount(string login, string password)
         {
-            string result = "success";
+            bool result = false;
             string hashedPassword = password;
             string lowerCaseLogin = login.ToLower();
             List<Device> devices = new List<Device>();
@@ -127,7 +127,7 @@ namespace WebApplication.Services
             }
             catch (Exception e)
             {
-                result = "An account with that username already exists please try another";
+                result = false;
             }
             return result;
         }

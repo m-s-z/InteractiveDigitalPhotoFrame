@@ -91,12 +91,14 @@ namespace WebApplication.Controllers
                 Session["UserId"] = login;
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
                 dto.Message = "Success";
+                dto.IsSuccess = true;
                 return Json(dto);
             }
             else
             {
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
                 dto.Message = "Failed to login";
+                dto.IsSuccess = false;
                 return Json(dto);
             }
         }
@@ -163,17 +165,27 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> AppRegister(string login, string password, string password2)
         {
-            string registrationResult = "";
+            AppRegisterResponseDTO dto = new AppRegisterResponseDTO();
+            string message = "";
+            bool registrationResult = false;
             if (password != password2)
             {
-                registrationResult = "passwords do not match";
+                dto.Message = "passwords do not match";
+                dto.IsSuccess = false;
             }
             else
             {
                 registrationResult = await authService.AppRegisterAccount(login, Account.HashPassword(password));
             }
-            AppRegisterResponseDTO dto = new AppRegisterResponseDTO();
-            dto.Message = registrationResult;
+            dto.IsSuccess = registrationResult;
+            if (dto.IsSuccess)
+            {
+                dto.Message = "success";
+            }
+            else
+            {
+                dto.Message = "An account with that username already exists please try another";
+            }
             return Json(dto);
         }
         #endregion methods
