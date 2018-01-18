@@ -1,154 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AAA.ViewModels;assembly=AAA"
              x:Class="AAA.Views.LoginPage"
-             Title="Clouds">
+             Title="Clouds"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel />
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
-        <StackLayout BackgroundColor="DarkGray">
-            <Grid HeightRequest="144" BackgroundColor="White">
-                <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Google Drive"
-                       TextColor="Black" />
-                <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="xxxxx@gmail.com"
-                       TextColor="Black"/>
-                <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="google_96px.png" />
-                <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                    <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                    <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
+        
+
+        <!--Main container-->
+        <Grid>
+
+            <!--Photo in background-->
+            <Image Aspect="AspectFill"
+                   Source="aaa_background.jpg"/>
+
+            <ScrollView>
+                <StackLayout VerticalOptions="Center"
+                         BackgroundColor="#E6FFFFFF"
+                         Margin="20">
+                    <Label HorizontalOptions="Center"
+                       Text="Digital Photo Frame"
+                       Margin="20, 20, 20, 5"
+                       Font="Bold, 25"
+                       TextColor="#333333" />
+                    <Label HorizontalOptions="Center"
+                       Text="Administrative Application"
+                       Margin="20, 5, 20, 10"
+                       Font="Bold, 20"
+                       TextColor="#2196F3" />
+                    <Label HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Margin="20, 10, 20, 20"
+                       FontSize="18"
+                       TextColor="#333333"
+                       Text="Manage your paired devices, assigned folders and connected cloud accounts." />
+
+                    <Entry Margin="20, 10, 20, 5"  Placeholder="Login" Text="{Binding Username, Mode=TwoWay}"/>
+                    <Entry Margin="20, 0, 20, 20"  IsPassword="True" Placeholder="Password" Text="{Binding Password, Mode=TwoWay}"/>
+
+                    <!--Pair code conatiner-->
+                    <Button BackgroundColor="#2196F3"
+                        IsEnabled="{Binding IsReadyToConnect}"
+                        TextColor="White"
+                        HeightRequest="60"
+                        HorizontalOptions="FillAndExpand"
+                        Margin="20, 60, 20, 20"
+                        Text="Log in"
+                        Command="{Binding GoToMainPageCommand}" />
+                    <Label HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Margin="20, 20, 20, 20"
+                       FontSize="18"
+                       TextColor="#2196F3"
+                       Text="Register">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToSignUpPageCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </StackLayout>
-            </Grid>
-            <Grid HeightRequest="144" BackgroundColor="White">
-                <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Flickr"
-                       TextColor="Black" />
-                <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="fffff@email.com"
-                       TextColor="Black"/>
-                <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="flickr_96px.png" />
-                <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                    <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                    <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                </StackLayout>
-            </Grid>
-            <Grid HeightRequest="144" BackgroundColor="White">
-                <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="OneDrive"
-                       TextColor="Black" />
-                <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="mmmmm@outlook.com"
-                       TextColor="Black"/>
-                <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="microsoft_96px.png" />
-                <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                    <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                    <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                </StackLayout>
-            </Grid>
-            <Grid HeightRequest="144" BackgroundColor="White">
-                <Label Margin="16, 24, 16, 16"
-                       FontSize="25"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="WordWrap"
-                       VerticalTextAlignment="Start"
-                       Text="Dropbox"
-                       TextColor="Black" />
-                <Label Margin="16, 55, 16, 16"
-                       FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       Text="ddddd@email.com"
-                       TextColor="Black"/>
-                <Image HorizontalOptions="End"
-                       VerticalOptions="Start"
-                       HeightRequest="80"
-                       WidthRequest="80"
-                       Margin="16, 16, 16, 16"
-                       Source="dropbox_96px.png" />
-                <StackLayout Orientation="Horizontal"
-                             VerticalOptions="End"
-                             HorizontalOptions="Start"
-                             Margin="16, 8, 8, 8">
-                    <Button Command="{Binding Command}"
-                            Text="MODIFY"
-                            TextColor="White"
-                            BackgroundColor="#2196F3"
-                            Margin="0, 0, 0, 0"/>
-                    <Button Command="{Binding Command}"
-                            Text="DISCONNECT"
-                            TextColor="White"
-                            BackgroundColor="Red"
-                            Margin="8, 0, 0, 0"/>
-                </StackLayout>
-            </Grid>
-        </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

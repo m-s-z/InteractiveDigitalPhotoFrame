@@ -7,35 +7,32 @@
              x:Class="AAA.Views.MainAppPage"
              Title="Home"
              x:Name="Root">
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="user_96px.png"
-                     Order="Primary"
-                     Command="{Binding ChangePageCommand}"
-                     CommandParameter="{x:Type views:ProfilPage}"/>
-    </ContentPage.ToolbarItems>
         
-    <ContentPage.BindingContext>
-        <viewModel:MainViewModel />
-    </ContentPage.BindingContext>
+    
 
     <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource="{Binding MainPageCards}"
-                      BackgroundColor="DarkGray"
-                      RowHeight="185">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
+        <Grid>
+
+            <!--Photo in background-->
+            <Image Aspect="AspectFill"
+                   Source="aaa_background.jpg"/>
+
+            <StackLayout Margin="10, 0, 10, 0">
+                <ListView ItemsSource="{Binding MainPageCards}"
+                          RowHeight="185">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
                                                CardMainActionName="{Binding CardMainActionName}"
                                                CardMainActionCommandParameter="{Binding CardMainActionCommandParameter}"
                                                CardImageSource="{Binding CardImageSource}"
                                                CardType="{Binding CardType}"
                                                CardSubtext="{Binding CardSubtext}"
                                                CardTitle="{Binding CardTitle}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

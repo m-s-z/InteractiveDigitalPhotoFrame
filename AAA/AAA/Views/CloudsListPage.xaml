@@ -8,15 +8,13 @@
     <ContentPage.Content>
         <StackLayout>
             <ListView ItemsSource="{Binding CloudsCollection}"
-                      RowHeight="144"
-                      SelectedItem="{Binding SelectedCloudProvider, Mode=TwoWay}">
+                      RowHeight="144">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
-                                               CardMainActionName="MODIFY"
+                                               CardMainActionCommandParameter="{Binding .}"
+                                               CardMainActionName="DISCONNECT"
                                                CardImageSource="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
-                                               CardSecondActionCommand="{Binding CardSecondActionCommand}"
-                                               CardSecondActionName="DISCONNECT"
                                                CardSubtext="{Binding CloudProvider.CloudEmail}"
                                                CardTitle="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToCloudName}}"
                                                CardType="{Binding CardType}" />

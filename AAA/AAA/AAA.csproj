@@ -53,6 +53,8 @@
     <Compile Include="Models\CloudProvider.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Folder.cs" />
+    <Compile Include="Models\IAccountService.cs" />
+    <Compile Include="Models\INetworkConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CloudProvider\CloudInformation.cs" />
     <Compile Include="Utils\CloudProvider\CloudInformationDictionary.cs" />
@@ -234,6 +236,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.4.0.280\lib\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.Core.dll</HintPath>
     </Reference>

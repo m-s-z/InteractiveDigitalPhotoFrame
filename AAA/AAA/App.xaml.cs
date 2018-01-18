@@ -10,10 +10,10 @@ namespace AAA
         {
             InitializeComponent();
 
-            //MainPage = new MainAppPage();
-            MainPage = new NavigationPage(new MainAppPage());
+             //MainPage = new SignUpPage();
+            // MainPage = new NavigationPage(new MainAppPage());
 
-            //MainPage = new NavigationPage(new FolderPage());
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()

@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using AAA.Models;
 using AAA.Utils;
 using AAA.Utils.CloudProvider;
 using AAA.Utils.Controls;
 using AAA.Views;
+using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
+using System.Net.Http;
+using System.Text;
+using IDPFLibrary.DTO.AAA.Login.Response;
+using Newtonsoft.Json;
 
 namespace AAA.ViewModels
 {
@@ -38,6 +45,9 @@ namespace AAA.ViewModels
         private ObservableCollection<VCListItem> _foldersCollection;
 
         private ObservableCollection<CardListItem> _mainPageCards;
+
+        private string _username;
+        private string _password;
 
         private string _cloudEmail;
         private string _deviceName;
@@ -80,10 +90,18 @@ namespace AAA.ViewModels
         public Command GoBackPageCommand { get; set; }
         public Command GoToCloudsListPageCommand { get; set; }
 
+        public Command GoToDevicePageCommand { get; set; }
+
         public Command GoToDevicesListPageCommand { get; set; }
 
         public Command GoToFoldersListPageCommand { get; set; }
-        
+
+        public Command GoToMainPageCommand { get; set; }
+
+        public Command GoToProfilePageCommand { get; set; }
+
+        public Command GoToSignUpPageCommand { get; set; }
+
         public Command DeviceUnassignCommand { get; set; }
         public Command FolderUnassignCommand { get; set; }
 
@@ -145,6 +163,24 @@ namespace AAA.ViewModels
         {
             get => _mainPageCards;
             set => SetProperty(ref _mainPageCards, value);
+        }
+
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                SetProperty(ref _username, value);
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                SetProperty(ref _password, value);
+            }
         }
 
         public string CloudEmail
@@ -224,9 +260,13 @@ namespace AAA.ViewModels
             DeviceUnpairCommand = new Command(ExecuteDeviceUnpairCommand);
             DevicePairCommand = new Command(ExecuteDevicePairCommand, CanExecuteDevicePairCommand);
             GoBackPageCommand = new Command(ExecuteGoBackPageCommand);
+            GoToDevicePageCommand = new Command(ExecuteGoToDevicePageCommand);
             GoToDevicesListPageCommand = new Command(ExecuteGoToDevicesListPageCommand);
             GoToFoldersListPageCommand = new Command(ExecuteGoToFoldersListPageCommand);
             GoToCloudsListPageCommand = new Command(ExecuteGoToCloudsListPageCommand);
+            GoToMainPageCommand = new Command(ExecuteGoToMainPageCommand);
+            GoToProfilePageCommand = new Command(ExecuteGoToProfilePageCommand);
+            GoToSignUpPageCommand = new Command(ExecuteGoToSignUpPageCommand);
             DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
             FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
         }
@@ -236,10 +276,10 @@ namespace AAA.ViewModels
             MainPageCards = new ObservableCollection<CardListItem>();
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "DEVICES", GoToDevicesListPageCommand,
                 "MANAGE", "tablet_card_96px.png", "Paired devices: " + NumberOfDevices));
-            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "FOLDERS", GoToFoldersListPageCommand,
-                "MANAGE", "folder_card_96px.png", "Assigned folders: " + NumberOfFolders));
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "CLOUDS", GoToCloudsListPageCommand,
                 "MANAGE", "cloud_card_96px.png", "Connected clouds: " + NumberOfClouds));
+            MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "PROFILE", GoToProfilePageCommand,
+                "MANAGE", "user_card_96px.png", "Your login"));
         }
 
         private void InitCollections()
@@ -251,7 +291,7 @@ namespace AAA.ViewModels
 
             foreach (var device in UserAccount.DevicesCollection)
             {
-                DevicesCollection.Add(new VCListItem(device, ChangePageCommand));
+                DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
 
                 foreach (var folder in device.FoldersCollection)
                 {
@@ -265,7 +305,7 @@ namespace AAA.ViewModels
 
             foreach (var cloud in UserAccount.CloudsCollection)
             {
-                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortTwoActions, cloud, CloudModifyCommand, CloudDisconnectCommand));
+                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
                 CloudChooseCollection.Add(new VCListItem(cloud, null));
             }
 
@@ -339,16 +379,15 @@ namespace AAA.ViewModels
             UpdateAllInformation();
             ExecuteGoBackPageCommand();
         }
-        private void ExecuteCloudDisconnectCommand()
+        private void ExecuteCloudDisconnectCommand(object item)
         {
-            if (SelectedCloudProvider == null)
+            if (item is VCCardListItem selectedCloud)
             {
-                return;
-            }
-
-            UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
-            UpdateAllInformation();
-            SelectedCloudProvider = null;
+                SelectedCloudProvider = selectedCloud;
+                UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
+                UpdateAllInformation();
+                SelectedCloudProvider = null;
+            } 
         }
 
         private void ExecuteCloudModifyCommand()
@@ -382,6 +421,17 @@ namespace AAA.ViewModels
             Application.Current.MainPage.Navigation.PushAsync(new CloudsListPage(this));
         }
 
+        private void ExecuteGoToDevicePageCommand(object item)
+        {
+            if (item is VCListItem selectedDevice)
+            {
+                SelectedDevice = selectedDevice;
+                var newPage = new DevicePage();
+                newPage.BindingContext = this;
+                Application.Current.MainPage.Navigation.PushAsync(newPage);
+            }
+        }
+
         private void ExecuteGoToDevicesListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new DevicesListPage(this));
@@ -390,6 +440,24 @@ namespace AAA.ViewModels
         private void ExecuteGoToFoldersListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
+        }
+
+        private async void ExecuteGoToMainPageCommand()
+        {
+            if (await LoginTask())
+            {
+                Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
+            }
+        }
+
+        private void ExecuteGoToProfilePageCommand()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
+        }
+
+        private void ExecuteGoToSignUpPageCommand()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new SignUpPage(this));
         }
 
         private void ExecuteDeviceUnassignCommand(object param)
@@ -413,6 +481,87 @@ namespace AAA.ViewModels
             InitMainPageCards();
             InitDeviceFoldersCollection();
             InitFolderDevicesCollection();
+        }
+
+        private async Task<bool> LoginTask()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppLoginRequestDTO requestDto = new AppLoginRequestDTO
+                        {
+                            Login = Username,
+                            Password = Password,
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Login/AppLogin";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppLoginResponseDTO>(contents));
+                        if (result.IsSuccess)
+                        {
+                            return result.IsSuccess;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using DPF", "OK");
+                    return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Calls model to check whether the device is connected to the Internet.
+        /// Upadtes IsNetworkConnected property.
+        /// </summary>
+        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        private bool CheckIfNetworkConnection()
+        {
+            return DependencyService.Get<INetworkConnectionService>().CheckIfNetworkConnected();
+        }
+
+        /// <summary>
+        /// Handles ErrorOccurred event.
+        /// Notifies the user about the error.
+        /// </summary>
+        /// <param name="sender">Instance of object which invoked the event.</param>
+        /// <param name="errorMessage">Message of the error.</param>
+        private void OnErrorOccurred(object sender, string errorMessage)
+        {
+            try
+            {
+                Application.Current.MainPage.DisplayAlert("Error occurred", errorMessage, "OK");
+            }
+            catch (Exception exception)
+            {
+                return;
+            }
         }
 
         #endregion
