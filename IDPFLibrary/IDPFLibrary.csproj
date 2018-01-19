@@ -43,6 +43,7 @@
     <Compile Include="DTO\AAA\Cloud\Response\AppGetCloudsResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppGetDevicesRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppPairDeviceRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Request\AppUnpairDeviceRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppGetDevicesResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppPairDeviceResponseDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Request\AppAddFolderRequestDTO.cs" />

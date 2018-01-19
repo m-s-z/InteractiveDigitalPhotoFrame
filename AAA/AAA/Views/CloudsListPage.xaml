@@ -14,9 +14,9 @@
                         <controls:ViewCellCard CardMainActionCommand="{Binding CardMainActionCommand}"
                                                CardMainActionCommandParameter="{Binding .}"
                                                CardMainActionName="DISCONNECT"
-                                               CardImageSource="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
-                                               CardSubtext="{Binding CloudProvider.CloudEmail}"
-                                               CardTitle="{Binding CloudProvider.CloudType, Converter={StaticResource CloudTypeToCloudName}}"
+                                               CardImageSource="{Binding CloudProvider.provider, Converter={StaticResource CloudTypeToImageSource}}"
+                                               CardSubtext="{Binding CloudProvider.provider, Converter={StaticResource CloudTypeToCloudName}}"
+                                               CardTitle="{Binding CloudProvider.CloudName}"
                                                CardType="{Binding CardType}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>

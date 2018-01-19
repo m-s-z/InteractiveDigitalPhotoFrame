@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using AAA.Utils.CloudProvider;
+using IDPFLibrary;
 using Xamarin.Forms;
 
 namespace AAA.Converters.Controls
@@ -23,12 +24,18 @@ namespace AAA.Converters.Controls
         /// <returns>Name of the cloud.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if ((CloudProviderType)value == CloudProviderType.Dropbox)
+            {
+                return CloudInformationDictionary.GetCloudInformation(CloudTypeEnum.Dropbox).CloudName;
+            }
+            else if ((CloudProviderType)value == CloudProviderType.Flickr)
+            {
+                return CloudInformationDictionary.GetCloudInformation(CloudTypeEnum.Flickr).CloudName;
+            }
+            else
             {
                 return "";
             }
-
-            return CloudInformationDictionary.GetCloudInformation((CloudTypeEnum)value).CloudName;
         }
 
         /// <summary>

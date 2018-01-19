@@ -1,6 +1,7 @@
 ﻿using AAA.Models;
 using AAA.Utils.CloudProvider;
 using IDPFLibrary;
+using IDPFLibrary.DTO.AAA.Cloud.Response;
 using IDPFLibrary.DTO.AAA.Device.Response;
 using IDPFLibrary.DTO.AAA.Folder.Response;
 using Xamarin.Forms;
@@ -11,7 +12,7 @@ namespace AAA.Utils.Controls
     {
         private Command _additionalCommand;
         private Command _mainCommand;
-        private Models.CloudProvider _cloud;
+        private RCloud _cloud;
         private SDeviceName _device;
         private SFolder _folder;
         private CloudTypeEnum _cloudType;
@@ -55,7 +56,7 @@ namespace AAA.Utils.Controls
             set { SetProperty(ref _subtext, value); }
         }
 
-        public Models.CloudProvider Cloud
+        public RCloud Cloud
         {
             get => _cloud;
             set => SetProperty(ref _cloud, value);
@@ -90,7 +91,7 @@ namespace AAA.Utils.Controls
             AdditionalCommand = additionalCommand;
         }
 
-        public VCListItem(Models.CloudProvider cloud, Command mainCommand, Command additionalCommand = null)
+        public VCListItem(RCloud cloud, Command mainCommand, Command additionalCommand = null)
         {
             Cloud = cloud;
             MainCommand = mainCommand;

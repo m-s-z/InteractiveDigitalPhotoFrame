@@ -16,6 +16,12 @@ namespace AAA.Models
         private ObservableCollection<VCListItem> _foldersCollection;
         private string _localName;
 
+        public int DeviceId
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
+
         public int NumberOfFolders
         {
             get => _numberOfFolders;
@@ -36,7 +42,7 @@ namespace AAA.Models
 
         public Device(string localName, int id)
         {;
-            _id = id;
+            DeviceId = id;
             LocalName = localName;
             FoldersCollection = new ObservableCollection<VCListItem>();
             NumberOfFolders = CountFolders();
