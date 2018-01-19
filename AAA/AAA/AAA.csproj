@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="Converters\Controls\CardTypeToSecondActionVisibilityConverter.cs" />
     <Compile Include="Converters\Controls\CardTypeToSizeConverter.cs" />
+    <Compile Include="Converters\Controls\CloudIntToImageSourceConverter.cs" />
     <Compile Include="Converters\Controls\CloudTypeToCloudNameConverter.cs" />
     <Compile Include="Converters\Controls\CloudTypeToImageSourceConverter.cs" />
     <Compile Include="Converters\StringIntoCloudTypeConverter.cs" />

@@ -1,6 +1,8 @@
 ﻿using AAA.Models;
 using AAA.Utils.CloudProvider;
 using IDPFLibrary;
+using IDPFLibrary.DTO.AAA.Device.Response;
+using IDPFLibrary.DTO.AAA.Folder.Response;
 using Xamarin.Forms;
 
 namespace AAA.Utils.Controls
@@ -10,8 +12,8 @@ namespace AAA.Utils.Controls
         private Command _additionalCommand;
         private Command _mainCommand;
         private Models.CloudProvider _cloud;
-        private Models.Device _device;
-        private Folder _folder;
+        private SDeviceName _device;
+        private SFolder _folder;
         private CloudTypeEnum _cloudType;
         private int _subtext;
 
@@ -58,13 +60,13 @@ namespace AAA.Utils.Controls
             get => _cloud;
             set => SetProperty(ref _cloud, value);
         }
-        public Models.Device Device
+        public SDeviceName Device
         {
             get => _device;
             set => SetProperty(ref _device, value);
         }
 
-        public Folder Folder
+        public SFolder Folder
         {
             get => _folder;
             set => SetProperty(ref _folder, value);
@@ -74,14 +76,14 @@ namespace AAA.Utils.Controls
 
         #region methods
 
-        public VCListItem(Models.Device device, Command mainCommand, Command additionalCommand = null)
+        public VCListItem(SDeviceName device, Command mainCommand, Command additionalCommand = null)
         {
             Device = device;
             MainCommand = mainCommand;
             AdditionalCommand = additionalCommand;
         }
 
-        public VCListItem(Folder folder, Command mainCommand, Command additionalCommand = null)
+        public VCListItem(SFolder folder, Command mainCommand, Command additionalCommand = null)
         {
             Folder = folder;
             MainCommand = mainCommand;
@@ -91,6 +93,12 @@ namespace AAA.Utils.Controls
         public VCListItem(Models.CloudProvider cloud, Command mainCommand, Command additionalCommand = null)
         {
             Cloud = cloud;
+            MainCommand = mainCommand;
+            AdditionalCommand = additionalCommand;
+        }
+
+        public VCListItem(Command mainCommand, Command additionalCommand = null)
+        {
             MainCommand = mainCommand;
             AdditionalCommand = additionalCommand;
         }

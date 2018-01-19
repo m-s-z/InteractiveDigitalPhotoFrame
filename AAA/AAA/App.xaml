@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <convertersControl:CardTypeToSecondActionVisibilityConverter x:Key="CardTypeToSecondActionVisibility"/>
             <convertersControl:CardTypeToSizeConverter x:Key="CardTypeToSize"/>
+            <convertersControl:CloudIntToImageSourceConverter x:Key="CloudIntToImageSource"/>
             <convertersControl:CloudTypeToImageSourceConverter x:Key="CloudTypeToImageSource"/>
             <convertersControl:CloudTypeToCloudNameConverter x:Key="CloudTypeToCloudName"/>
             <converters:StringIntoCloudTypeConverter x:Key="StringIntoCloudType"/>

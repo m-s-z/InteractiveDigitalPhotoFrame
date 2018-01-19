@@ -13,6 +13,7 @@ using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
 using System.Net.Http;
 using System.Text;
+using IDPFLibrary.DTO.AAA.Device.Response;
 using IDPFLibrary.DTO.AAA.Login.Response;
 using Newtonsoft.Json;
 
@@ -54,9 +55,10 @@ namespace AAA.ViewModels
         private string _pairCode;
 
         private VCCardListItem _selectedCloudProvider;
-        private VCListItem _selectedDevice;
+        private Models.Device _selectedDevice;
         private VCListItem _selectedFolder;
 
+        private AppGetDevicesResponseDTO _devicesResponseDto;
 
         #endregion
 
@@ -217,7 +219,7 @@ namespace AAA.ViewModels
             set => SetProperty(ref _selectedCloudProvider, value);
         }
 
-        public VCListItem SelectedDevice
+        public Models.Device SelectedDevice
         {
             get => _selectedDevice;
             set
@@ -234,6 +236,16 @@ namespace AAA.ViewModels
             {
                 SetProperty(ref _selectedFolder, value);
                 InitFolderDevicesCollection();
+            }
+        }
+
+        public AppGetDevicesResponseDTO DevicesResponseDto
+        {
+            get => _devicesResponseDto;
+            set
+            {
+                SetProperty(ref _devicesResponseDto, value);
+                
             }
         }
 
@@ -284,71 +296,71 @@ namespace AAA.ViewModels
 
         private void InitCollections()
         {
-            CloudChooseCollection = new ObservableCollection<VCListItem>();
-            CloudsCollection = new ObservableCollection<VCCardListItem>();
-            DevicesCollection = new ObservableCollection<VCListItem>();
-            FoldersCollection = new ObservableCollection<VCListItem>();
+            //CloudChooseCollection = new ObservableCollection<VCListItem>();
+            //CloudsCollection = new ObservableCollection<VCCardListItem>();
+            //DevicesCollection = new ObservableCollection<VCListItem>();
+            //FoldersCollection = new ObservableCollection<VCListItem>();
 
-            foreach (var device in UserAccount.DevicesCollection)
-            {
-                DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
+            //foreach (var device in UserAccount.DevicesCollection)
+            //{
+            //    DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
 
-                foreach (var folder in device.FoldersCollection)
-                {
-                    if (FoldersCollection.FirstOrDefault(f => f.Folder == folder) == null)
-                    {
-                        FoldersCollection.Add(new VCListItem(folder, ChangePageCommand));
-                    }
-                }
+            //    foreach (var folder in device.FoldersCollection)
+            //    {
+            //        if (FoldersCollection.FirstOrDefault(f => f.Folder == folder) == null)
+            //        {
+            //            FoldersCollection.Add(new VCListItem(folder, ChangePageCommand));
+            //        }
+            //    }
 
-            }
+            //}
 
-            foreach (var cloud in UserAccount.CloudsCollection)
-            {
-                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
-                CloudChooseCollection.Add(new VCListItem(cloud, null));
-            }
+            //foreach (var cloud in UserAccount.CloudsCollection)
+            //{
+            //    CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
+            //    CloudChooseCollection.Add(new VCListItem(cloud, null));
+            //}
 
-            NumberOfClouds = UserAccount.CountCloudProviders();
-            NumberOfDevices = UserAccount.CountDevices();
-            NumberOfFolders = UserAccount.CountAllFolders();
+            //NumberOfClouds = UserAccount.CountCloudProviders();
+            //NumberOfDevices = UserAccount.CountDevices();
+            //NumberOfFolders = UserAccount.CountAllFolders();
         }
 
         private void InitDeviceFoldersCollection()
         {
-            if (SelectedDevice == null)
-            {
-                return;;
-            }
+            //if (SelectedDevice == null)
+            //{
+            //    return;;
+            //}
 
-            DeviceFoldersCollection = new ObservableCollection<VCListItem>();
+            //DeviceFoldersCollection = new ObservableCollection<VCListItem>();
 
-            foreach (var folder in SelectedDevice.Device.FoldersCollection)
-            {
-                DeviceFoldersCollection.Add(new VCListItem(folder, null, FolderUnassignCommand));
-            }
+            //foreach (var folder in SelectedDevice.Device.FoldersCollection)
+            //{
+            //    DeviceFoldersCollection.Add(new VCListItem(folder, null, FolderUnassignCommand));
+            //}
         }
 
         private void InitFolderDevicesCollection()
         {
-            if (SelectedFolder == null)
-            {
-                return; ;
-            }
+            //if (SelectedFolder == null)
+            //{
+            //    return; ;
+            //}
 
-            FolderDevicesCollection = new ObservableCollection<VCListItem>();
+            //FolderDevicesCollection = new ObservableCollection<VCListItem>();
 
-            foreach (var device in UserAccount.DevicesCollection)
-            {
-                foreach (var folder in device.FoldersCollection)
-                {
-                    if (folder == SelectedFolder.Folder)
-                    {
-                        FolderDevicesCollection.Add(new VCListItem(device, null, DeviceUnassignCommand));
-                    }
-                }
+            //foreach (var device in UserAccount.DevicesCollection)
+            //{
+            //    foreach (var folder in device.FoldersCollection)
+            //    {
+            //        if (folder == SelectedFolder.Folder)
+            //        {
+            //            FolderDevicesCollection.Add(new VCListItem(device, null, DeviceUnassignCommand));
+            //        }
+            //    }
 
-            }
+            //}
         }
 
         private void InitUser()
@@ -405,7 +417,7 @@ namespace AAA.ViewModels
         private void ExecuteDeviceUnpairCommand()
         {
             ExecuteGoBackPageCommand();
-            UserAccount.DevicesCollection.Remove(SelectedDevice.Device);
+            //UserAccount.DevicesCollection.Remove(SelectedDevice.Device);
             SelectedDevice = null;
             DeviceFoldersCollection = new ObservableCollection<VCListItem>();
             UpdateAllInformation();
@@ -425,7 +437,7 @@ namespace AAA.ViewModels
         {
             if (item is VCListItem selectedDevice)
             {
-                SelectedDevice = selectedDevice;
+                SelectedDevice = new Models.Device(selectedDevice.Device.Name, selectedDevice.Device.DeviceId);
                 var newPage = new DevicePage();
                 newPage.BindingContext = this;
                 Application.Current.MainPage.Navigation.PushAsync(newPage);
@@ -483,6 +495,11 @@ namespace AAA.ViewModels
             InitFolderDevicesCollection();
         }
 
+        private void GetDevices()
+        {
+            
+        }
+
         private async Task<bool> LoginTask()
         {
             try
@@ -525,7 +542,7 @@ namespace AAA.ViewModels
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using DPF", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using application.", "OK");
                     return false;
                 }
             }
@@ -561,6 +578,14 @@ namespace AAA.ViewModels
             catch (Exception exception)
             {
                 return;
+            }
+        }
+
+        private void AssambleDevicesDtoToCollection()
+        {
+            foreach (var device in DevicesResponseDto.Devices)
+            {
+                DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
             }
         }
 

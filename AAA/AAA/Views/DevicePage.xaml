@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
              xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.DevicePage"
-             Title="{Binding SelectedDevice.Device.LocalName}">
+             Title="{Binding SelectedDevice.LocalName}">
     
     <ContentPage.Content>
         <StackLayout>
@@ -14,7 +14,7 @@
                 <Button Text="UNPAIR" TextColor="White" BackgroundColor="Red" HorizontalOptions="End" Command="{Binding DeviceUnpairCommand}"/>
             </StackLayout>
 
-            <ListView ItemsSource="{Binding DeviceFoldersCollection}"
+            <ListView ItemsSource="{Binding SelectedDevice.FoldersCollection}"
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -22,9 +22,8 @@
                                                     AdditionalCommandParameter="{Binding .}"
                                                     AdditionalImageSource="minus_96px.png"
                                                     MainImageSource="folder_96px.png"
-                                                    MainText="{Binding Folder.FolderName}"
-                                                    SubimageSource="{Binding Folder.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
-                                                    Subtext="{Binding Folder.PhotosNumber, StringFormat='Photos in folder: {0}'}" />
+                                                    MainText="{Binding Folder.Name}"
+                                                    SubimageSource="{Binding Folder.CloudId, Converter={StaticResource CloudIntToImageSource}}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
