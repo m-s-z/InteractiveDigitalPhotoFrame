@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDPFLibrary.DTO.AAA.Device.Request
 {
-    class AppPairDeviceRequestDTO
+    public class AppPairDeviceRequestDTO
     {
         #region properties
         /// <summary>

@@ -13,6 +13,9 @@ using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
 using System.Net.Http;
 using System.Text;
+using IDPFLibrary.DTO.AAA.Account.Request;
+using IDPFLibrary.DTO.AAA.Account.Response;
+using IDPFLibrary.DTO.AAA.Cloud.Response;
 using IDPFLibrary.DTO.AAA.Device.Request;
 using IDPFLibrary.DTO.AAA.Device.Response;
 using IDPFLibrary.DTO.AAA.Folder.Request;
@@ -63,6 +66,9 @@ namespace AAA.ViewModels
         private VCListItem _selectedFolder;
 
         private AppGetDevicesResponseDTO _devicesResponseDto;
+        private AppGetCloudsResponseDTO _cloudsResponseDto;
+        private AppChangePasswordRequestDTO _changePasswordModel;
+        private AppRegisterRequestDTO _registerUser;
 
         #endregion
 
@@ -253,6 +259,34 @@ namespace AAA.ViewModels
             }
         }
 
+        public AppGetCloudsResponseDTO CloudsResponseDto
+        {
+            get => _cloudsResponseDto;
+            set
+            {
+                SetProperty(ref _cloudsResponseDto, value);
+                AssambleCloudsDtoToCollection();
+            }
+        }
+
+        public AppChangePasswordRequestDTO ChangePasswordModel
+        {
+            get => _changePasswordModel;
+            set
+            {
+                SetProperty(ref _changePasswordModel, value);
+            }
+        }
+
+        public AppRegisterRequestDTO RegisterUser
+        {
+            get => _registerUser;
+            set
+            {
+                SetProperty(ref _registerUser, value);
+            }
+        }
+
         #endregion
 
         #region methods
@@ -301,8 +335,8 @@ namespace AAA.ViewModels
         private void InitCollections()
         {
             //CloudChooseCollection = new ObservableCollection<VCListItem>();
-            //CloudsCollection = new ObservableCollection<VCCardListItem>();
-            //DevicesCollection = new ObservableCollection<VCListItem>();
+            CloudsCollection = new ObservableCollection<VCCardListItem>();
+            DevicesCollection = new ObservableCollection<VCListItem>();
             //FoldersCollection = new ObservableCollection<VCListItem>();
 
             //foreach (var device in UserAccount.DevicesCollection)
@@ -400,7 +434,7 @@ namespace AAA.ViewModels
             if (item is VCCardListItem selectedCloud)
             {
                 SelectedCloudProvider = selectedCloud;
-                UserAccount.CloudsCollection.Remove(SelectedCloudProvider.CloudProvider);
+
                 UpdateAllInformation();
                 SelectedCloudProvider = null;
             } 
@@ -502,6 +536,111 @@ namespace AAA.ViewModels
             InitFolderDevicesCollection();
         }
 
+        private async Task<bool> AccountRegister()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppRegisterRequestDTO requestDto = new AppRegisterRequestDTO
+                        {
+                            Password = RegisterUser.Password,
+                            Password2 = RegisterUser.Password2,
+                            Login = RegisterUser.Login
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Login/AppRegister";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppRegisterResponseDTO>(contents));
+                        if (result.IsSuccess)
+                        {
+                            return result.IsSuccess;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Error", result.Message, "OK");
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline",
+                        "Connect to the Internet to start using application.", "OK");
+                    return false;
+                }
+            }
+        }
+
+        private async void ChangePassword()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppChangePasswordRequestDTO requestDto = new AppChangePasswordRequestDTO()
+                        {
+                            OldPassword = ChangePasswordModel.OldPassword,
+                            Password = ChangePasswordModel.Password,
+                            Password2 = ChangePasswordModel.Password2,
+                            AccountId = _userId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Account/AppChangePassword";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppChangePasswordResponseDTO>(contents));
+                        await Application.Current.MainPage.DisplayAlert("Change password result", result.Message, "OK");
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+        }
+
+        private async void DisconnectCloud()
+        {
+
+        }
+
+        private async void GetClouds()
+        {
+
+        }
+
         private async void GetDevices()
         {
             try
@@ -594,6 +733,49 @@ namespace AAA.ViewModels
             {
                 OnErrorOccurred(this, exception.Message);
                 return false;
+            }
+        }
+
+        private async void PairDevice()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppPairDeviceRequestDTO requestDto = new AppPairDeviceRequestDTO
+                        {
+                            DeviceName = DeviceName,
+                            PairCode = PairCode
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Device/AppPairDevice";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        await Application.Current.MainPage.DisplayAlert("Pair device", contents, "OK");
+
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
             }
         }
 
@@ -705,6 +887,16 @@ namespace AAA.ViewModels
             catch (Exception exception)
             {
                 return;
+            }
+        }
+
+        private void AssambleCloudsDtoToCollection()
+        {
+            CloudsCollection.Clear();
+
+            foreach (var cloud in CloudsResponseDto.clouds)
+            {
+                CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
             }
         }
 
