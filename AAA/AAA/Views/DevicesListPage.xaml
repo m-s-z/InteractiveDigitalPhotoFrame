@@ -20,8 +20,7 @@
                         <controls:ViewCellExtension MainCommand="{Binding MainCommand}"
                                                     MainCommandParameter="{Binding .}"
                                                     MainImageSource="tablet_96px.png"
-                                                    MainText="{Binding Device.LocalName}"
-                                                    Subtext="{Binding Device.NumberOfFolders, StringFormat='Assigned folders: {0}'}" />
+                                                    MainText="{Binding Device.Name}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
