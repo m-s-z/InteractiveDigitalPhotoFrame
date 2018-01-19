@@ -1,6 +1,7 @@
 ﻿using IDPFLibrary.DTO;
 using IDPFLibrary.DTO.AAA.Device.Request;
 using IDPFLibrary.DTO.AAA.Device.Response;
+using IDPFLibrary.DTO.AAA.Login.Response;
 using IDPFLibrary.Utils;
 using System;
 using System.Collections.Generic;
@@ -364,9 +365,11 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Test()
         {
             //var response = await deviceService.GeneratePairCode(6, "7EGLOIZ");
-            var response = await deviceService.GetAllPhotosUrl(new List<int>() { 14 }, 6);
+            LoginController controller = new LoginController();
+            JsonResult dto = await controller.AppLogin("", "") as JsonResult;
+            
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }
-        */
+        }*/
+        
     }
 }

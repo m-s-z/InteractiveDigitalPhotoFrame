@@ -86,7 +86,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> AppLogin(string login, string password)
         {
-            if (await authService.AppLogin(login, Account.HashPassword(password)))
+            if (await authService.AppLogin(login, password))
             {
                 Session["UserId"] = login;
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
