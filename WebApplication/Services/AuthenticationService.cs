@@ -221,6 +221,25 @@ namespace WebApplication.Services
             Account account = await db.Accounts.FindAsync(id);
             return account.Login;
         }
+
+        /// <summary>
+        /// method for obtaining user id
+        /// </summary>
+        /// <param name="session">session</param>
+        /// <returns>id of logged in account</returns>
+        public async Task<int> GetAccountId(HttpSessionStateBase session)
+        {
+            if (session["UserId"] != null)
+            {
+                string userLogin = session["UserId"] as string;
+                Account acc = await db.Accounts.FirstOrDefaultAsync(p => p.Login == userLogin);
+                return acc.Id;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         #endregion methods
     }
 }

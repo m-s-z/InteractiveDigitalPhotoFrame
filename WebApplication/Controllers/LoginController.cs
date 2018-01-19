@@ -88,10 +88,12 @@ namespace WebApplication.Controllers
         {
             if (await authService.AppLogin(login, password))
             {
+                int id = await authService.GetAccountId(Session);
                 Session["UserId"] = login;
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
                 dto.Message = "Success";
                 dto.IsSuccess = true;
+                dto.userId = id;
                 return Json(dto);
             }
             else

@@ -93,6 +93,12 @@ namespace WebApplication.Services
         /// returns a string with result message
         /// </returns>
         Task<bool> AppRegisterAccount(string login, string password);
+        /// <summary>
+        /// method for obtaining user id
+        /// </summary>
+        /// <param name="session">session</param>
+        /// <returns>id of logged in account</returns>
+        Task<int> GetAccountId(HttpSessionStateBase session);
         #endregion methods
     }
 }

@@ -20,6 +20,10 @@ namespace IDPFLibrary.DTO.AAA.Login.Response
         /// Flag indicating whether the logging in was successful or not.
         /// </summary>
         public bool IsSuccess { get; set; }
+        /// <summary>
+        /// user id
+        /// </summary>
+        public int userId { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppLoginResponseDTO class
