@@ -16,6 +16,11 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// folder id
         /// </summary>
         public int FolderId { get; set; }
+
+        /// <summary>
+        /// Account ID.
+        /// </summary>
+        public int AccountId { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppDeleteFolderRequestDTO

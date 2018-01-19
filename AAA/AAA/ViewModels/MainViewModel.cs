@@ -13,7 +13,10 @@ using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
 using System.Net.Http;
 using System.Text;
+using IDPFLibrary.DTO.AAA.Device.Request;
 using IDPFLibrary.DTO.AAA.Device.Response;
+using IDPFLibrary.DTO.AAA.Folder.Request;
+using IDPFLibrary.DTO.AAA.Folder.Response;
 using IDPFLibrary.DTO.AAA.Login.Response;
 using Newtonsoft.Json;
 
@@ -37,6 +40,7 @@ namespace AAA.ViewModels
         private int _numberOfClouds;
         private int _numberOfDevices;
         private int _numberOfFolders;
+        private int _userId;
 
         private ObservableCollection<VCCardListItem> _cloudsCollection;
         private ObservableCollection<VCListItem> _cloudChooseCollection;
@@ -245,7 +249,7 @@ namespace AAA.ViewModels
             set
             {
                 SetProperty(ref _devicesResponseDto, value);
-                
+                AssambleDevicesDtoToCollection();
             }
         }
 
@@ -416,6 +420,9 @@ namespace AAA.ViewModels
 
         private void ExecuteDeviceUnpairCommand()
         {
+            //SelectedDevice.
+
+
             ExecuteGoBackPageCommand();
             //UserAccount.DevicesCollection.Remove(SelectedDevice.Device);
             SelectedDevice = null;
@@ -474,14 +481,14 @@ namespace AAA.ViewModels
 
         private void ExecuteDeviceUnassignCommand(object param)
         {
-            UserAccount.DevicesCollection.FirstOrDefault(d => d == ((VCListItem)param).Device)?.FoldersCollection.Remove(SelectedFolder.Folder);
+            
             UpdateAllInformation();
             Application.Current.MainPage.DisplayAlert("Unassignment", "The device has been successfully  unassiged", "OK");
         }
 
         private void ExecuteFolderUnassignCommand(object param)
         {
-            UserAccount.DevicesCollection.FirstOrDefault(d => d == SelectedDevice.Device)?.FoldersCollection.Remove(((VCListItem)param).Folder);
+            //UserAccount.DevicesCollection.FirstOrDefault(d => d == SelectedDevice.Device)?.FoldersCollection.Remove(((VCListItem)param).Folder);
             UpdateAllInformation();
             Application.Current.MainPage.DisplayAlert("Unassignment", "The folder has been successfully  unassiged", "OK");
         }
@@ -495,9 +502,46 @@ namespace AAA.ViewModels
             InitFolderDevicesCollection();
         }
 
-        private void GetDevices()
+        private async void GetDevices()
         {
-            
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppGetDevicesRequestDTO requestDto = new AppGetDevicesRequestDTO
+                        {
+                            AccountId = _userId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Device/AppGetDevices";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        DevicesResponseDto = (JsonConvert.DeserializeObject<AppGetDevicesResponseDTO>(contents));
+                       
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
         }
 
         private async Task<bool> LoginTask()
@@ -553,6 +597,89 @@ namespace AAA.ViewModels
             }
         }
 
+
+        private async void UnpairDevice()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppUnpairDeviceRequestDTO requestDto = new AppUnpairDeviceRequestDTO
+                        {
+                            AccountId = _userId,
+                            DeviceId = SelectedDevice.DeviceId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Device/AppUnpairDevice";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+        }
+
+        private async void UnassignFolderFromDevice(SFolder folderToUnassign)
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppDeleteFolderRequestDTO requestDto = new AppDeleteFolderRequestDTO
+                        {
+                            AccountId = _userId,
+                            FolderId = folderToUnassign.FolderId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Folder/AppDeleteFolder";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+        }
+
         /// <summary>
         /// Calls model to check whether the device is connected to the Internet.
         /// Upadtes IsNetworkConnected property.
@@ -583,6 +710,8 @@ namespace AAA.ViewModels
 
         private void AssambleDevicesDtoToCollection()
         {
+            DevicesCollection.Clear();
+
             foreach (var device in DevicesResponseDto.Devices)
             {
                 DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
