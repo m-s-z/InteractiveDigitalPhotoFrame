@@ -1,13 +1,19 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using AAA.Utils.CloudProvider;
+using AAA.Utils.Controls;
 using IDPFLibrary;
+using IDPFLibrary.DTO.AAA.Folder.Response;
+using Xamarin.Forms;
 
 namespace AAA.Models
 {
     public class Device : ViewModelBase
     {
+        private int _id;
         private int _numberOfFolders;
-        private ObservableCollection<Folder> _foldersCollection;
+        private ObservableCollection<VCListItem> _foldersCollection;
         private string _localName;
 
         public int NumberOfFolders
@@ -16,7 +22,7 @@ namespace AAA.Models
             set => SetProperty(ref _numberOfFolders, value);
         }
 
-        public ObservableCollection<Folder> FoldersCollection
+        public ObservableCollection<VCListItem> FoldersCollection
         {
             get => _foldersCollection;
             set => SetProperty(ref _foldersCollection, value);
@@ -28,19 +34,11 @@ namespace AAA.Models
             set => SetProperty(ref _localName, value);
         }
 
-        public Device(string localName)
-        {
+        public Device(string localName, int id)
+        {;
+            _id = id;
             LocalName = localName;
-            FoldersCollection = new ObservableCollection<Folder>();
-            NumberOfFolders = CountFolders();
-        }
-
-        public Device(string localName, int temp)
-        {
-            LocalName = localName;
-            FoldersCollection = new ObservableCollection<Folder>();
-            FoldersCollection.Add(new Folder(CloudTypeEnum.Flickr, "Holidays 2017"));
-            FoldersCollection.Add(new Folder(CloudTypeEnum.Dropbox, "Trip to France"));
+            FoldersCollection = new ObservableCollection<VCListItem>();
             NumberOfFolders = CountFolders();
         }
 
@@ -52,6 +50,16 @@ namespace AAA.Models
         public int CountFolders()
         {
             return FoldersCollection.Count;
+        }
+
+        public void AssambleFoldersDtoToCollection(List<SFolder> folders, Command deleteCommand)
+        {
+            FoldersCollection = new ObservableCollection<VCListItem>();
+
+            foreach (var folder in folders)
+            {
+                FoldersCollection.Add(new VCListItem(folder, null, deleteCommand));
+            }
         }
     }
 }
