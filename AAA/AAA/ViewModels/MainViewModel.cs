@@ -72,6 +72,8 @@ namespace AAA.ViewModels
 
         private HttpClient _httpClient;
 
+        private string _endpoint = "https://idpf.azurewebsites.net";
+
         #endregion
 
         #region properties
@@ -655,7 +657,7 @@ namespace AAA.ViewModels
                     {
 
 
-                        string url = "https://idpf.azurewebsites.net/Cloud/AppGetClouds";
+                        string url = _endpoint + "/Cloud/AppGetClouds";
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
@@ -736,7 +738,7 @@ namespace AAA.ViewModels
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                        string url = "https://idpf.azurewebsites.net/Login/AppLogin";
+                        string url = _endpoint + "/Login/AppLogin";
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
