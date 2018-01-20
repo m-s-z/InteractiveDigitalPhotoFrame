@@ -70,6 +70,8 @@ namespace AAA.ViewModels
         private AppChangePasswordRequestDTO _changePasswordModel;
         private AppRegisterRequestDTO _registerUser;
 
+        private HttpClient _httpClient;
+
         #endregion
 
         #region properties
@@ -299,6 +301,7 @@ namespace AAA.ViewModels
             InitUser();
             InitCollections();
             InitMainPageCards();
+            _httpClient = new HttpClient();
         }
 
         private void InitCommands()
@@ -505,7 +508,8 @@ namespace AAA.ViewModels
 
         private void ExecuteGoToProfilePageCommand()
         {
-            Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
+            GetClouds();
+            //Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
         }
 
         private void ExecuteGoToSignUpPageCommand()
@@ -584,6 +588,11 @@ namespace AAA.ViewModels
                     return false;
                 }
             }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+                return false;
+            }
         }
 
         private async void ChangePassword()
@@ -638,7 +647,35 @@ namespace AAA.ViewModels
 
         private async void GetClouds()
         {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
 
+
+                        string url = "https://idpf.azurewebsites.net/Cloud/AppGetClouds";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Get
+                        };
+
+                        var response = await _httpClient.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppGetCloudsResponseDTO>(contents));
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
         }
 
         private async void GetDevices()
@@ -709,7 +746,7 @@ namespace AAA.ViewModels
                                 "application/json")
                         };
 
-                        var response = await client.SendAsync(request);
+                        var response = await _httpClient.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         var result = (JsonConvert.DeserializeObject<AppLoginResponseDTO>(contents));
                         if (result.IsSuccess)

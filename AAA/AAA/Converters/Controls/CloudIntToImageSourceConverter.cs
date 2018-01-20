@@ -54,7 +54,6 @@ namespace AAA.Converters.Controls
         }
 
         #endregion
-    {
         
     }
 }
