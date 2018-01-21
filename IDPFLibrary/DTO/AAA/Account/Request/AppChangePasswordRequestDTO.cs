@@ -28,6 +28,10 @@ namespace IDPFLibrary.DTO.AAA.Account.Request
         /// id for the account that the password should be changed to
         /// </summary>
         public int AccountId { get; set; }
+        /// <summary>
+        /// token
+        /// </summary>
+        public string Token { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppChangePasswordRequestDTO class

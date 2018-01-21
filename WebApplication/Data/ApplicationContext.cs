@@ -33,6 +33,10 @@ namespace WebApplication.Data
         /// DeviceNames
         /// </summary>
         public DbSet<DeviceName> DeviceNames { get; set; }
+        /// <summary>
+        /// auhtorization tokens
+        /// </summary>
+        public DbSet<AuthorizationToken> AuthorizationTokens { get; set; }
         #endregion properties
         #region methods
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using IDPFLibrary;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace WebApplication.Services
@@ -74,7 +75,7 @@ namespace WebApplication.Services
         /// <param name="password">password assigned to account</param>
         /// <returns>true on successfull authentication
         /// false on unsucessfull authentication</returns>
-        Task<bool> AppLogin(string username, string password);
+        Task<string> AppLogin(string username, string password);
         /// <summary>
         /// method for registering a new account
         /// </summary>
@@ -99,6 +100,13 @@ namespace WebApplication.Services
         /// <param name="session">session</param>
         /// <returns>id of logged in account</returns>
         Task<int> GetAccountId(HttpSessionStateBase session);
+        /// <summary>
+        /// checks if the token is valid and has not expired
+        /// </summary>
+        /// <param name="token">authorization token</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
+        Task<AuthorizationResponse> AppIsAuthenticated(string token, int userId);
         #endregion methods
     }
 }

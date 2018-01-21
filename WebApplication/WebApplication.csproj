@@ -245,8 +245,13 @@
     <Compile Include="Migrations\201712161631312_DeviceTokenMigration.Designer.cs">
       <DependentUpon>201712161631312_DeviceTokenMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801211645305_AAAauthorization.cs" />
+    <Compile Include="Migrations\201801211645305_AAAauthorization.Designer.cs">
+      <DependentUpon>201801211645305_AAAauthorization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AuthorizationToken.cs" />
     <Compile Include="Models\Cloud.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\DeviceName.cs" />
@@ -402,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712161631312_DeviceTokenMigration.resx">
       <DependentUpon>201712161631312_DeviceTokenMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801211645305_AAAauthorization.resx">
+      <DependentUpon>201801211645305_AAAauthorization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

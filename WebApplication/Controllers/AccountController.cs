@@ -1,4 +1,5 @@
-﻿using IDPFLibrary.DTO.AAA.Account.Response;
+﻿using IDPFLibrary;
+using IDPFLibrary.DTO.AAA.Account.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,12 +104,15 @@ namespace WebApplication.Controllers
         /// AppChangePasswordResponseDTO
         /// </returns>
         [HttpPost]
-        public async Task<ActionResult> AppChangePassword(string oldPassword, string password, string password2, int accountId)
+        public async Task<ActionResult> AppChangePassword(string oldPassword, string password, string password2, int accountId, string token)
         {
             string result = "";
-            if (!authService.IsAuthenticated(Session))
+            AppChangePasswordResponseDTO dto = new AppChangePasswordResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, accountId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
             if (password == password2)
             {
@@ -125,8 +129,8 @@ namespace WebApplication.Controllers
             {
                 result = "new passwords do not match";
             }
-            AppChangePasswordResponseDTO dto = new AppChangePasswordResponseDTO();
             dto.Message = result;
+            dto.Auth = auth;
             return Json(dto);
         }
 

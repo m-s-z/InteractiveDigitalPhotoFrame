@@ -16,6 +16,10 @@ namespace IDPFLibrary.DTO.AAA.Account.Response
         /// response message string
         /// </summary>
         public string Message { get; set; }
+        /// <summary>
+        /// Authorization Response 
+        /// </summary>
+        public AuthorizationResponse Auth { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppChangePasswordResponseDTO

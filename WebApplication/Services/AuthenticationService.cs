@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDPFLibrary;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace WebApplication.Services
         /// <param name="password">password assigned to account</param>
         /// <returns>true on successfull authentication
         /// false on unsucessfull authentication</returns>
-        public async Task<bool> AppLogin(string username, string password)
+        public async Task<string> AppLogin(string username, string password)
         {
             var foundUser = await db.Accounts.FirstOrDefaultAsync(u => u.Login.Equals(username.ToLower()));
             if (foundUser != null)
@@ -63,10 +64,17 @@ namespace WebApplication.Services
                 //if (foundUser.Password == password && foundUser.Login.ToLower() == username.ToLower())
                 if (Account.PasswordEquals(password, foundUser.Password) && foundUser.Login == username.ToLower())
                 {
-                    return true;
+                    IDeviceService devService = new DeviceService();
+                    string token = devService.TrueRandomString(10);
+                    DateTime date = new DateTime();
+                    date.AddHours(2);
+                    AuthorizationToken auth = new AuthorizationToken(foundUser, token, date);
+                    db.AuthorizationTokens.Add(auth);
+                    await db.SaveChangesAsync();
+                    return token;
                 }
             }
-            return false;
+            return "";
         }
         /// <summary>
         /// checks if the session contains an uthenticated user
@@ -85,6 +93,28 @@ namespace WebApplication.Services
             else
             {
                 return true;
+            }
+        }
+        /// <summary>
+        /// checks if the token is valid and has not expired
+        /// </summary>
+        /// <param name="token">authorization token</param>
+        /// <param name="userId">userId</param>
+        /// <returns></returns>
+        public async Task<AuthorizationResponse> AppIsAuthenticated(string token, int userId)
+        {
+            AuthorizationToken auth = await db.AuthorizationTokens.FirstOrDefaultAsync(a => a.Account.Id == userId && a.Token == token);
+            if (auth == null)
+            {
+                return AuthorizationResponse.InvalidToken;
+            }
+            else if (auth.ExpirationDate < DateTime.Now)
+            {
+                return AuthorizationResponse.Ok;
+            }
+            else
+            {
+                return AuthorizationResponse.TokenExpired;
             }
         }
         /// <summary>

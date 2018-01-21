@@ -36,9 +36,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationResponse.cs" />
     <Compile Include="DTO\AAA\Account\Request\AppChangePasswordRequestDTO.cs" />
     <Compile Include="DTO\AAA\Account\Response\AppChangePasswordResponseDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Request\AppCreateCloudRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Cloud\Request\AppGetCloudsRequestDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Response\AppCreateCloudResponseDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Response\AppGetCloudsResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppGetDevicesRequestDTO.cs" />
