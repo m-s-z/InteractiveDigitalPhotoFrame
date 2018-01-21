@@ -20,6 +20,14 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// device id
         /// </summary>
         public int DeviceId { get; set; }
+        /// <summary>
+        /// provider user id
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// authentication token
+        /// </summary>
+        public string Token { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppGetCloudFoldersRequestDTO class

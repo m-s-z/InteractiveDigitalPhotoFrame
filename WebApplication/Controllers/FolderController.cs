@@ -1,4 +1,5 @@
 ﻿using FlickrNet;
+using IDPFLibrary;
 using IDPFLibrary.DTO.AAA.Folder.Response;
 using System;
 using System.Collections.Generic;
@@ -223,13 +224,18 @@ namespace WebApplication.Controllers
         /// Http status code result
         /// </returns>
         [HttpDelete]
-        public ActionResult AppDeleteFolder(int folderId)
+        public async Task<ActionResult> AppDeleteFolder(int folderId, string token, int userId)
         {
-            if (!authService.IsAuthenticated(Session))
+            AppDeleteFolderResponseDTO dto = new AppDeleteFolderResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK, "cloud was successfuly created");
+            await folderService.deleteFolder(folderId);
+            dto.Auth = auth;
+            return Json(dto);
         }
 
         /// <summary>
@@ -291,29 +297,37 @@ namespace WebApplication.Controllers
         /// <returns>
         /// HttpStatusCodeResult
         /// </returns>
-        public async Task<ActionResult> AppAddFolder(List<string> folders, int cloudId, int deviceId)
+        public async Task<ActionResult> AppAddFolder(List<string> folders, int cloudId, int deviceId, string token, int userId)
         {
-            if (!authService.IsAuthenticated(Session))
+            AppAddFolderResponseDTO dto = new AppAddFolderResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
             await folderService.AddCloudFolders(folders, cloudId, deviceId);
-            return new HttpStatusCodeResult(HttpStatusCode.OK, "Folders Added");
+            dto.Auth = auth;
+            return Json(dto);
         }
         /// <summary>
         /// Method for obtaining all folders conected to given device
         /// </summary>
         /// <param name="deviceId"></param>
         /// <returns>AppGetDeviceFoldersResponseDTO</returns>
-        public async Task<ActionResult> AppGetDeviceFolders(int deviceId, int accountId)
+        public async Task<ActionResult> AppGetDeviceFolders(int deviceId, int accountId, string token)
         {
-            if (!authService.IsAuthenticated(Session))
+            AppGetDeviceFoldersResponseDTO dto = new AppGetDeviceFoldersResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, accountId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
             List<Folder> folders = new List<Folder>();
             //searching by cloud
-            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            string user = await authService.GetAccountLogin(accountId);
+            List<Cloud> clouds = await cloudService.GetClouds(user);
             foreach (var cloud in clouds)
             {
                 List<Folder> cloudFolders = new List<Folder>();
@@ -349,7 +363,7 @@ namespace WebApplication.Controllers
                     sFolders.Add(sFolder);
                 }
             }
-            AppGetDeviceFoldersResponseDTO dto = new AppGetDeviceFoldersResponseDTO();
+            dto.Auth = auth;
             dto.Folders = sFolders;
             return Json(dto);
         }
@@ -361,11 +375,14 @@ namespace WebApplication.Controllers
         /// <returns>
         /// AppGetCloudFoldersResponseDTO
         /// </returns>
-        public async Task<ActionResult> AppGetCloudFolders(int cloudId, int deviceId)
+        public async Task<ActionResult> AppGetCloudFolders(int cloudId, int deviceId, string token, int userId)
         {
-            if (!authService.IsAuthenticated(Session))
+            AppGetCloudFoldersResponseDTO dto = new AppGetCloudFoldersResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
             List<UniversalFolder> folders = new List<UniversalFolder>();
             List<SUniversalFolder> sFolders = new List<SUniversalFolder>();
@@ -379,7 +396,6 @@ namespace WebApplication.Controllers
                     folders = await folderService.GetDropboxFolders(cloud.Id, deviceId);
                     break;
             }
-            AppGetCloudFoldersResponseDTO dto = new AppGetCloudFoldersResponseDTO();
             foreach(var f in folders)
             {
                 SUniversalFolder sFolder = new SUniversalFolder();
@@ -389,6 +405,7 @@ namespace WebApplication.Controllers
                 sFolders.Add(sFolder);
             }
             dto.folders = sFolders;
+            dto.Auth = auth;
             return Json(dto);
         }
         #endregion methods
