@@ -84,6 +84,27 @@ namespace WebApplication.Controllers
             await cloudService.removeCloud(cloudId);
             return Redirect("Index");
         }
+
+        /// <summary>
+        /// controller method used for deleting a cloud
+        /// </summary>
+        /// <param name="cloudId">cloud id indentifying the cloud to be removed</param>
+        /// <returns>
+        /// returns cloud view
+        /// </returns>
+        public async Task<ActionResult> AppDeleteCloud(int cloudId, string token, int userId)
+        {
+            AppDeleteCloudResponseDTO dto = new AppDeleteCloudResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
+            await cloudService.removeCloud(cloudId);
+            dto.Auth = auth;
+            return Json(dto);
+        }
         /// <summary>
         /// controller method responsible for displaying the delete cloud view. This method does not remove the cloud from the database
         /// </summary>
