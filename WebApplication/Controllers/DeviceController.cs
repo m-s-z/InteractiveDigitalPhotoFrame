@@ -1,4 +1,5 @@
-﻿using IDPFLibrary.DTO;
+﻿using IDPFLibrary;
+using IDPFLibrary.DTO;
 using IDPFLibrary.DTO.AAA.Device.Request;
 using IDPFLibrary.DTO.AAA.Device.Response;
 using IDPFLibrary.DTO.AAA.Login.Response;
@@ -181,7 +182,25 @@ namespace WebApplication.Controllers
             return Redirect("Index");
         }
 
-
+        /// <summary>
+        /// app for unpairing of devices
+        /// </summary>
+        /// <param name="deviceId">device id</param>
+        /// <param name="accountId">account id</param>
+        /// <returns></returns>
+        public async Task<ActionResult> AppUnpairDevice(int deviceId, int accountId, string token)
+        {
+            AppUnpairDeviceResponseDTO dto = new AppUnpairDeviceResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, accountId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
+            await deviceService.UnpairDevice(deviceId, authService.getLoggedInUsername(Session));
+            dto.Auth = auth;
+            return Json(dto);
+        }
         /// <summary>
         /// pairs with device
         /// </summary>
@@ -211,15 +230,18 @@ namespace WebApplication.Controllers
         /// string with result
         /// </returns>
         [HttpPost]
-        public async Task<ActionResult> AppPairDevice(String pairCode, string deviceName)
+        public async Task<ActionResult> AppPairDevice(String pairCode, string deviceName, string token, int userId)
         {
-            if (!authService.IsAuthenticated(Session))
+            AppPairDeviceResponseDTO dto = new AppPairDeviceResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
+                dto.Auth = auth;
+                return Json(dto);
             }
             pairCode = pairCode.ToUpper();
-            AppPairDeviceResponseDTO dto = new AppPairDeviceResponseDTO();
             dto.Message = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
+            dto.Auth = auth;
             return Json(dto);
         }
 
@@ -339,13 +361,15 @@ namespace WebApplication.Controllers
         /// AppGetDevicesResponseDTO
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult> AppGetDevices(int accountId)
+        public async Task<ActionResult> AppGetDevices(int accountId, string token)
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             AppGetDevicesResponseDTO dto = new AppGetDevicesResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, accountId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
             string acc = await authService.GetAccountLogin(accountId);
             List<DeviceName> devices = await deviceService.GetDevices(acc);
             List<SDeviceName> sDevices = new List<SDeviceName>();
@@ -357,6 +381,7 @@ namespace WebApplication.Controllers
                 sDevices.Add(sDevice);
             }
             dto.Devices = sDevices;
+            dto.Auth = auth;
             return Json(sDevices);
         }
 

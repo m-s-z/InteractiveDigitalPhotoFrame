@@ -17,6 +17,10 @@ namespace IDPFLibrary.DTO.AAA.Device.Request
         /// account id
         /// </summary>
         public int AccountId { get; set; }
+        /// <summary>
+        /// authentication token
+        /// </summary>
+        public string Token { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppGetDevicesRequestDTO class

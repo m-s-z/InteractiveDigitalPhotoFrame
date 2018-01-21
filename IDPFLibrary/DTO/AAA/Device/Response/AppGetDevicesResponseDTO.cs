@@ -40,6 +40,10 @@ namespace IDPFLibrary.DTO.AAA.Device.Response
         /// account id
         /// </summary>
         public List<SDeviceName> Devices { get; set; }
+        /// <summary>
+        /// Authorization Response 
+        /// </summary>
+        public AuthorizationResponse Auth { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppGetDevicesResponseDTO

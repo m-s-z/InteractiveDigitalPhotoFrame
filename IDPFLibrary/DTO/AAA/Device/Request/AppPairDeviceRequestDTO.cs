@@ -18,6 +18,18 @@ namespace IDPFLibrary.DTO.AAA.Device.Request
         /// Custom device name for the device
         /// </summary>
         public String DeviceName { get; set; }
+        /// <summary>
+        /// token Secret
+        /// </summary>
+        public string TokenSecret { get; set; }
+        /// <summary>
+        /// provider user id
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// authentication token
+        /// </summary>
+        public string Token { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppPairDeviceRequestDTO

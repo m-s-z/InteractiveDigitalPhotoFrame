@@ -7,26 +7,22 @@ using System.Threading.Tasks;
 namespace IDPFLibrary.DTO.AAA.Device.Response
 {
     /// <summary>
-    /// response class for AppPairDevice controller method
+    /// Response class for AppUnpairDevice controller method
     /// </summary>
-    public class AppPairDeviceResponseDTO
+    public class AppUnpairDeviceResponseDTO
     {
         #region properties
-        /// <summary>
-        /// response message
-        /// </summary>
-        public String Message { get; set; }
         /// <summary>
         /// Authorization Response 
         /// </summary>
         public AuthorizationResponse Auth { get; set; }
         #endregion properties
         /// <summary>
-        /// construcor for AppPairDeviceResponseDTO
+        /// constructor for AppUnpairDevice
         /// </summary>
-        public AppPairDeviceResponseDTO()
+        public AppUnpairDeviceResponseDTO()
         {
-
+                
         }
     }
 }

@@ -15,6 +15,10 @@
         /// Device ID.
         /// </summary>
         public int DeviceId { get; set; }
+        /// <summary>
+        /// authentication token
+        /// </summary>
+        public string Token { get; set; }
 
         #endregion properties
 
