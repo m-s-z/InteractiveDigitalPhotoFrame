@@ -36,20 +36,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationResponse.cs" />
     <Compile Include="DTO\AAA\Account\Request\AppChangePasswordRequestDTO.cs" />
     <Compile Include="DTO\AAA\Account\Response\AppChangePasswordResponseDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Request\AppCreateCloudRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Cloud\Request\AppDeleteCloudRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Cloud\Request\AppGetCloudsRequestDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Response\AppCreateCloudResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Cloud\Response\AppDeleteCloudResponseDTO.cs" />
     <Compile Include="DTO\AAA\Cloud\Response\AppGetCloudsResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppGetDevicesRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppPairDeviceRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Request\AppUnpairDeviceRequestDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppGetDevicesResponseDTO.cs" />
     <Compile Include="DTO\AAA\Device\Response\AppPairDeviceResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Device\Response\AppUnpairDeviceResponseDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Request\AppAddFolderRequestDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Request\AppDeleteFolderRequestDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Request\AppGetCloudFoldersRequestDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Request\AppGetDeviceFoldersRequestDTO.cs" />
+    <Compile Include="DTO\AAA\Folder\Response\AppAddFolderResponseDTO.cs" />
+    <Compile Include="DTO\AAA\Folder\Response\AppDeleteFolderResponseDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Response\AppGetCloudFoldersResponseDTO.cs" />
     <Compile Include="DTO\AAA\Folder\Response\AppGetDeviceFoldersResponseDTO.cs" />
     <Compile Include="DTO\AAA\Login\Request\AppLoginRequestDTO.cs" />

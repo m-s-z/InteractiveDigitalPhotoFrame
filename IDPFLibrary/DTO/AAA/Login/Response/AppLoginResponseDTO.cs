@@ -23,7 +23,11 @@ namespace IDPFLibrary.DTO.AAA.Login.Response
         /// <summary>
         /// user id
         /// </summary>
-        public int userId { get; set; }
+        public int UserId { get; set; }
+        /// <summary>
+        /// authorization token
+        /// </summary>
+        public string Token { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppLoginResponseDTO class

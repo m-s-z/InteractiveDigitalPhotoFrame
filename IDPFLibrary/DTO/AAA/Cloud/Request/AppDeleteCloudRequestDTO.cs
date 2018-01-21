@@ -4,22 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDPFLibrary.DTO.AAA.Folder.Request
+namespace IDPFLibrary.DTO.AAA.Cloud.Request
 {
     /// <summary>
-    /// request class for AppGetCloudFolder controller method
+    /// request class fro AppDeleteCloud controller method
     /// </summary>
-    public class AppGetCloudFoldersRequestDTO
+    public class AppDeleteCloudRequestDTO
     {
-        #region properties
         /// <summary>
         /// cloud id
         /// </summary>
         public int CloudId { get; set; }
-        /// <summary>
-        /// device id
-        /// </summary>
-        public int DeviceId { get; set; }
         /// <summary>
         /// provider user id
         /// </summary>
@@ -28,11 +23,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// authentication token
         /// </summary>
         public string Token { get; set; }
-        #endregion properties
         /// <summary>
-        /// constructor for AppGetCloudFoldersRequestDTO class
+        /// constructor for AppDeleteCloudRequestDTO
         /// </summary>
-        public AppGetCloudFoldersRequestDTO()
+        public AppDeleteCloudRequestDTO()
         {
 
         }

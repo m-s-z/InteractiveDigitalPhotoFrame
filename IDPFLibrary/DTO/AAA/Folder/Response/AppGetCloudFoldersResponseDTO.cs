@@ -43,6 +43,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Response
         /// </summary>
         public List<SUniversalFolder> folders { get; set; }
         /// <summary>
+        /// Authorization Response 
+        /// </summary>
+        public AuthorizationResponse Auth { get; set; }
+        /// <summary>
         /// constructor for AppGetCloudFoldersResponseDTO class
         /// </summary>
         public AppGetCloudFoldersResponseDTO()

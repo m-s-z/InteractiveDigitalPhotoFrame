@@ -7,24 +7,18 @@ using System.Threading.Tasks;
 namespace IDPFLibrary.DTO.AAA.Cloud.Response
 {
     /// <summary>
-    /// response class for AppCreateCloud controller method
+    /// response class for AppDeleteCloud controller method
     /// </summary>
-    public class AppCreateCloudResponseDTO
+    public class AppDeleteCloudResponseDTO
     {
-        #region properties
-        /// <summary>
-        /// response message string
-        /// </summary>
-        public string Message { get; set; }
         /// <summary>
         /// Authorization Response 
         /// </summary>
         public AuthorizationResponse Auth { get; set; }
-        #endregion properties
         /// <summary>
-        /// contructor for AppCreateCloudResponseDTO class
+        /// constructor for AppDeleteCloudResponseDTO
         /// </summary>
-        public AppCreateCloudResponseDTO()
+        public AppDeleteCloudResponseDTO()
         {
 
         }

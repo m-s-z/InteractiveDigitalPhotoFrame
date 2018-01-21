@@ -84,6 +84,27 @@ namespace WebApplication.Controllers
             await cloudService.removeCloud(cloudId);
             return Redirect("Index");
         }
+
+        /// <summary>
+        /// controller method used for deleting a cloud
+        /// </summary>
+        /// <param name="cloudId">cloud id indentifying the cloud to be removed</param>
+        /// <returns>
+        /// returns cloud view
+        /// </returns>
+        public async Task<ActionResult> AppDeleteCloud(int cloudId, string token, int userId)
+        {
+            AppDeleteCloudResponseDTO dto = new AppDeleteCloudResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
+            await cloudService.removeCloud(cloudId);
+            dto.Auth = auth;
+            return Json(dto);
+        }
         /// <summary>
         /// controller method responsible for displaying the delete cloud view. This method does not remove the cloud from the database
         /// </summary>
@@ -254,14 +275,17 @@ namespace WebApplication.Controllers
         /// AppCreateCloudResponseDTO
         /// </returns>
         [HttpPut]
-        public async Task<ActionResult> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId)
+        public async Task<ActionResult> AppCreateCloud(int accountId, string cloudName, CloudProviderType provider, string token, string tokenSecret, string userId, string authToken)
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             AppCreateCloudResponseDTO dto = new AppCreateCloudResponseDTO();
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(authToken, accountId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
             dto.Message = await cloudService.AppCreateCloud(accountId, cloudName, provider, token, tokenSecret, userId);
+            dto.Auth = auth;
             return Json(dto);
         }
         /// <summary>
@@ -271,14 +295,17 @@ namespace WebApplication.Controllers
         /// AppGetCloudsResponseDTO
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult> AppGetClouds()
+        public async Task<ActionResult> AppGetClouds(string token, int userId)
         {
-            if (!authService.IsAuthenticated(Session))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Login to use this request");
-            }
             AppGetCloudsResponseDTO dto = new AppGetCloudsResponseDTO();
-            List<Cloud> clouds = await cloudService.GetClouds(authService.getLoggedInUsername(Session));
+            AuthorizationResponse auth = await authService.AppIsAuthenticated(token, userId);
+            if (auth != AuthorizationResponse.Ok)
+            {
+                dto.Auth = auth;
+                return Json(dto);
+            }
+            string user = await authService.GetAccountLogin(userId);
+            List<Cloud> clouds = await cloudService.GetClouds(user);
             List<RCloud> rClouds = new List<RCloud>();
             foreach(var c in clouds)
             {
@@ -297,6 +324,7 @@ namespace WebApplication.Controllers
                 rClouds.Add(rCloud);
             }
             dto.clouds = rClouds;
+            dto.Auth = auth;
             return Json(rClouds);
         }
         #endregion methods

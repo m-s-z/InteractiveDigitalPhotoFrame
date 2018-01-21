@@ -86,14 +86,15 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> AppLogin(string login, string password)
         {
-            if (await authService.AppLogin(login, password))
+            string loginResponse = await authService.AppLogin(login, password);
+            if (loginResponse != "")
             {
-                int id = await authService.GetAccountId(Session);
-                Session["UserId"] = login;
+                int id = await authService.GetAccountId(login);
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
                 dto.Message = "Success";
                 dto.IsSuccess = true;
-                dto.userId = id;
+                dto.UserId = id;
+                dto.Token = loginResponse;
                 return Json(dto);
             }
             else

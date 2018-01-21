@@ -47,6 +47,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Response
         /// </summary>
         public List<SFolder> Folders { get; set; }
         /// <summary>
+        /// Authorization Response 
+        /// </summary>
+        public AuthorizationResponse Auth { get; set; }
+        /// <summary>
         /// constructor for AppGetDeviceFoldersResponseDTO class
         /// </summary>
         public AppGetDeviceFoldersResponseDTO()

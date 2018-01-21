@@ -36,6 +36,10 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Request
         /// provider user id
         /// </summary>
         public string UserId { get; set; }
+        /// <summary>
+        /// authentication token
+        /// </summary>
+        public string AuthToken { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppCreateCloudRequestDTO class

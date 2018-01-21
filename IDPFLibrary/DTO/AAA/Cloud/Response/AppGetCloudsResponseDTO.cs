@@ -32,6 +32,7 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
         /// user id
         /// </summary>
         public string  UserId { get; set; }
+        
         #endregion properties
         /// <summary>
         /// constructor for Rcloud class
@@ -51,6 +52,10 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
         /// returned clouds
         /// </summary>
         public List<RCloud> clouds { get; set; }
+        /// <summary>
+        /// Authorization Response 
+        /// </summary>
+        public AuthorizationResponse Auth { get; set; }
         #endregion properties
         /// <summary>
         /// constructor for AppGetCloudsResponseDTO class
