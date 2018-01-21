@@ -107,6 +107,12 @@ namespace WebApplication.Services
         /// <param name="userId">userId</param>
         /// <returns></returns>
         Task<AuthorizationResponse> AppIsAuthenticated(string token, int userId);
+        /// <summary>
+        /// method for obtaining user id
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>id of logged in account</returns>
+        Task<int> GetAccountId(string login);
         #endregion methods
     }
 }

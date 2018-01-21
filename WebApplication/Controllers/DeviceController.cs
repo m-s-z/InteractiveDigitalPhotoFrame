@@ -197,7 +197,8 @@ namespace WebApplication.Controllers
                 dto.Auth = auth;
                 return Json(dto);
             }
-            await deviceService.UnpairDevice(deviceId, authService.getLoggedInUsername(Session));
+            string user = await authService.GetAccountLogin(accountId);
+            await deviceService.UnpairDevice(deviceId, user);
             dto.Auth = auth;
             return Json(dto);
         }
@@ -240,7 +241,8 @@ namespace WebApplication.Controllers
                 return Json(dto);
             }
             pairCode = pairCode.ToUpper();
-            dto.Message = await deviceService.PairDevice(pairCode, deviceName, authService.getLoggedInUsername(Session));
+            string user = await authService.GetAccountLogin(userId);
+            dto.Message = await deviceService.PairDevice(pairCode, deviceName, user);
             dto.Auth = auth;
             return Json(dto);
         }

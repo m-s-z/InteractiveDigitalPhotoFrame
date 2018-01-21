@@ -270,6 +270,18 @@ namespace WebApplication.Services
                 return -1;
             }
         }
+
+        
+        /// <summary>
+        /// method for obtaining user id
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>id of logged in account</returns>
+        public async Task<int> GetAccountId(string login)
+        {
+            Account acc = await db.Accounts.FirstOrDefaultAsync(p => p.Login == login);
+            return acc.Id;
+        }
         #endregion methods
     }
 }

@@ -89,8 +89,7 @@ namespace WebApplication.Controllers
             string loginResponse = await authService.AppLogin(login, password);
             if (loginResponse != "")
             {
-                int id = await authService.GetAccountId(Session);
-                Session["UserId"] = login;
+                int id = await authService.GetAccountId(login);
                 AppLoginResponseDTO dto = new AppLoginResponseDTO();
                 dto.Message = "Success";
                 dto.IsSuccess = true;
