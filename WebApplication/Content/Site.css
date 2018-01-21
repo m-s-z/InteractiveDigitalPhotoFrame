@@ -165,3 +165,9 @@ textarea {
 .main-page-text{
     text-align: justify;
 }
+
+.home-icon {
+    background-image: url('../Images/Logo_web-64-64.png');
+    background-repeat: no-repeat;
+    width: 4em;
+}
