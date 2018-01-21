@@ -288,6 +288,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Images\dpf_code.png" />
     <Content Include="Images\loginIcon.png" />
+    <Content Include="Images\Logo_web.ico" />
     <Content Include="Images\registretationIcon.png" />
     <Content Include="Images\websitephoto2-1999x1045.jpg" />
     <Content Include="Styles\folder.css" />
