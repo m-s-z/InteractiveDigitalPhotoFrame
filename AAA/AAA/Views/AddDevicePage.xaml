@@ -14,7 +14,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0"
                    Margin="20"
-                   Text="Tutorial how to pair account with a device. &#10; Photo will be changed."
+                   Text="Tap LINK button on a DPF device. Rewrite generated code."
                    HorizontalTextAlignment="Center"
                    VerticalOptions="CenterAndExpand" 
                    HorizontalOptions="CenterAndExpand" />

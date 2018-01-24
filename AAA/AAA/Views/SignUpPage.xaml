@@ -49,7 +49,7 @@
                 <Button BackgroundColor="#32CD32"
                         Command="{Binding GoBackPageCommand}"
                         Grid.Row="5"
-                        Text="SAVE PASSWORD"
+                        Text="CREATE ACCOUNT"
                         TextColor="White"
                         VerticalOptions="End" />
             </Grid>
