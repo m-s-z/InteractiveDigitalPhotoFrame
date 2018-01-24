@@ -210,7 +210,7 @@
     <AndroidResource Include="Resources\drawable\account_profile_96px.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\dpf_background.jpg" />
+    <AndroidResource Include="Resources\drawable\dpf_background.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
