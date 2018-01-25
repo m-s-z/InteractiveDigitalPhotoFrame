@@ -70,7 +70,7 @@ namespace WebApplication.Services
                     date.AddHours(2);
                     AuthorizationToken auth = new AuthorizationToken(foundUser, token, date);
                     db.AuthorizationTokens.Add(auth);
-                    db.SaveChanges();
+                    int check = await db.SaveChangesAsync();
                     return token;
                 }
             }
