@@ -66,11 +66,11 @@ namespace WebApplication.Services
                 {
                     IDeviceService devService = new DeviceService();
                     string token = devService.TrueRandomString(10);
-                    DateTime date = new DateTime();
+                    DateTime date = DateTime.Now;
                     date.AddHours(2);
                     AuthorizationToken auth = new AuthorizationToken(foundUser, token, date);
                     db.AuthorizationTokens.Add(auth);
-                    await db.SaveChangesAsync();
+                    db.SaveChanges();
                     return token;
                 }
             }
@@ -110,6 +110,9 @@ namespace WebApplication.Services
             }
             else if (auth.ExpirationDate < DateTime.Now)
             {
+                auth.ExpirationDate.AddHours(2);
+                db.Entry(auth).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
                 return AuthorizationResponse.Ok;
             }
             else

@@ -297,6 +297,7 @@ namespace WebApplication.Controllers
         /// <returns>
         /// HttpStatusCodeResult
         /// </returns>
+        [HttpPost]
         public async Task<ActionResult> AppAddFolder(List<string> folders, int cloudId, int deviceId, string token, int userId)
         {
             AppAddFolderResponseDTO dto = new AppAddFolderResponseDTO();
@@ -315,6 +316,7 @@ namespace WebApplication.Controllers
         /// </summary>
         /// <param name="deviceId"></param>
         /// <returns>AppGetDeviceFoldersResponseDTO</returns>
+        [HttpPost]
         public async Task<ActionResult> AppGetDeviceFolders(int deviceId, int accountId, string token)
         {
             AppGetDeviceFoldersResponseDTO dto = new AppGetDeviceFoldersResponseDTO();
@@ -375,6 +377,7 @@ namespace WebApplication.Controllers
         /// <returns>
         /// AppGetCloudFoldersResponseDTO
         /// </returns>
+        [HttpPost]
         public async Task<ActionResult> AppGetCloudFolders(int cloudId, int deviceId, string token, int userId)
         {
             AppGetCloudFoldersResponseDTO dto = new AppGetCloudFoldersResponseDTO();

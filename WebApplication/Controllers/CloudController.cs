@@ -92,6 +92,7 @@ namespace WebApplication.Controllers
         /// <returns>
         /// returns cloud view
         /// </returns>
+        [HttpPost]
         public async Task<ActionResult> AppDeleteCloud(int cloudId, string token, int userId)
         {
             AppDeleteCloudResponseDTO dto = new AppDeleteCloudResponseDTO();
@@ -294,7 +295,7 @@ namespace WebApplication.Controllers
         /// <returns>
         /// AppGetCloudsResponseDTO
         /// </returns>
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> AppGetClouds(string token, int userId)
         {
             AppGetCloudsResponseDTO dto = new AppGetCloudsResponseDTO();

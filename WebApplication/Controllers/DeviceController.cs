@@ -188,6 +188,7 @@ namespace WebApplication.Controllers
         /// <param name="deviceId">device id</param>
         /// <param name="accountId">account id</param>
         /// <returns></returns>
+        [HttpPost]
         public async Task<ActionResult> AppUnpairDevice(int deviceId, int accountId, string token)
         {
             AppUnpairDeviceResponseDTO dto = new AppUnpairDeviceResponseDTO();
