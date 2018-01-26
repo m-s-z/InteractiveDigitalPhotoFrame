@@ -16,6 +16,7 @@ using System.Text;
 using IDPFLibrary;
 using IDPFLibrary.DTO.AAA.Account.Request;
 using IDPFLibrary.DTO.AAA.Account.Response;
+using IDPFLibrary.DTO.AAA.Cloud.Request;
 using IDPFLibrary.DTO.AAA.Cloud.Response;
 using IDPFLibrary.DTO.AAA.Device.Request;
 using IDPFLibrary.DTO.AAA.Device.Response;
@@ -99,6 +100,7 @@ namespace AAA.ViewModels
         }
 
         public Command ChangePageCommand { get; set; }
+        public Command ChangePasswordCommand { get; set; }
         public Command CloudConnectCommand { get; set; }
         public Command CloudDisconnectCommand { get; set; }
         public Command CloudModifyCommand { get; set; }
@@ -121,6 +123,7 @@ namespace AAA.ViewModels
 
         public Command DeviceUnassignCommand { get; set; }
         public Command FolderUnassignCommand { get; set; }
+        public Command RefreshCommand { get; set; }
         public Command SignUpCommand { get; set; }
 
 
@@ -302,15 +305,20 @@ namespace AAA.ViewModels
             PairCode = "";
             DeviceName = "";
             RegisterUser = new AppRegisterRequestDTO();
+            ChangePasswordModel = new AppChangePasswordRequestDTO();
             InitCommands();
             InitUser();
             InitCollections();
             InitMainPageCards();
+            var temp = new AppGetCloudsResponseDTO();
+            temp.clouds = new List<RCloud>();
+            CloudsResponseDto = temp;
         }
 
         private void InitCommands()
         {
             ChangePageCommand = new Command(ExecuteChangePageCommand);
+            ChangePasswordCommand = new Command(ExecuteChangePasswordCommand);
             CloudConnectCommand = new Command(ExecuteCloudConnectCommand);
             CloudDisconnectCommand = new Command(ExecuteCloudDisconnectCommand);
             CloudModifyCommand = new Command(ExecuteCloudModifyCommand);
@@ -326,6 +334,7 @@ namespace AAA.ViewModels
             GoToSignUpPageCommand = new Command(ExecuteGoToSignUpPageCommand);
             DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
             FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
+            RefreshCommand = new Command(ExecuteRefreshCommand);
             SignUpCommand = new Command(ExecuteSignUpCommand);
         }
 
@@ -337,7 +346,7 @@ namespace AAA.ViewModels
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "CLOUDS", GoToCloudsListPageCommand,
                 "MANAGE", "cloud_card_96px.png", "Connected clouds: " + NumberOfClouds));
             MainPageCards.Add(new CardListItem(CardTypeEnum.HighOneAction, "PROFILE", GoToProfilePageCommand,
-                "MANAGE", "user_card_96px.png", "Your login"));
+                "MANAGE", "user_card_96px.png", Username));
         }
 
         private void InitCollections()
@@ -431,6 +440,11 @@ namespace AAA.ViewModels
             Application.Current.MainPage.Navigation.PushAsync(nextPage);
         }
 
+        private void ExecuteChangePasswordCommand()
+        {
+            ChangePassword();
+        }
+
         private void ExecuteCloudConnectCommand()
         {
             UserAccount.CloudsCollection.Add(new CloudProvider(NewCloudType, CloudEmail));
@@ -508,15 +522,16 @@ namespace AAA.ViewModels
             //GetDevices();
             if (await LoginTask())
             {
-                GetDevices();
+                //GetDevices();
+                //GetClouds();
                 Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
+                MainPageCards[2].CardSubtext = Username;
             }
         }
 
         private void ExecuteGoToProfilePageCommand()
         {
-            GetClouds();
-            //Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
+            Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
         }
 
         private void ExecuteGoToSignUpPageCommand()
@@ -536,6 +551,12 @@ namespace AAA.ViewModels
             //UserAccount.DevicesCollection.FirstOrDefault(d => d == SelectedDevice.Device)?.FoldersCollection.Remove(((VCListItem)param).Folder);
             UpdateAllInformation();
             Application.Current.MainPage.DisplayAlert("Unassignment", "The folder has been successfully  unassiged", "OK");
+        }
+
+        private async void ExecuteRefreshCommand()
+        {
+            // GetDevices();
+            // GetClouds();
         }
 
         private async void ExecuteSignUpCommand()
@@ -627,7 +648,8 @@ namespace AAA.ViewModels
                             OldPassword = ChangePasswordModel.OldPassword,
                             Password = ChangePasswordModel.Password,
                             Password2 = ChangePasswordModel.Password2,
-                            AccountId = _userId
+                            AccountId = _userId,
+                            Token = _userToken
                         };
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
@@ -672,18 +694,34 @@ namespace AAA.ViewModels
                 {
                     using (var client = new HttpClient())
                     {
+                        AppGetCloudsRequestDTO requestDto = new AppGetCloudsRequestDTO
+                        {
+                            UserId = _userId,
+                            Token = _userToken
+                        };
 
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
                         string url = _endpoint + "/Cloud/AppGetClouds";
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
-                            Method = HttpMethod.Get
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
                         };
 
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
-                        var result = (JsonConvert.DeserializeObject<AppGetCloudsResponseDTO>(contents));
+                        
+                        CloudsResponseDto = (JsonConvert.DeserializeObject<AppGetCloudsResponseDTO>(contents));
+
+                        if (CloudsResponseDto.Auth == AuthorizationResponse.TokenExpired || CloudsResponseDto.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return;
+                        }
                     }
                 }
                 else
@@ -726,6 +764,7 @@ namespace AAA.ViewModels
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         DevicesResponseDto = (JsonConvert.DeserializeObject<AppGetDevicesResponseDTO>(contents));
+                        
                         if (DevicesResponseDto.Auth == AuthorizationResponse.TokenExpired || DevicesResponseDto.Auth == AuthorizationResponse.InvalidToken)
                         {
                             Application.Current.MainPage = new NavigationPage(new LoginPage());
@@ -742,6 +781,55 @@ namespace AAA.ViewModels
             catch (Exception exception)
             {
                 OnErrorOccurred(this, exception.Message);
+            }
+        }
+
+        private async void GetSelectedDevice()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppGetDeviceFoldersRequestDTO requestDto = new AppGetDeviceFoldersRequestDTO
+                        {
+                            Token = _userToken,
+                            DeviceId = SelectedDevice.DeviceId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Folder/AppGetDeviceFolders";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppGetDeviceFoldersResponseDTO>(contents));
+                        if (result.Auth == AuthorizationResponse.TokenExpired || result.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using application.", "OK");
+                    return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+                return false;
             }
         }
 
@@ -962,6 +1050,9 @@ namespace AAA.ViewModels
             {
                 CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
             }
+
+            NumberOfClouds = CloudsCollection.Count;
+            MainPageCards[1].CardSubtext = "Connected clouds: " + NumberOfClouds;
         }
 
         private void AssambleDevicesDtoToCollection()
@@ -974,6 +1065,7 @@ namespace AAA.ViewModels
             }
 
             NumberOfDevices = DevicesCollection.Count;
+            MainPageCards[0].CardSubtext = "Paired devices: " + NumberOfDevices;
         }
 
         #endregion

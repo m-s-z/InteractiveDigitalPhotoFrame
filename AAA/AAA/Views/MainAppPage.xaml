@@ -7,8 +7,10 @@
              x:Class="AAA.Views.MainAppPage"
              Title="Home"
              x:Name="Root">
-        
-    
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="RefreshMenuItem" Order="Primary" Icon="refresh_96px.png" Priority="0"/>
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <Grid>

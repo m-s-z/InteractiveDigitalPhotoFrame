@@ -13,13 +13,7 @@
                        HorizontalTextAlignment="Start"
                        Margin="16, 24, 16, 16"
                        LineBreakMode="WordWrap"
-                       Text="{Binding UserAccount.Login}"
-                       TextColor="Black"
-                       VerticalTextAlignment="Start" />
-                <Label FontSize="14"
-                       HorizontalTextAlignment="Start"
-                       Margin="16, 55, 16, 16"
-                       Text="{Binding UserAccount.AccountEmail}"
+                       Text="{Binding Username}"
                        TextColor="Black"
                        VerticalTextAlignment="Start" />
                 <Image HeightRequest="80"
