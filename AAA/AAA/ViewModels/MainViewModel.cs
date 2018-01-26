@@ -13,6 +13,7 @@ using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
 using System.Net.Http;
 using System.Text;
+using IDPFLibrary;
 using IDPFLibrary.DTO.AAA.Account.Request;
 using IDPFLibrary.DTO.AAA.Account.Response;
 using IDPFLibrary.DTO.AAA.Cloud.Response;
@@ -55,6 +56,7 @@ namespace AAA.ViewModels
         private ObservableCollection<CardListItem> _mainPageCards;
 
         private string _username;
+        private string _userToken;
         private string _password;
 
         private string _cloudEmail;
@@ -70,7 +72,6 @@ namespace AAA.ViewModels
         private AppChangePasswordRequestDTO _changePasswordModel;
         private AppRegisterRequestDTO _registerUser;
 
-        private HttpClient _httpClient;
 
         private string _endpoint = "https://idpf.azurewebsites.net";
 
@@ -120,6 +121,7 @@ namespace AAA.ViewModels
 
         public Command DeviceUnassignCommand { get; set; }
         public Command FolderUnassignCommand { get; set; }
+        public Command SignUpCommand { get; set; }
 
 
         public int NumberOfClouds
@@ -299,11 +301,11 @@ namespace AAA.ViewModels
         {
             PairCode = "";
             DeviceName = "";
+            RegisterUser = new AppRegisterRequestDTO();
             InitCommands();
             InitUser();
             InitCollections();
             InitMainPageCards();
-            _httpClient = new HttpClient();
         }
 
         private void InitCommands()
@@ -324,6 +326,7 @@ namespace AAA.ViewModels
             GoToSignUpPageCommand = new Command(ExecuteGoToSignUpPageCommand);
             DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
             FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
+            SignUpCommand = new Command(ExecuteSignUpCommand);
         }
 
         private void InitMainPageCards()
@@ -502,8 +505,10 @@ namespace AAA.ViewModels
 
         private async void ExecuteGoToMainPageCommand()
         {
+            //GetDevices();
             if (await LoginTask())
             {
+                GetDevices();
                 Application.Current.MainPage = new NavigationPage(new MainAppPage(this));
             }
         }
@@ -533,6 +538,11 @@ namespace AAA.ViewModels
             Application.Current.MainPage.DisplayAlert("Unassignment", "The folder has been successfully  unassiged", "OK");
         }
 
+        private async void ExecuteSignUpCommand()
+        {
+            await AccountRegister();
+        }
+
         private void UpdateAllInformation()
         {
             UserAccount.UpdateInformation();
@@ -546,6 +556,11 @@ namespace AAA.ViewModels
         {
             try
             {
+                if (RegisterUser.Login == null || RegisterUser.Password == null || RegisterUser.Password2 == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Fill in all fields", "OK");
+                    return false;
+                }
                 if (CheckIfNetworkConnection())
                 {
                     using (var client = new HttpClient())
@@ -574,6 +589,8 @@ namespace AAA.ViewModels
                         var result = (JsonConvert.DeserializeObject<AppRegisterResponseDTO>(contents));
                         if (result.IsSuccess)
                         {
+                            await Application.Current.MainPage.DisplayAlert("Account registered", "You can now sign in to use application.", "OK");
+                            await Application.Current.MainPage.Navigation.PopAsync();
                             return result.IsSuccess;
                         }
                         else
@@ -664,7 +681,7 @@ namespace AAA.ViewModels
                             Method = HttpMethod.Get
                         };
 
-                        var response = await _httpClient.SendAsync(request);
+                        var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         var result = (JsonConvert.DeserializeObject<AppGetCloudsResponseDTO>(contents));
                     }
@@ -690,7 +707,8 @@ namespace AAA.ViewModels
                     {
                         AppGetDevicesRequestDTO requestDto = new AppGetDevicesRequestDTO
                         {
-                            AccountId = _userId
+                            AccountId = _userId,
+                            Token = _userToken
                         };
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
@@ -708,6 +726,11 @@ namespace AAA.ViewModels
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         DevicesResponseDto = (JsonConvert.DeserializeObject<AppGetDevicesResponseDTO>(contents));
+                        if (DevicesResponseDto.Auth == AuthorizationResponse.TokenExpired || DevicesResponseDto.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return;
+                        }
                        
                     }
                 }
@@ -733,12 +756,12 @@ namespace AAA.ViewModels
                         AppLoginRequestDTO requestDto = new AppLoginRequestDTO
                         {
                             Login = Username,
-                            Password = Password,
+                            Password = Password
                         };
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                        string url = _endpoint + "/Login/AppLogin";
+                        string url = "https://idpf.azurewebsites.net/Login/AppLogin";
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
@@ -748,11 +771,13 @@ namespace AAA.ViewModels
                                 "application/json")
                         };
 
-                        var response = await _httpClient.SendAsync(request);
+                        var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
                         var result = (JsonConvert.DeserializeObject<AppLoginResponseDTO>(contents));
                         if (result.IsSuccess)
                         {
+                            _userToken = result.Token;
+                            _userId = result.UserId;
                             return result.IsSuccess;
                         }
                         else
@@ -947,6 +972,8 @@ namespace AAA.ViewModels
             {
                 DevicesCollection.Add(new VCListItem(device, GoToDevicePageCommand));
             }
+
+            NumberOfDevices = DevicesCollection.Count;
         }
 
         #endregion
