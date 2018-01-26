@@ -31,7 +31,7 @@ namespace DPF.ViewModels
         /// <summary>
         /// Indicates the length of the interval between photo changing during slideshow (in tenths of a second).
         /// </summary>
-        private const int SLIDESHOW_TIMER = 40;
+        private const int SLIDESHOW_TIMER = 100;
 
         /// <summary>
         /// Contains path to default photo to display.

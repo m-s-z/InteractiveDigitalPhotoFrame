@@ -31,23 +31,26 @@
                        FontSize="20"
                        HorizontalTextAlignment="Start"
                        Placeholder="Username"
-                       PlaceholderColor="DarkGray" />
+                       PlaceholderColor="DarkGray"
+                       Text="{Binding RegisterUser.Login, Mode=TwoWay}" />
                 <Entry Grid.Row="2"
                        Margin="16, 8, 16, 8"
                        FontSize="20"
                        HorizontalTextAlignment="Start"
                        IsPassword="True"
                        Placeholder="Password"
-                       PlaceholderColor="DarkGray" />
+                       PlaceholderColor="DarkGray"
+                       Text="{Binding RegisterUser.Password, Mode=TwoWay}" />
                 <Entry Grid.Row="3"
                        Margin="16, 8, 16, 8"
                        FontSize="20"
                        HorizontalTextAlignment="Start"
                        IsPassword="True"
                        Placeholder="Repeat password"
-                       PlaceholderColor="DarkGray" />
+                       PlaceholderColor="DarkGray"
+                       Text="{Binding RegisterUser.Password2, Mode=TwoWay}" />
                 <Button BackgroundColor="#32CD32"
-                        Command="{Binding GoBackPageCommand}"
+                        Command="{Binding SignUpCommand}"
                         Grid.Row="5"
                         Text="CREATE ACCOUNT"
                         TextColor="White"
