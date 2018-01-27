@@ -363,7 +363,7 @@ namespace WebApplication.Controllers
         /// <returns>
         /// AppGetDevicesResponseDTO
         /// </returns>
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> AppGetDevices(int accountId, string token)
         {
             AppGetDevicesResponseDTO dto = new AppGetDevicesResponseDTO();
@@ -385,7 +385,7 @@ namespace WebApplication.Controllers
             }
             dto.Devices = sDevices;
             dto.Auth = auth;
-            return Json(sDevices);
+            return Json(dto);
         }
 
         #endregion methods

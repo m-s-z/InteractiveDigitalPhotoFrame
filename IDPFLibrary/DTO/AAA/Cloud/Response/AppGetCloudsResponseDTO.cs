@@ -13,6 +13,10 @@ namespace IDPFLibrary.DTO.AAA.Cloud.Response
     {
         #region properties
         /// <summary>
+        /// cloud id
+        /// </summary>
+        public int CloudId { get; set; }
+        /// <summary>
         /// custom cloud name
         /// </summary>
         public string CloudName { get; set; }

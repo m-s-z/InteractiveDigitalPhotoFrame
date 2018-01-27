@@ -62,7 +62,7 @@ namespace WebApplication.Services
             if (folder != null)
             {
                 db.Folders.Remove(folder);
-                await db.SaveChangesAsync();
+                int check = await db.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -76,6 +76,7 @@ namespace WebApplication.Services
         /// </returns>
         public async Task<List<Folder>> RefreshFlickrFolders(int cloudId)
         {
+            bool check;
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             FlickrManager fm = new FlickrManager();
@@ -92,7 +93,7 @@ namespace WebApplication.Services
                     if(album == null)
                     {
                         toDelete.Add(f.Name);
-                        await deleteFolder(f.FolderId);
+                        check = await deleteFolder(f.FolderId);
                     }
                 }
                 foreach (var d in toDelete)
@@ -105,7 +106,7 @@ namespace WebApplication.Services
             catch (Exception e)
             {
                 ICloudService cloudService = new CloudService();
-                await cloudService.removeCloud(cloudId);
+                check = await cloudService.removeCloud(cloudId);
                 return null;
             }
         }
@@ -119,6 +120,7 @@ namespace WebApplication.Services
         /// </returns>
         public async Task<List<Folder>> RefreshDropboxFolders(int cloudId)
         {
+            bool check;
             Cloud cloud = await db.Clouds.FindAsync(cloudId);
             List<Folder> oldFolders = await db.Folders.Where(f => f.CloudId == cloudId).ToListAsync<Folder>();
             try
@@ -134,7 +136,7 @@ namespace WebApplication.Services
                     var album = newFolders.FirstOrDefault(g => g.PathDisplay == f.Name);
                     if (album == null)
                     {
-                        await deleteFolder(f.FolderId);
+                        check = await deleteFolder(f.FolderId);
                         toDelete.Add(f.Name);
                     }
                 }
@@ -147,7 +149,7 @@ namespace WebApplication.Services
             }catch(Exception e)
             {
                 ICloudService cloudService = new CloudService();
-                await cloudService.removeCloud(cloudId);
+                check = await cloudService.removeCloud(cloudId);
                 return null;
             }
         }

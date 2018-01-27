@@ -157,6 +157,7 @@ namespace WebApplication.Services
             {
                 db.Accounts.Add(account);
                 await db.SaveChangesAsync();
+                result = true;
             }
             catch (Exception e)
             {
@@ -232,7 +233,7 @@ namespace WebApplication.Services
             Account foundUser = await db.Accounts.FirstOrDefaultAsync(a => a.Login == username.ToLower());
             if (foundUser != null)
             {
-                if (oldPassword == foundUser.Password)
+                if (Account.PasswordEquals(oldPassword, foundUser.Password))
                 {
                     foundUser.Password = Account.HashPassword(newPassword);
                     db.Entry(foundUser).State = System.Data.Entity.EntityState.Modified;

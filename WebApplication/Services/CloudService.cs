@@ -68,7 +68,7 @@ namespace WebApplication.Services
             if (cloud != null)
             {
                 db.Clouds.Remove(cloud);
-                await db.SaveChangesAsync();
+                int check = await db.SaveChangesAsync();
                 return true;
             }
             return false;

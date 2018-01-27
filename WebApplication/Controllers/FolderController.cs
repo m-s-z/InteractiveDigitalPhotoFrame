@@ -355,7 +355,7 @@ namespace WebApplication.Controllers
             List<SFolder> sFolders = new List<SFolder>();
             foreach(var f in folders)
             {
-                if (f.Cloud.Account.Id == accountId)
+                if (f.DeviceId == deviceId)
                 {
                     SFolder sFolder = new SFolder();
                     sFolder.CloudId = f.CloudId;

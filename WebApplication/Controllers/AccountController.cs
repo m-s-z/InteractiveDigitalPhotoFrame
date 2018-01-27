@@ -116,7 +116,8 @@ namespace WebApplication.Controllers
             }
             if (password == password2)
             {
-                if (await authService.AppChangePassword(oldPassword, password, authService.getLoggedInUsername(Session)))
+                string username = await authService.GetAccountLogin(accountId);
+                if (await authService.AppChangePassword(oldPassword, password, username))
                 {
                     result = "Success";
                 }

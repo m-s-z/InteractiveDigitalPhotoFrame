@@ -169,7 +169,6 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> AppRegister(string login, string password, string password2)
         {
             AppRegisterResponseDTO dto = new AppRegisterResponseDTO();
-            string message = "";
             bool registrationResult = false;
             if (password != password2)
             {

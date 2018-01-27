@@ -319,6 +319,7 @@ namespace WebApplication.Controllers
                 {
                     rCloud.provider = CloudProviderType.Flickr;
                 }
+                rCloud.CloudId = c.Id;
                 rCloud.Token = c.Token;
                 rCloud.TokenSecret = c.TokenSecret;
                 rCloud.UserId = c.FlickrUserId;
@@ -326,7 +327,7 @@ namespace WebApplication.Controllers
             }
             dto.clouds = rClouds;
             dto.Auth = auth;
-            return Json(rClouds);
+            return Json(dto);
         }
         #endregion methods
     }
