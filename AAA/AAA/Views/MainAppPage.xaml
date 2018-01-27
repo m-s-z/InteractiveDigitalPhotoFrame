@@ -9,7 +9,7 @@
              x:Name="Root">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Name="RefreshMenuItem" Order="Primary" Icon="refresh_96px.png" Priority="0"/>
+        <ToolbarItem Name="RefreshMenuItem" Order="Primary" Icon="refresh_96px.png" Priority="0" Command="{Binding RefreshCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

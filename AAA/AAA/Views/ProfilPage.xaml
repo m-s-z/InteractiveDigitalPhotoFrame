@@ -7,7 +7,7 @@
     
     <ContentPage.Content>
         <StackLayout BackgroundColor="DarkGray">
-            <Grid BackgroundColor="White"
+            <!--<Grid BackgroundColor="White"
                   HeightRequest="144">
                 <Label FontSize="25"
                        HorizontalTextAlignment="Start"
@@ -28,7 +28,7 @@
                         Text="LOGOUT"
                         TextColor="White"
                         VerticalOptions="End" />
-            </Grid>
+            </Grid>-->
             <Grid BackgroundColor="White"
                   HeightRequest="144">
                 <Label FontSize="25"

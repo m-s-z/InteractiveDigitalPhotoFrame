@@ -17,15 +17,11 @@ namespace IDPFLibrary.DTO.AAA.Device.Request
         /// <summary>
         /// Custom device name for the device
         /// </summary>
-        public String DeviceName { get; set; }
-        /// <summary>
-        /// token Secret
-        /// </summary>
-        public string TokenSecret { get; set; }
+        public string DeviceName { get; set; }
         /// <summary>
         /// provider user id
         /// </summary>
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         /// <summary>
         /// authentication token
         /// </summary>
