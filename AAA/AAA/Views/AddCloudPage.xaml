@@ -31,19 +31,17 @@
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Dropbox</x:String>
                                 <x:String>Flickr</x:String>
-                                <x:String>Google Drive</x:String>
-                                <x:String>OneDrive</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
-                    <!--<Entry Grid.Row="2"
+                    <Entry Grid.Row="2"
                            Margin="16, 8, 16, 8"
                            FontSize="20"
                            HorizontalTextAlignment="Start"
-                           Placeholder="Login"
+                           Placeholder="Custom name for new account"
                            PlaceholderColor="DarkGray"
-                           Text="{Binding CloudEmail, Mode=OneWayToSource}"/>
-                    <Entry Grid.Row="3"
+                           Text="{Binding NewCloudName, Mode=OneWayToSource}"/>
+                    <!--<Entry Grid.Row="3"
                            Margin="16, 8, 16, 8"
                            FontSize="20"
                            HorizontalTextAlignment="Start"

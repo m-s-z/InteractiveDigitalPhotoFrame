@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using AAA.Utils.CloudProvider;
+using IDPFLibrary;
 using Xamarin.Forms;
 
 namespace AAA.Converters
@@ -36,15 +37,15 @@ namespace AAA.Converters
             switch ((string)value)
             {
                 case "Dropbox":
-                    return CloudTypeEnum.Dropbox;
+                    return CloudProviderType.Dropbox;
                 case "Flickr":
-                    return CloudTypeEnum.Flickr;
+                    return CloudProviderType.Flickr;
                 case "Google Drive":
-                    return CloudTypeEnum.GoogleDrive;
+                    return CloudProviderType.GoogleDrive;
                 case "OneDrive":
-                    return CloudTypeEnum.OneDrive;
+                    return CloudProviderType.OneDrive;
                 default:
-                    return CloudTypeEnum.None;
+                    return CloudProviderType.None;
             }
             
         }

@@ -13,6 +13,10 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
     {
         #region properties
         /// <summary>
+        /// Account ID.
+        /// </summary>
+        public int AccountId { get; set; }
+        /// <summary>
         /// device id
         /// </summary>
         public int DeviceId { get; set; }
