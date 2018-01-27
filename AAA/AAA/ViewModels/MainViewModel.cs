@@ -49,6 +49,9 @@ namespace AAA.ViewModels
         private int _numberOfFolders;
         private int _userId;
 
+        private Int32 _timeStamp;
+        private string _tokenSecret;
+
         private ObservableCollection<VCCardListItem> _cloudsCollection;
         private ObservableCollection<VCListItem> _cloudChooseCollection;
         private ObservableCollection<VCListItem> _deviceFoldersCollection;
@@ -75,6 +78,7 @@ namespace AAA.ViewModels
         private AppChangePasswordRequestDTO _changePasswordModel;
         private AppRegisterRequestDTO _registerUser;
         private AppGetDeviceFoldersResponseDTO _deviceFoldersDto;
+        private AppCreateCloudRequestDTO _createCloudRequestDto;
 
 
         private string _endpoint = "https://idpf.azurewebsites.net";
@@ -309,6 +313,15 @@ namespace AAA.ViewModels
             }
         }
 
+        public AppCreateCloudRequestDTO CreateCloudRequestDto
+        {
+            get => _createCloudRequestDto;
+            set
+            {
+                SetProperty(ref _createCloudRequestDto, value);
+            }
+        }
+
         #endregion
 
         #region methods
@@ -332,6 +345,7 @@ namespace AAA.ViewModels
             var temp3 = new AppGetDeviceFoldersResponseDTO();
             temp3.Folders = new List<SFolder>();
             DeviceFoldersDto = temp3;
+            CreateCloudRequestDto = new AppCreateCloudRequestDTO();
         }
 
         private void InitCommands()
@@ -728,6 +742,57 @@ namespace AAA.ViewModels
             return true;
         }
 
+        private async Task<bool> CreateCloud()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppCreateCloudRequestDTO requestDto = CreateCloudRequestDto;
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = _endpoint + "/Cloud/AppGetClouds";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+
+                        var result = (JsonConvert.DeserializeObject<AppCreateCloudResponseDTO>(contents));
+
+                        await Application.Current.MainPage.DisplayAlert("Connection status", result.Message, "OK");
+
+                        if (result.Auth == AuthorizationResponse.TokenExpired || result.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+            return false;
+        }
+
+
         private async Task<bool> DisconnectCloud()
         {
             try
@@ -851,44 +916,131 @@ namespace AAA.ViewModels
 
         private async Task<bool> GetConnectionWithFlickr()
         {
+            _timeStamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            var requestSignature = FlickrAPI.GetRequestToSignature();
+            string requestToken;
 
-            var apiRequest = "https://www.flickr.com/services/oauth/authorize?oauth_token=72157663052282657-d8e008a8d9b3e92a";
+            string signature = DependencyService.Get<ICloudsConnectionsService>()
+                .GetSignature(FlickrAPI.SharedSecret +"&", string.Format(requestSignature, _timeStamp));
+
+            signature = signature.Replace("=", "%3D");
+            signature = signature.Replace("+", "%2B");
+
+            var fullRequestUri = string.Format(FlickrAPI.RequestTokenURL, _timeStamp, signature);
+
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(fullRequestUri),
+                    Method = HttpMethod.Get,
+                };
+
+                var response = await client.SendAsync(request);
+                var contents = await response.Content.ReadAsStringAsync();
+                var token = GetRequestTokenFromText(contents);
+                requestToken = token.Item1;
+                _tokenSecret = token.Item2;
+
+            }
+
+            var authorizeUri = string.Format(FlickrAPI.AuthorizeTokenURL, requestToken);
 
             var webView = new WebView
             {
-                Source = apiRequest
+                Source = authorizeUri
             };
 
             webView.Navigated += WebViewOnNavigated;
-
-            var tempPage = new WebPage();
-            tempPage.Content = webView;
-            Application.Current.MainPage.Navigation.PushAsync(tempPage);
-
-
-            
-
+            var tempPage = new WebPage()
+            {
+                Content = webView,
+                Title = "Flickr",
+            };
+            await Application.Current.MainPage.Navigation.PushAsync(tempPage);
 
             return true;
         }
 
-        private void WebViewOnNavigated(object sender, WebNavigatedEventArgs eventArgs)
+        private async void WebViewOnNavigated(object sender, WebNavigatedEventArgs eventArgs)
         {
-            var accessToken = GetAccessTokenFromUrl(eventArgs.Url);
+            var accessToken = GetAuthorizationTokenFromUrl(eventArgs.Url);
 
-            if (accessToken != "")
+            if (accessToken != null)
             {
-                System.Diagnostics.Debug.WriteLine("----------------------------------------");
+                await App.Current.MainPage.Navigation.PopAsync();
+                await App.Current.MainPage.Navigation.PopAsync();
+                var requestSignature = FlickrAPI.GetAccessToSignature();
+
+                string signature = DependencyService.Get<ICloudsConnectionsService>()
+                    .GetSignature(FlickrAPI.SharedSecret + "&" + _tokenSecret, string.Format(requestSignature, _timeStamp, accessToken.Item1, accessToken.Item2));
+
+                signature = signature.Replace("=", "%3D");
+                signature = signature.Replace("+", "%2B");
+
+                var fullRequestUri = string.Format(FlickrAPI.AccessTokenURL, signature, _timeStamp, accessToken.Item1, accessToken.Item2);
+
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(fullRequestUri),
+                        Method = HttpMethod.Get,
+                    };
+
+                    var response = await client.SendAsync(request);
+                    var contents = await response.Content.ReadAsStringAsync();
+                    var token = GetAccessTokenFromUrl(contents);
+
+                    CreateCloudRequestDto.AccountId = _userId;
+                    CreateCloudRequestDto.CloudName = NewCloudName;
+                    CreateCloudRequestDto.AuthToken = _userToken;
+                    CreateCloudRequestDto.Provider = NewCloudType;
+                    CreateCloudRequestDto.Token = token[1];
+                    CreateCloudRequestDto.TokenSecret = token[2];
+                    CreateCloudRequestDto.UserId = token[3];
+
+                    var result = await CreateCloud();
+                }
             }
         }
 
-        private string GetAccessTokenFromUrl(string url)
+        private Tuple<string, string> GetRequestTokenFromText(string text)
+        {
+            if (text.Contains("oauth_token") && text.Contains("oauth_callback_confirmed") && text.Contains("&oauth_token_secret"))
+            {
+                var at = text.Replace("oauth_callback_confirmed=true&oauth_token=", "");
+                var oauth_token = at.Substring(0, at.IndexOf('&'));
+                var oauth_token_secret = at.Substring(at.IndexOf('&') + 20, at.Length - at.IndexOf('&') - 20);
+                return Tuple.Create(oauth_token, oauth_token_secret);
+            }
+            return null;
+        }
+
+        private Tuple<string, string> GetAuthorizationTokenFromUrl(string url)
         {
             if (url.Contains("oauth_token") && url.Contains("&oauth_verifier"))
             {
-                return "s";
+                var at = url.Replace("https://www.idpf.azurewebsites.net/?oauth_token=", "");
+                var access = at.Substring(0, at.IndexOf('&'));
+                var verifier = at.Substring(at.IndexOf('&') + 16, at.Length - at.IndexOf('&') - 16);
+                return Tuple.Create(access, verifier);
             }
-            return "y";
+            return null;
+        }
+
+        private string[] GetAccessTokenFromUrl(string url)
+        {
+            if (url.Contains("oauth_token") && url.Contains("&oauth_token_secret"))
+            {
+                var s = url;
+                var i = s.Split('&');
+                i[1] = i[1].Replace("oauth_token=", "");
+                i[2] = i[2].Replace("oauth_token_secret=", "");
+                i[3] = i[3].Replace("user_nsid=", "");
+                return i;
+            }
+            return null;
         }
 
         private async void GetDevices()

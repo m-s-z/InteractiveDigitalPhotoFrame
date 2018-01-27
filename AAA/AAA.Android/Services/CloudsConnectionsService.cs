@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 using AAA.Droid.Services;
 using AAA.Models;
@@ -15,6 +16,9 @@ namespace AAA.Droid.Services
     {
         public void ConnectWithFlickr()
         {
+            
+
+
             //var webView = new WebView
             //{
             //    Source = "https://www.google.pl/"
@@ -70,6 +74,17 @@ namespace AAA.Droid.Services
             Forms.Context.StartActivity(ui_object);
 
 
+        }
+
+        public string GetSignature(string secretKey, string signatureString)
+        {
+            var enc = Encoding.ASCII;
+            HMACSHA1 hmac = new HMACSHA1(enc.GetBytes(secretKey));
+            hmac.Initialize();
+
+            byte[] buffer = enc.GetBytes(signatureString);
+            //return BitConverter.ToString(hmac.ComputeHash(buffer)).Replace("-", "").ToLower();
+            return Convert.ToBase64String(hmac.ComputeHash(buffer)).Replace("-", "");
         }
 
     }
