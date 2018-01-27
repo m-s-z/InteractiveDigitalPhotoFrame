@@ -18,13 +18,9 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         public int FolderId { get; set; }
 
         /// <summary>
-        /// Account ID.
-        /// </summary>
-        public int AccountId { get; set; }
-        /// <summary>
         /// provider user id
         /// </summary>
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         /// <summary>
         /// authentication token
         /// </summary>

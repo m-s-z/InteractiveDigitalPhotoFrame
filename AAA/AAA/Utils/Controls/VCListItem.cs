@@ -16,6 +16,7 @@ namespace AAA.Utils.Controls
         private SDeviceName _device;
         private SFolder _folder;
         private CloudTypeEnum _cloudType;
+        private SUniversalFolder _folderUniversal;
         private int _subtext;
 
         #region properties
@@ -73,6 +74,12 @@ namespace AAA.Utils.Controls
             set => SetProperty(ref _folder, value);
         }
 
+        public SUniversalFolder FolderUniversal
+        {
+            get => _folderUniversal;
+            set => SetProperty(ref _folderUniversal, value);
+        }
+
         #endregion
 
         #region methods
@@ -91,15 +98,23 @@ namespace AAA.Utils.Controls
             AdditionalCommand = additionalCommand;
         }
 
-        public VCListItem(RCloud cloud, Command mainCommand, Command additionalCommand = null)
+        public VCListItem(RCloud cloud, CloudTypeEnum cloudType, Command mainCommand, Command additionalCommand = null)
         {
             Cloud = cloud;
+            CloudType = cloudType;
             MainCommand = mainCommand;
             AdditionalCommand = additionalCommand;
         }
 
         public VCListItem(Command mainCommand, Command additionalCommand = null)
         {
+            MainCommand = mainCommand;
+            AdditionalCommand = additionalCommand;
+        }
+
+        public VCListItem(SUniversalFolder folderUniversal, Command mainCommand, Command additionalCommand = null)
+        {
+            FolderUniversal = folderUniversal;
             MainCommand = mainCommand;
             AdditionalCommand = additionalCommand;
         }
