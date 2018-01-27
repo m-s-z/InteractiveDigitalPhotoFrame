@@ -195,7 +195,7 @@ namespace WebApplication.Services
             db.Clouds.Add(cloud);
             try
             {
-                await db.SaveChangesAsync();
+                int check = await db.SaveChangesAsync();
             }catch(Exception e)
             {
                 return "Cloud could not be added";

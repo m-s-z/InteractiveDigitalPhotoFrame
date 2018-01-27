@@ -307,7 +307,7 @@ namespace WebApplication.Controllers
                 dto.Auth = auth;
                 return Json(dto);
             }
-            await folderService.AddCloudFolders(folders, cloudId, deviceId);
+            bool check = await folderService.AddCloudFolders(folders, cloudId, deviceId);
             dto.Auth = auth;
             return Json(dto);
         }
