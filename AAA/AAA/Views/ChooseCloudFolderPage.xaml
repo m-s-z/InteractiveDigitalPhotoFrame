@@ -1,13 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AAA.Views.ChooseCloudFolderPage">
+             xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
+             x:Class="AAA.Views.ChooseCloudFolderPage"
+             Title="Assign folders">
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Button VerticalOptions="End" Text="ASSIGN NEW FOLDER" TextColor="White"  BackgroundColor="#32CD32" Command="{Binding GoToChooseProviderPageCommand}"/>
+            <Label Margin="20"
+                   Text="Assign folders to the DPF."
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+            <ListView ItemsSource="{Binding CloudFoldersCollection}"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ViewCellExtension MainText="{Binding FolderUniversal.Title}"
+                                                    AdditionalCommand="{Binding AdditionalCommand}"
+                                                    AdditionalCommandParameter="{Binding .}"
+                                                    SubimageSource="{Binding FolderUniversal.NumberOfPhotos, StringFormat='Number of photos: {0}'}"
+                                                    AdditionalImageSource="go_next_96px.png"
+                                                    MainImageSource="folder_96px.png"   />
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

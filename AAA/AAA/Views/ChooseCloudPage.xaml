@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:AAA.Controls;assembly=AAA"
              xmlns:views="clr-namespace:AAA.Views;assembly=AAA"
              x:Class="AAA.Views.ChooseCloudPage"
-             Title="Choose cloud provider">
+             Title="Cloud providers">
     
     <ContentPage.Content>
         <StackLayout>
@@ -17,19 +17,17 @@
                       RowHeight="80">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <controls:ViewCellExtension AdditionalImageSource="go_next_96px.png"
-                                                    MainImageSource="{Binding Cloud.CloudType, Converter={StaticResource CloudTypeToImageSource}}"
-                                                    MainText="{Binding Cloud.CloudType, Converter={StaticResource CloudTypeToCloudName}}"
-                                                    Subtext="{Binding Cloud.CloudEmail}" />
+                        <controls:ViewCellExtension MainCommand="{Binding MainCommand}"
+                                                    MainCommandParameter="{Binding .}"
+                                                    MainText="{Binding Cloud.CloudName}"
+                                                    AdditionalCommand="{Binding MainCommand}"
+                                                    AdditionalCommandParameter="{Binding .}"
+                                                    AdditionalImageSource="go_next_96px.png"
+                                                    MainImageSource="{Binding CloudType, Converter={StaticResource CloudTypeToImageSource}}"   />
+
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button BackgroundColor="#32CD32"
-                    Command="{Binding ChangePageCommand}"
-                    CommandParameter="{x:Type views:AddCloudPage}"
-                    VerticalOptions="End"
-                    Text="CONNECT NEW ACCOUNT"
-                    TextColor="White" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

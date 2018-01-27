@@ -53,6 +53,7 @@ namespace AAA.ViewModels
         private string _tokenSecret;
 
         private ObservableCollection<VCCardListItem> _cloudsCollection;
+        private ObservableCollection<VCListItem> _cloudFoldersCollection;
         private ObservableCollection<VCListItem> _cloudChooseCollection;
         private ObservableCollection<VCListItem> _deviceFoldersCollection;
         private ObservableCollection<VCListItem> _devicesCollection;
@@ -72,6 +73,7 @@ namespace AAA.ViewModels
         private VCCardListItem _selectedCloudProvider;
         private Models.Device _selectedDevice;
         private SFolder _selectedFolder;
+        private RCloud _selectedCloud;
 
         private AppGetDevicesResponseDTO _devicesResponseDto;
         private AppGetCloudsResponseDTO _cloudsResponseDto;
@@ -79,6 +81,7 @@ namespace AAA.ViewModels
         private AppRegisterRequestDTO _registerUser;
         private AppGetDeviceFoldersResponseDTO _deviceFoldersDto;
         private AppCreateCloudRequestDTO _createCloudRequestDto;
+        private AppGetCloudFoldersResponseDTO _cloudFoldersResponseDto;
 
 
         private string _endpoint = "https://idpf.azurewebsites.net";
@@ -114,6 +117,7 @@ namespace AAA.ViewModels
         public Command DevicePairCommand { get; set; }
         public Command DeviceUnpairCommand { get; set; }
         public Command GoBackPageCommand { get; set; }
+        public Command GoToChooseCloudPageCommand { get; set; }
         public Command GoToCloudsListPageCommand { get; set; }
 
         public Command GoToDevicePageCommand { get; set; }
@@ -129,6 +133,8 @@ namespace AAA.ViewModels
         public Command GoToSignUpPageCommand { get; set; }
 
         public Command DeviceUnassignCommand { get; set; }
+        public Command GoToCloudFoldersPage { get; set; }
+        public Command FolderAssignCommand { get; set; }
         public Command FolderUnassignCommand { get; set; }
         public Command RefreshCommand { get; set; }
         public Command SignUpCommand { get; set; }
@@ -156,6 +162,12 @@ namespace AAA.ViewModels
         {
             get => _cloudsCollection;
             set => SetProperty(ref _cloudsCollection, value);
+        }
+
+        public ObservableCollection<VCListItem> CloudFoldersCollection
+        {
+            get => _cloudFoldersCollection;
+            set => SetProperty(ref _cloudFoldersCollection, value);
         }
 
         public ObservableCollection<VCListItem> CloudChooseCollection
@@ -265,6 +277,15 @@ namespace AAA.ViewModels
             }
         }
 
+        public RCloud SelectedCloud
+        {
+            get => _selectedCloud;
+            set
+            {
+                SetProperty(ref _selectedCloud, value);
+            }
+        }
+
         public AppGetDevicesResponseDTO DevicesResponseDto
         {
             get => _devicesResponseDto;
@@ -322,6 +343,16 @@ namespace AAA.ViewModels
             }
         }
 
+        public AppGetCloudFoldersResponseDTO CloudFoldersResponseDto
+        {
+            get => _cloudFoldersResponseDto;
+            set
+            {
+                SetProperty(ref _cloudFoldersResponseDto, value);
+                AssambleCloudFoldersDtoToCollection();
+            }
+        }
+
         #endregion
 
         #region methods
@@ -361,11 +392,14 @@ namespace AAA.ViewModels
             GoToDevicePageCommand = new Command(ExecuteGoToDevicePageCommand);
             GoToDevicesListPageCommand = new Command(ExecuteGoToDevicesListPageCommand);
             GoToFoldersListPageCommand = new Command(ExecuteGoToFoldersListPageCommand);
+            GoToChooseCloudPageCommand = new Command(ExecuteGoToChooseCloudPageCommand);
             GoToCloudsListPageCommand = new Command(ExecuteGoToCloudsListPageCommand);
             GoToMainPageCommand = new Command(ExecuteGoToMainPageCommand);
             GoToProfilePageCommand = new Command(ExecuteGoToProfilePageCommand);
             GoToSignUpPageCommand = new Command(ExecuteGoToSignUpPageCommand);
             DeviceUnassignCommand = new Command(ExecuteDeviceUnassignCommand);
+            GoToCloudFoldersPage = new Command(ExecuteGoToCloudFoldersPage);
+            FolderAssignCommand = new Command(ExecuteFolderAssignCommand);
             FolderUnassignCommand = new Command(ExecuteFolderUnassignCommand);
             RefreshCommand = new Command(ExecuteRefreshCommand);
             SignUpCommand = new Command(ExecuteSignUpCommand);
@@ -386,8 +420,10 @@ namespace AAA.ViewModels
         {
             //CloudChooseCollection = new ObservableCollection<VCListItem>();
             CloudsCollection = new ObservableCollection<VCCardListItem>();
+            CloudChooseCollection = new ObservableCollection<VCListItem>();
             DevicesCollection = new ObservableCollection<VCListItem>();
             FoldersCollection = new ObservableCollection<VCListItem>();
+            CloudFoldersCollection = new ObservableCollection<VCListItem>();
 
             //foreach (var device in UserAccount.DevicesCollection)
             //{
@@ -541,11 +577,38 @@ namespace AAA.ViewModels
             //UpdateAllInformation();
         }
 
+        private async void ExecuteFolderAssignCommand(object param)
+        {
+            if (param is VCListItem selectedFolder)
+            {
+                var result = await AssignFolder(selectedFolder.FolderUniversal);
+                if (result)
+                {
+                    GetSelectedCloudFolders();
+                    GetSelectedDevice();
+                }
+            }
+        }
+
         private void ExecuteGoBackPageCommand()
         {
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        private void ExecuteGoToChooseCloudPageCommand()
+        {
+            Application.Current.MainPage.Navigation.PushAsync(new ChooseCloudPage(this));
+        }
+
+        private void ExecuteGoToCloudFoldersPage(object param)
+        {
+            if (param is VCListItem selectedCloud)
+            {
+                SelectedCloud = selectedCloud.Cloud;
+                Application.Current.MainPage.Navigation.PushAsync(new ChooseCloudFolderPage(this));
+                GetSelectedCloudFolders();
+            }
+        }
         private void ExecuteGoToCloudsListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new CloudsListPage(this));
@@ -610,6 +673,10 @@ namespace AAA.ViewModels
             {
                 SelectedFolder = selectedFolder.Folder;
                 var result = await UnassignFolderFromDevice(SelectedFolder);
+                if (result)
+                {
+                    GetSelectedDevice();
+                }
             }
         }
 
@@ -685,6 +752,64 @@ namespace AAA.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Offline",
                         "Connect to the Internet to start using application.", "OK");
+                    return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+                return false;
+            }
+        }
+
+        private async Task<bool> AssignFolder(SUniversalFolder selectedCloudFolder)
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppAddFolderRequestDTO requestDto = new AppAddFolderRequestDTO
+                        {
+                            UserId = _userId,
+                            Token = _userToken,
+                            DeviceId = SelectedDevice.DeviceId,
+                            CloudId = SelectedCloud.CloudId,
+                            Folders = new List<string> { selectedCloudFolder.Title }
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Folder/AppAddFolder";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppAddFolderResponseDTO>(contents));
+
+                        if (result.Auth == AuthorizationResponse.TokenExpired || result.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return false;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Folder assignment", "Folder has been successfully assigned", "OK");
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to use the application.", "OK");
                     return false;
                 }
             }
@@ -1096,6 +1221,55 @@ namespace AAA.ViewModels
             }
         }
 
+        private async void GetSelectedCloudFolders()
+        {
+            try
+            {
+                if (CheckIfNetworkConnection())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        AppGetCloudFoldersRequestDTO requestDto = new AppGetCloudFoldersRequestDTO
+                        {
+                            Token = _userToken,
+                            DeviceId = SelectedDevice.DeviceId,
+                            UserId = _userId,
+                            CloudId = SelectedCloud.CloudId
+                        };
+
+                        var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
+
+                        string url = "https://idpf.azurewebsites.net/Folder/AppGetCloudFolders";
+                        var request = new HttpRequestMessage()
+                        {
+                            RequestUri = new Uri(url),
+                            Method = HttpMethod.Post,
+                            Content = new StringContent(json,
+                                Encoding.UTF8,
+                                "application/json")
+                        };
+
+                        var response = await client.SendAsync(request);
+                        var contents = await response.Content.ReadAsStringAsync();
+                        CloudFoldersResponseDto = (JsonConvert.DeserializeObject<AppGetCloudFoldersResponseDTO>(contents));
+                        if (CloudFoldersResponseDto.Auth == AuthorizationResponse.TokenExpired || CloudFoldersResponseDto.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Offline", "Connect to the Internet to start using application.", "OK");
+                }
+            }
+            catch (Exception exception)
+            {
+                OnErrorOccurred(this, exception.Message);
+            }
+        }
+
         private async void GetSelectedDevice()
         {
             try
@@ -1412,10 +1586,19 @@ namespace AAA.ViewModels
         private void AssambleCloudsDtoToCollection()
         {
             CloudsCollection.Clear();
+            CloudChooseCollection.Clear();
 
             foreach (var cloud in CloudsResponseDto.clouds)
             {
                 CloudsCollection.Add(new VCCardListItem(CardTypeEnum.ShortOneAction, cloud, CloudDisconnectCommand));
+                if (cloud.provider == CloudProviderType.Dropbox)
+                {
+                    CloudChooseCollection.Add(new VCListItem(cloud, CloudTypeEnum.Dropbox, GoToCloudFoldersPage));
+                }
+                else
+                {
+                    CloudChooseCollection.Add(new VCListItem(cloud, CloudTypeEnum.Flickr, GoToCloudFoldersPage));
+                }
             }
 
             NumberOfClouds = CloudsCollection.Count;
@@ -1433,6 +1616,16 @@ namespace AAA.ViewModels
 
             NumberOfDevices = DevicesCollection.Count;
             MainPageCards[0].CardSubtext = "Paired devices: " + NumberOfDevices;
+        }
+
+        private void AssambleCloudFoldersDtoToCollection()
+        {
+            CloudFoldersCollection.Clear();
+
+            foreach (var folder in CloudFoldersResponseDto.folders)
+            {
+                CloudFoldersCollection.Add(new VCListItem(folder, null, FolderAssignCommand));
+            }
         }
 
         #endregion

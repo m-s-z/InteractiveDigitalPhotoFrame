@@ -37,8 +37,7 @@
             </ListView>
 
             <Button BackgroundColor="#32CD32"
-                    Command="{Binding ChangePageCommand}"
-                    CommandParameter="{x:Type views:ChooseCloudPage}"
+                    Command="{Binding GoToChooseCloudPageCommand}"
                     Text="ASSIGN NEW FOLDER"
                     TextColor="White"
                     VerticalOptions="End" />

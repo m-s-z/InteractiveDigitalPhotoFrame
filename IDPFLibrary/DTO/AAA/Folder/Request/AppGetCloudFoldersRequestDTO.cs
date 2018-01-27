@@ -23,7 +23,7 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// <summary>
         /// provider user id
         /// </summary>
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         /// <summary>
         /// authentication token
         /// </summary>

@@ -25,9 +25,9 @@ namespace IDPFLibrary.DTO.AAA.Folder.Request
         /// </summary>
         public int DeviceId { get; set; }
         /// <summary>
-        /// provider user id
+        /// user id
         /// </summary>
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         /// <summary>
         /// authentication token
         /// </summary>
