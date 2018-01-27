@@ -71,7 +71,7 @@ namespace AAA.ViewModels
 
         private VCCardListItem _selectedCloudProvider;
         private Models.Device _selectedDevice;
-        private VCListItem _selectedFolder;
+        private SFolder _selectedFolder;
 
         private AppGetDevicesResponseDTO _devicesResponseDto;
         private AppGetCloudsResponseDTO _cloudsResponseDto;
@@ -255,7 +255,7 @@ namespace AAA.ViewModels
             }
         }
 
-        public VCListItem SelectedFolder
+        public SFolder SelectedFolder
         {
             get => _selectedFolder;
             set
@@ -498,10 +498,9 @@ namespace AAA.ViewModels
                 var result = await DisconnectCloud();
                 if (result)
                 {
-                    
-                    ExecuteGoBackPageCommand();
+                    SelectedCloudProvider = null;
+                    GetClouds();
                 }
-                SelectedCloudProvider = null;
             } 
         }
 
@@ -605,11 +604,13 @@ namespace AAA.ViewModels
             Application.Current.MainPage.DisplayAlert("Unassignment", "The device has been successfully  unassiged", "OK");
         }
 
-        private void ExecuteFolderUnassignCommand(object param)
+        private async void ExecuteFolderUnassignCommand(object param)
         {
-            //UserAccount.DevicesCollection.FirstOrDefault(d => d == SelectedDevice.Device)?.FoldersCollection.Remove(((VCListItem)param).Folder);
-            UpdateAllInformation();
-            Application.Current.MainPage.DisplayAlert("Unassignment", "The folder has been successfully  unassiged", "OK");
+            if (param is VCListItem selectedFolder)
+            {
+                SelectedFolder = selectedFolder.Folder;
+                var result = await UnassignFolderFromDevice(SelectedFolder);
+            }
         }
 
         private async void ExecuteRefreshCommand()
@@ -754,11 +755,11 @@ namespace AAA.ViewModels
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
 
-                        string url = _endpoint + "/Cloud/AppGetClouds";
+                        string url = _endpoint + "/Cloud/AppCreateCloud";
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
-                            Method = HttpMethod.Post,
+                            Method = HttpMethod.Put,
                             Content = new StringContent(json,
                                 Encoding.UTF8,
                                 "application/json")
@@ -776,7 +777,7 @@ namespace AAA.ViewModels
                             Application.Current.MainPage = new NavigationPage(new LoginPage());
                             return false;
                         }
-
+                        GetClouds();
                         return true;
                     }
                 }
@@ -805,7 +806,7 @@ namespace AAA.ViewModels
                         {
                             UserId = _userId,
                             Token = _userToken,
-                            CloudId = 1
+                            CloudId = SelectedCloudProvider.CloudProvider.CloudId
                         };
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
@@ -830,7 +831,7 @@ namespace AAA.ViewModels
                             Application.Current.MainPage = new NavigationPage(new LoginPage());
                             return false;
                         }
-
+                        
                         return true;
                     }
                 }
@@ -998,7 +999,7 @@ namespace AAA.ViewModels
                     CreateCloudRequestDto.Provider = NewCloudType;
                     CreateCloudRequestDto.Token = token[1];
                     CreateCloudRequestDto.TokenSecret = token[2];
-                    CreateCloudRequestDto.UserId = token[3];
+                    CreateCloudRequestDto.UserId = token[3].Replace("%40", "@");
 
                     var result = await CreateCloud();
                 }
@@ -1071,10 +1072,10 @@ namespace AAA.ViewModels
 
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
-                        var result = (JsonConvert.DeserializeObject<List<SDeviceName>>(contents));
-                        var temp = new AppGetDevicesResponseDTO();
-                        temp.Devices = result;
-                        DevicesResponseDto = temp;
+                        DevicesResponseDto = (JsonConvert.DeserializeObject<AppGetDevicesResponseDTO>(contents));
+                        //var temp = new AppGetDevicesResponseDTO();
+                        //temp.Devices = result;
+                        //DevicesResponseDto = temp;
                         
                         if (DevicesResponseDto.Auth == AuthorizationResponse.TokenExpired || DevicesResponseDto.Auth == AuthorizationResponse.InvalidToken)
                         {
@@ -1313,7 +1314,7 @@ namespace AAA.ViewModels
             }
         }
 
-        private async void UnassignFolderFromDevice(SFolder folderToUnassign)
+        private async Task<bool> UnassignFolderFromDevice(SFolder folderToUnassign)
         {
             try
             {
@@ -1323,8 +1324,9 @@ namespace AAA.ViewModels
                     {
                         AppDeleteFolderRequestDTO requestDto = new AppDeleteFolderRequestDTO
                         {
-                            AccountId = _userId,
-                            FolderId = folderToUnassign.FolderId
+                            UserId = _userId,
+                            FolderId = folderToUnassign.FolderId,
+                            Token = _userToken
                         };
 
                         var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestDto);
@@ -1333,7 +1335,7 @@ namespace AAA.ViewModels
                         var request = new HttpRequestMessage()
                         {
                             RequestUri = new Uri(url),
-                            Method = HttpMethod.Post,
+                            Method = HttpMethod.Delete,
                             Content = new StringContent(json,
                                 Encoding.UTF8,
                                 "application/json")
@@ -1341,6 +1343,18 @@ namespace AAA.ViewModels
 
                         var response = await client.SendAsync(request);
                         var contents = await response.Content.ReadAsStringAsync();
+                        var result = (JsonConvert.DeserializeObject<AppDeleteFolderResponseDTO>(contents));
+
+                        if (result.Auth == AuthorizationResponse.TokenExpired || result.Auth == AuthorizationResponse.InvalidToken)
+                        {
+                            Application.Current.MainPage = new NavigationPage(new LoginPage());
+                            return false;
+                        }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Folder unassignment", "The folder has been successfully  unassiged", "OK");
+                            return true;
+                        }
                     }
                 }
                 else
@@ -1352,6 +1366,7 @@ namespace AAA.ViewModels
             {
                 OnErrorOccurred(this, exception.Message);
             }
+            return false;
         }
 
         /// <summary>
@@ -1386,9 +1401,9 @@ namespace AAA.ViewModels
         {
             FoldersCollection.Clear();
 
-            foreach (var cloud in DeviceFoldersDto.Folders)
+            foreach (var folder in DeviceFoldersDto.Folders)
             {
-                FoldersCollection.Add(new VCListItem(cloud, CloudDisconnectCommand));
+                FoldersCollection.Add(new VCListItem(folder, null, FolderUnassignCommand));
             }
 
             NumberOfFolders = FoldersCollection.Count;

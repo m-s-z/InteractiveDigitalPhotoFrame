@@ -9,9 +9,17 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Padding="10,5,10,5" BackgroundColor="White" Orientation="Horizontal">
-                <Image Source="tablet_96px.png" HeightRequest="40" />
-                <Label FontSize="15" Text="{Binding NumberOfFolders, StringFormat='Folders assigned to this device: {0}'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                <Button Text="UNPAIR" TextColor="White" BackgroundColor="Red" HorizontalOptions="End" Command="{Binding DeviceUnpairCommand}"/>
+                <Image Source="tablet_96px.png"
+                       HeightRequest="40" />
+                <Label FontSize="15"
+                       Text="{Binding NumberOfFolders, StringFormat='Folders assigned to this device: {0}'}"
+                       HorizontalOptions="StartAndExpand"
+                       VerticalOptions="Center" />
+                <Button Text="UNPAIR"
+                        TextColor="White"
+                        BackgroundColor="Red"
+                        HorizontalOptions="End"
+                        Command="{Binding DeviceUnpairCommand}"/>
             </StackLayout>
 
             <ListView ItemsSource="{Binding SelectedDevice.FoldersCollection}"
