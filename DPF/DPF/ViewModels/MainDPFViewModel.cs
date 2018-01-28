@@ -490,6 +490,7 @@ namespace DPF.ViewModels
                 if (GetDeviceAccounts.Accounts.Count == 0)
                 {
                     PhotoPath = EMPTY_PHOTOSET_DEFAULT_PATH;
+                    OnSynchronizationCompleted(this, null);
                     return;
                 }
 
