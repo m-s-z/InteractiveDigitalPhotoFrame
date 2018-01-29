@@ -4,9 +4,15 @@
              x:Class="AAA.Views.WebPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <WebView HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Source="{Binding WebViewSourceCloud}" />
+            <Entry Text="{Binding DropboxCode}"
+                   IsVisible="{Binding IsDropboxConnection}"
+                   HorizontalOptions="FillAndExpand" />
+            <Button Text="Confirm code"
+                    Command="{Binding ConfirmDropboxCommand}"
+                    IsVisible="{Binding IsDropboxConnection}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

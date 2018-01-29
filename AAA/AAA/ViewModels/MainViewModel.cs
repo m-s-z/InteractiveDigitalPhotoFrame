@@ -13,6 +13,7 @@ using IDPFLibrary.DTO.AAA.Login.Request;
 using Xamarin.Forms;
 using System.Net.Http;
 using System.Text;
+using Dropbox.Api;
 using IDPFLibrary;
 using IDPFLibrary.DTO.AAA.Account.Request;
 using IDPFLibrary.DTO.AAA.Account.Response;
@@ -36,6 +37,8 @@ namespace AAA.ViewModels
     public class MainViewModel : IDPFLibrary.ViewModelBase
     {
         #region fields
+
+        private bool _isDropboxConnection;
 
         /// <summary>
         /// Backing field for TestNumberTwo property.
@@ -69,6 +72,7 @@ namespace AAA.ViewModels
         private string _newCloudName;
         private string _deviceName;
         private string _pairCode;
+        private string _dropboxCode;
 
         private VCCardListItem _selectedCloudProvider;
         private Models.Device _selectedDevice;
@@ -83,12 +87,21 @@ namespace AAA.ViewModels
         private AppCreateCloudRequestDTO _createCloudRequestDto;
         private AppGetCloudFoldersResponseDTO _cloudFoldersResponseDto;
 
+        private WebViewSource _webViewSourceCloud;
+
 
         private string _endpoint = "https://idpf.azurewebsites.net";
 
         #endregion
 
         #region properties
+
+        public bool IsDropboxConnection
+        {
+            get => _isDropboxConnection;
+
+            set => SetProperty(ref _isDropboxConnection, value);
+        }
 
         /// <summary>
         /// Property indicating current application user.
@@ -114,6 +127,8 @@ namespace AAA.ViewModels
         public Command CloudConnectCommand { get; set; }
         public Command CloudDisconnectCommand { get; set; }
         public Command CloudModifyCommand { get; set; }
+
+        public Command ConfirmDropboxCommand { get; set; }
         public Command DevicePairCommand { get; set; }
         public Command DeviceUnpairCommand { get; set; }
         public Command GoBackPageCommand { get; set; }
@@ -251,6 +266,15 @@ namespace AAA.ViewModels
                 DevicePairCommand?.ChangeCanExecute();
             }
         }
+        
+        public string DropboxCode
+        {
+            get => _dropboxCode;
+            set
+            {
+                SetProperty(ref _dropboxCode, value);
+            }
+        }
         public VCCardListItem SelectedCloudProvider
         {
             get => _selectedCloudProvider;
@@ -353,6 +377,15 @@ namespace AAA.ViewModels
             }
         }
 
+        public WebViewSource WebViewSourceCloud
+        {
+            get => _webViewSourceCloud;
+            set
+            {
+                SetProperty(ref _webViewSourceCloud, value);
+            }
+        }
+
         #endregion
 
         #region methods
@@ -361,6 +394,7 @@ namespace AAA.ViewModels
         {
             PairCode = "";
             DeviceName = "";
+            DropboxCode = "";
             RegisterUser = new AppRegisterRequestDTO();
             ChangePasswordModel = new AppChangePasswordRequestDTO();
             InitCommands();
@@ -386,6 +420,7 @@ namespace AAA.ViewModels
             CloudConnectCommand = new Command(ExecuteCloudConnectCommand);
             CloudDisconnectCommand = new Command(ExecuteCloudDisconnectCommand);
             CloudModifyCommand = new Command(ExecuteCloudModifyCommand);
+            ConfirmDropboxCommand = new Command(ExecuteConfirmDropboxCommand);
             DeviceUnpairCommand = new Command(ExecuteDeviceUnpairCommand);
             DevicePairCommand = new Command(ExecuteDevicePairCommand, CanExecuteDevicePairCommand);
             GoBackPageCommand = new Command(ExecuteGoBackPageCommand);
@@ -1027,8 +1062,10 @@ namespace AAA.ViewModels
             switch (NewCloudType)
             {
                 case CloudProviderType.Dropbox:
+                    IsDropboxConnection = true;
                     return await GetConnectionWithDropbox();
                 case CloudProviderType.Flickr:
+                    IsDropboxConnection = false;
                     return await GetConnectionWithFlickr();
                 default:
                     return false;
@@ -1037,7 +1074,122 @@ namespace AAA.ViewModels
 
         private async Task<bool> GetConnectionWithDropbox()
         {
+            try
+            {
+                WebViewSourceCloud = DropboxOAuth2Helper.GetAuthorizeUri(DropboxApi.DropBoxApiKey);
+
+                //var webView = new WebView
+                //{
+                //    Source = WebViewSourceCloud,
+                //    HorizontalOptions = LayoutOptions.FillAndExpand,
+                //    VerticalOptions = LayoutOptions.FillAndExpand
+
+                //};
+
+                //webView.Navigated += WebViewOnNavigatedDropbox;
+
+                //var codeButton = new Button
+                //{
+                //    Command = new Command(ExecuteConfirmDropboxCommand),
+                //    Text = "Confrim code"
+                //};
+
+                //var entryCode = new Entry()
+                //{
+                //    HorizontalOptions = LayoutOptions.FillAndExpand,
+                //};
+                //entryCode.SetBinding(Entry.TextProperty, DropboxCode);
+
+                //var stackLayout = new StackLayout()
+                //{
+                //    HorizontalOptions = LayoutOptions.FillAndExpand,
+                //    VerticalOptions = LayoutOptions.FillAndExpand
+                //};
+                
+                //stackLayout.Children.Add(webView);
+                //stackLayout.Children.Add(entryCode);
+                //stackLayout.Children.Add(codeButton);
+
+                var tempPage = new WebPage(this)
+                {
+                    //Content = stackLayout,
+                    Title = "Dropbox",
+                };
+
+                await Application.Current.MainPage.Navigation.PushAsync(tempPage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("------------------------" + e);
+                throw;
+            }
+
             return false;
+        }
+
+        private async void ExecuteConfirmDropboxCommand()
+        {
+            OAuth2Response accessToken = await DropboxOAuth2Helper.ProcessCodeFlowAsync(DropboxCode, DropboxApi.DropBoxApiKey, DropboxApi.DropBoxApiKeySecret);
+            Debug.WriteLine("------------------------" + accessToken.AccessToken);
+
+            await Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
+
+            Debug.WriteLine("------------------------");
+
+            CreateCloudRequestDto.AccountId = _userId;
+            CreateCloudRequestDto.AuthToken = _userToken;
+            CreateCloudRequestDto.Provider = NewCloudType;
+            CreateCloudRequestDto.CloudName = NewCloudName;
+            CreateCloudRequestDto.UserId = accessToken.Uid;
+            CreateCloudRequestDto.Token = accessToken.AccessToken;
+            CreateCloudRequestDto.TokenSecret = "";
+
+            var result = await CreateCloud();
+        }
+
+        private async void WebViewOnNavigatedDropbox(object sender, WebNavigatedEventArgs eventArgs)
+        {
+            //var accessToken = GetAuthorizationTokenFromUrl(eventArgs.Url);
+
+            if (eventArgs.Url.Contains("authorization"))
+            {
+                //OAuth2Response accessToken = await DropboxOAuth2Helper.ProcessCodeFlowAsync(requestToken, DropboxApi.DropBoxApiKey, DropboxApi.DropBoxApiKeySecret);
+                //await App.Current.MainPage.Navigation.PopAsync();
+                //await App.Current.MainPage.Navigation.PopAsync();
+                //var requestSignature = FlickrAPI.GetAccessToSignature();
+
+                //string signature = DependencyService.Get<ICloudsConnectionsService>()
+                //    .GetSignature(FlickrAPI.SharedSecret + "&" + _tokenSecret, string.Format(requestSignature, _timeStamp, accessToken.Item1, accessToken.Item2));
+
+                //signature = signature.Replace("=", "%3D");
+                //signature = signature.Replace("+", "%2B");
+
+                //var fullRequestUri = string.Format(FlickrAPI.AccessTokenURL, signature, _timeStamp, accessToken.Item1, accessToken.Item2);
+
+                //using (var client = new HttpClient())
+                //{
+                //    var request = new HttpRequestMessage()
+                //    {
+                //        RequestUri = new Uri(fullRequestUri),
+                //        Method = HttpMethod.Get,
+                //    };
+
+                //    var response = await client.SendAsync(request);
+                //    var contents = await response.Content.ReadAsStringAsync();
+                //    var token = GetAccessTokenFromUrl(contents);
+
+                //    CreateCloudRequestDto.AccountId = _userId;
+                //    CreateCloudRequestDto.CloudName = NewCloudName;
+                //    CreateCloudRequestDto.AuthToken = _userToken;
+                //    CreateCloudRequestDto.Provider = NewCloudType;
+                //    CreateCloudRequestDto.Token = token[1];
+                //    CreateCloudRequestDto.TokenSecret = token[2];
+                //    CreateCloudRequestDto.UserId = token[3].Replace("%40", "@");
+
+                //    var result = await CreateCloud();
+                //}
+            }
         }
 
         private async Task<bool> GetConnectionWithFlickr()
@@ -1078,7 +1230,7 @@ namespace AAA.ViewModels
             };
 
             webView.Navigated += WebViewOnNavigated;
-            var tempPage = new WebPage()
+            var tempPage = new WebPage(this)
             {
                 Content = webView,
                 Title = "Flickr",

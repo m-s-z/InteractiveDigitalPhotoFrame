@@ -10,7 +10,7 @@ namespace AAA.Utils
         /// </summary>
         public const string ApiKey = "6d8b52db06178de4dacd9c8423851a8b";
         /// <summary>
-        /// flickr key secret  72157663052282657-d8e008a8d9b3e92a
+        /// flickr key secret.
         /// </summary>
         public const string SharedSecret = "a1a67205cb7c23ae";
 
