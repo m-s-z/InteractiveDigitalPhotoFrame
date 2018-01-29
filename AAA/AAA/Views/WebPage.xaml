@@ -7,10 +7,14 @@
             <WebView HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand"
                      Source="{Binding WebViewSourceCloud}" />
-            <Entry Text="{Binding DropboxCode}"
+            <Entry BackgroundColor="White"
+                   Text="{Binding DropboxCode}"
+                   Placeholder="Rewrite code here"
                    IsVisible="{Binding IsDropboxConnection}"
                    HorizontalOptions="FillAndExpand" />
-            <Button Text="Confirm code"
+            <Button BackgroundColor="#32CD32"
+                    Text="CONFIRM CODE"
+                    TextColor="White"
                     Command="{Binding ConfirmDropboxCommand}"
                     IsVisible="{Binding IsDropboxConnection}" />
         </StackLayout>

@@ -43,10 +43,7 @@ namespace AAA.Models
             set => SetProperty(ref _login, value);
         }
 
-        public string Password
-        {
-            get => _password;
-        }
+        public string Password => _password;
 
         #endregion
 

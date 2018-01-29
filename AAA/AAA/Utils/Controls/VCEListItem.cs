@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+﻿    using System.Windows.Input;
 using AAA.Utils.CloudProvider;
 using IDPFLibrary;
 using Xamarin.Forms;
@@ -24,8 +24,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public Command AdditionalCommand
         {
-            get { return _additionalCommand; }
-            set { SetProperty(ref _additionalCommand , value); }
+            get => _additionalCommand;
+            set => SetProperty(ref _additionalCommand , value);
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public Command MainCommand
         {
-            get { return _mainCommand; }
-            set { SetProperty(ref _mainCommand , value); }
+            get => _mainCommand;
+            set => SetProperty(ref _mainCommand , value);
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public object AdditionalCommandParameter
         {
-            get { return _additionalCommandParameter; }
-            set { SetProperty(ref _additionalCommandParameter , value); }
+            get => _additionalCommandParameter;
+            set => SetProperty(ref _additionalCommandParameter , value);
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public object MainCommandParameter
         {
-            get { return _mainCommandParameter; }
-            set { SetProperty(ref _mainCommandParameter , value); }
+            get => _mainCommandParameter;
+            set => SetProperty(ref _mainCommandParameter , value);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public string AdditionalImageSource
         {
-            get { return _additionalImageSource; }
-            set { SetProperty(ref _additionalImageSource , value); }
+            get => _additionalImageSource;
+            set => SetProperty(ref _additionalImageSource , value);
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public string MainImageSource
         {
-            get { return _mainImageSource; }
-            set { SetProperty(ref _mainImageSource , value); }
+            get => _mainImageSource;
+            set => SetProperty(ref _mainImageSource , value);
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public string MainText
         {
-            get { return _mainText; }
-            set { SetProperty(ref _mainText , value); }
+            get => _mainText;
+            set => SetProperty(ref _mainText , value);
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public CloudTypeEnum SubimageSource
         {
-            get { return _subimageSource; }
-            set { SetProperty(ref _subimageSource , value); }
+            get => _subimageSource;
+            set => SetProperty(ref _subimageSource , value);
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public string Subtext
         {
-            get { return _subtext; }
-            set { SetProperty(ref _subtext, value); }
+            get => _subtext;
+            set => SetProperty(ref _subtext, value);
         }
 
         #endregion

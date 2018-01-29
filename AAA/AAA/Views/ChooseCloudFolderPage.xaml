@@ -17,10 +17,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <controls:ViewCellExtension MainText="{Binding FolderUniversal.Title}"
+                                                    MainCommand="{Binding AdditionalCommand}"
+                                                    MainCommandParameter="{Binding .}"
                                                     AdditionalCommand="{Binding AdditionalCommand}"
                                                     AdditionalCommandParameter="{Binding .}"
-                                                    SubimageSource="{Binding FolderUniversal.NumberOfPhotos, StringFormat='Number of photos: {0}'}"
-                                                    AdditionalImageSource="go_next_96px.png"
+                                                    Subtext="{Binding FolderUniversal.NumberOfPhotos, StringFormat='Number of photos: {0}'}"
+                                                    AdditionalImageSource="plus_96px.png"
                                                     MainImageSource="folder_96px.png"   />
 
                     </DataTemplate>

@@ -26,8 +26,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public Command AdditionalCommand
         {
-            get { return _additionalCommand; }
-            set { SetProperty(ref _additionalCommand, value); }
+            get => _additionalCommand;
+            set => SetProperty(ref _additionalCommand, value);
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public Command MainCommand
         {
-            get { return _mainCommand; }
-            set { SetProperty(ref _mainCommand, value); }
+            get => _mainCommand;
+            set => SetProperty(ref _mainCommand, value);
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public CloudTypeEnum CloudType
         {
-            get { return _cloudType; }
-            set { SetProperty(ref _cloudType, value); }
+            get => _cloudType;
+            set => SetProperty(ref _cloudType, value);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace AAA.Utils.Controls
         /// </summary>
         public int Subtext
         {
-            get { return _subtext; }
-            set { SetProperty(ref _subtext, value); }
+            get => _subtext;
+            set => SetProperty(ref _subtext, value);
         }
 
         public RCloud Cloud
