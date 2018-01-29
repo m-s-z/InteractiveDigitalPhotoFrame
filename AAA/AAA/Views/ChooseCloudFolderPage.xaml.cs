@@ -9,10 +9,17 @@ using Xamarin.Forms.Xaml;
 
 namespace AAA.Views
 {
+    /// <summary>
+    /// ChooseCloudFolderPage class.
+    /// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ChooseCloudFolderPage : ContentPage
 	{
-		public ChooseCloudFolderPage(MainViewModel viewModel)
+	    /// <summary>
+	    /// ChooseCloudFolderPage class constructor.
+	    /// </summary>
+        /// <param name="viewModel">View model to use as a binding context.</param>
+        public ChooseCloudFolderPage(MainViewModel viewModel)
 		{
 			InitializeComponent ();
 		    BindingContext = viewModel;

@@ -9,9 +9,16 @@ using Xamarin.Forms.Xaml;
 
 namespace AAA.Views
 {
+    /// <summary>
+    /// DevicesListPage class.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DevicesListPage : ContentPage
     {
+        /// <summary>
+        /// DevicesListPage class constructor.
+        /// </summary>
+        /// <param name="viewModel">View model to use as a binding context.</param>
         public DevicesListPage(MainViewModel viewModel)
         {
             InitializeComponent();

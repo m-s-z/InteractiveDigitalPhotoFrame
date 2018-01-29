@@ -9,9 +9,15 @@ using Xamarin.Forms.Xaml;
 
 namespace AAA.Views
 {
+    /// <summary>
+    /// FolderPage class.
+    /// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FolderPage : ContentPage
 	{
+        /// <summary>
+        /// FolderPage class constructor.
+        /// </summary>
 		public FolderPage ()
 		{
 			InitializeComponent ();

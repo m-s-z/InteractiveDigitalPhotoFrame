@@ -1,5 +1,8 @@
 ﻿namespace AAA.Utils
 {
+    /// <summary>
+    /// DropboxApi class.
+    /// </summary>
     public class DropboxApi
     {
         /// <summary>

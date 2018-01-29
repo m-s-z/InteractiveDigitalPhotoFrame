@@ -9,9 +9,15 @@ using Xamarin.Forms.Xaml;
 
 namespace AAA.Views
 {
+    /// <summary>
+    /// AddDevicePage class.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddDevicePage : ContentPage
     {
+        /// <summary>
+        /// AddDevicePage class constructor.
+        /// </summary>
         public AddDevicePage()
         {
             InitializeComponent();

@@ -9,9 +9,15 @@ using Xamarin.Forms.Xaml;
 
 namespace AAA.Views
 {
+    /// <summary>
+    /// LoginPage class.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        /// <summary>
+        /// LoginPage class constructor.
+        /// </summary>
         public LoginPage()
         {
             InitializeComponent();

@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AAA.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,11 +52,7 @@
     <Compile Include="Converters\Controls\CloudTypeToCloudNameConverter.cs" />
     <Compile Include="Converters\Controls\CloudTypeToImageSourceConverter.cs" />
     <Compile Include="Converters\StringIntoCloudTypeConverter.cs" />
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\CloudProvider.cs" />
     <Compile Include="Models\Device.cs" />
-    <Compile Include="Models\Folder.cs" />
-    <Compile Include="Models\IAccountService.cs" />
     <Compile Include="Models\ICloudsConnectionsService.cs" />
     <Compile Include="Models\INetworkConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,11 +63,9 @@
     <Compile Include="Utils\Controls\CardListItem.cs" />
     <Compile Include="Utils\Controls\CardTypeEnum.cs" />
     <Compile Include="Utils\Controls\VCCardListItem.cs" />
-    <Compile Include="Utils\Controls\VCEListItem.cs" />
     <Compile Include="Utils\Controls\VCListItem.cs" />
     <Compile Include="Utils\DropboxApi.cs" />
     <Compile Include="Utils\FlickrAPI.cs" />
-    <Compile Include="Utils\ListItem.cs" />
     <Compile Include="Utils\RestRequester.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\AddCloudPage.xaml.cs">

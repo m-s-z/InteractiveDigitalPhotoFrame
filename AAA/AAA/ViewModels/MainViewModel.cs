@@ -22,7 +22,6 @@ using IDPFLibrary.DTO.AAA.Folder.Request;
 using IDPFLibrary.DTO.AAA.Folder.Response;
 using IDPFLibrary.DTO.AAA.Login.Response;
 using Newtonsoft.Json;
-using Account = AAA.Models.Account;
 
 namespace AAA.ViewModels
 {
@@ -34,64 +33,188 @@ namespace AAA.ViewModels
     {
         #region fields
 
+        /// <summary>
+        /// Backing field of IsDropboxConnection property.
+        /// </summary>
         private bool _isDropboxConnection;
 
         /// <summary>
-        /// Backing field for TestNumberTwo property.
+        /// Backing field of NewCloudType property.
         /// </summary>
-        private Account _userAccount;
-
         private CloudProviderType _newCloudType;
 
+        /// <summary>
+        /// Backing field of NumberOfClouds property.
+        /// </summary>
         private int _numberOfClouds;
+
+        /// <summary>
+        /// Backing field of NumberOfDevices property.
+        /// </summary>
         private int _numberOfDevices;
+
+        /// <summary>
+        /// Backing field of NumberOfFolders property.
+        /// </summary>
         private int _numberOfFolders;
+
+        /// <summary>
+        /// ID of a current user.
+        /// </summary>
         private int _userId;
 
+        /// <summary>
+        /// Current time in relation to current Unix Timestamp.
+        /// </summary>
         private Int32 _timeStamp;
+
+        /// <summary>
+        /// Token of Flickr used in account connecting.
+        /// </summary>
         private string _tokenSecret;
 
+        /// <summary>
+        /// Backing field of CloudsCollection property.
+        /// </summary>
         private ObservableCollection<VCCardListItem> _cloudsCollection;
+
+        /// <summary>
+        /// Backing field of CloudFoldersCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _cloudFoldersCollection;
+
+        /// <summary>
+        /// Backing field of CloudChooseCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _cloudChooseCollection;
+
+        /// <summary>
+        /// Backing field of DeviceFoldersCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _deviceFoldersCollection;
+
+        /// <summary>
+        /// Backing field of DevicesCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _devicesCollection;
+
+        /// <summary>
+        /// Backing field of FolderDevicesCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _folderDevicesCollection;
+
+        /// <summary>
+        /// Backing field of FoldersCollection property.
+        /// </summary>
         private ObservableCollection<VCListItem> _foldersCollection;
 
+        /// <summary>
+        /// Backing field of MainPageCards property.
+        /// </summary>
         private ObservableCollection<CardListItem> _mainPageCards;
 
+        /// <summary>
+        /// Name of a current user.
+        /// </summary>
         private string _username;
+
+        /// <summary>
+        /// Authentication token of a current user.
+        /// </summary>
         private string _userToken;
+
+        /// <summary>
+        /// Backing field of Password property.
+        /// </summary>
         private string _password;
 
+        /// <summary>
+        /// Backing field of NewCloudName property.
+        /// </summary>
         private string _newCloudName;
+
+        /// <summary>
+        /// Backing field of DeviceName property.
+        /// </summary>
         private string _deviceName;
+
+        /// <summary>
+        /// Backing field of PairCode property.
+        /// </summary>
         private string _pairCode;
+
+        /// <summary>
+        /// Token of Dropbox used in account connecting.
+        /// </summary>
         private string _dropboxCode;
 
+        /// <summary>
+        /// Backing field of SelectedCloudProvider property.
+        /// </summary>
         private VCCardListItem _selectedCloudProvider;
+
+        /// <summary>
+        /// Backing field of SelectedDevice property.
+        /// </summary>
         private Models.Device _selectedDevice;
+
+        /// <summary>
+        /// Backing field of SelectedFolder property.
+        /// </summary>
         private SFolder _selectedFolder;
+
+        /// <summary>
+        /// Backing field of SelectedCloud property.
+        /// </summary>
         private RCloud _selectedCloud;
 
+        /// <summary>
+        /// Backing field of DevicesResponseDto property.
+        /// </summary>
         private AppGetDevicesResponseDTO _devicesResponseDto;
+
+        /// <summary>
+        /// Backing field of CloudsResponseDto property.
+        /// </summary>
         private AppGetCloudsResponseDTO _cloudsResponseDto;
+
+        /// <summary>
+        /// Backing field of ChangePasswordModel property.
+        /// </summary>
         private AppChangePasswordRequestDTO _changePasswordModel;
+
+        /// <summary>
+        /// Backing field of RegisterUser property.
+        /// </summary>
         private AppRegisterRequestDTO _registerUser;
+
+        /// <summary>
+        /// Backing field of DeviceFoldersDto property.
+        /// </summary>
         private AppGetDeviceFoldersResponseDTO _deviceFoldersDto;
+
+        /// <summary>
+        /// Backing field of CreateCloudRequestDto property.
+        /// </summary>
         private AppCreateCloudRequestDTO _createCloudRequestDto;
+
+        /// <summary>
+        /// Backing field of CloudFoldersResponseDto property.
+        /// </summary>
         private AppGetCloudFoldersResponseDTO _cloudFoldersResponseDto;
 
+        /// <summary>
+        /// Backing field of WebViewSourceCloud property.
+        /// </summary>
         private WebViewSource _webViewSourceCloud;
-
-
-        private string _endpoint = "https://idpf.azurewebsites.net";
 
         #endregion
 
         #region properties
 
+        /// <summary>
+        /// Flag indicating whether the user tries to connect with Dropbox or not.
+        /// </summary>
         public bool IsDropboxConnection
         {
             get => _isDropboxConnection;
@@ -99,6 +222,9 @@ namespace AAA.ViewModels
             set => SetProperty(ref _isDropboxConnection, value);
         }
 
+        /// <summary>
+        /// Property indicating type of a cloud to connect to.
+        /// </summary>
         public CloudProviderType NewCloudType
         {
             get => _newCloudType;
@@ -109,6 +235,9 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Command which calls ExecuteChangePageCommand method.
+        /// </summary>
         public Command ChangePageCommand { get; set; }
         public Command ChangePasswordCommand { get; set; }
         public Command CloudConnectCommand { get; set; }
@@ -345,6 +474,9 @@ namespace AAA.ViewModels
 
         #region Init
 
+        /// <summary>
+        /// MainViewModel class constructor.
+        /// </summary>
         public MainViewModel()
         {
             InitProperties();
@@ -354,6 +486,9 @@ namespace AAA.ViewModels
             InitCollections();
         }
 
+        /// <summary>
+        /// Initialize commands.
+        /// </summary>
         private void InitCommands()
         {
             ChangePageCommand = new Command(ExecuteChangePageCommand);
@@ -379,6 +514,9 @@ namespace AAA.ViewModels
             SignUpCommand = new Command(ExecuteSignUpCommand);
         }
 
+        /// <summary>
+        /// Initialize collections.
+        /// </summary>
         private void InitCollections()
         {
             CloudsCollection = new ObservableCollection<VCCardListItem>();
@@ -388,6 +526,9 @@ namespace AAA.ViewModels
             CloudFoldersCollection = new ObservableCollection<VCListItem>();
         }
 
+        /// <summary>
+        /// Initialize DTOs.
+        /// </summary>
         private void InitDto()
         {
             RegisterUser = new AppRegisterRequestDTO();
@@ -404,6 +545,9 @@ namespace AAA.ViewModels
             CreateCloudRequestDto = new AppCreateCloudRequestDTO();
         }
 
+        /// <summary>
+        /// Initialize MainPage cards.
+        /// </summary>
         private void InitMainPageCards()
         {
             MainPageCards = new ObservableCollection<CardListItem>();
@@ -415,6 +559,9 @@ namespace AAA.ViewModels
                 "MANAGE", "user_card_96px.png", Username));
         }
 
+        /// <summary>
+        /// Initialize properties.
+        /// </summary>
         private void InitProperties()
         {
             PairCode = "";
@@ -426,16 +573,29 @@ namespace AAA.ViewModels
 
         #region command execution
 
+        /// <summary>
+        /// Checks whether CloudConnectCommand can be executed or not.
+        /// </summary>
+        /// <returns>True if CloudConnectCommand can be executed, false otherwise.</returns>
         private bool CanExecuteCloudConnectCommand()
         {
             return NewCloudName?.Length > 0 && NewCloudType != CloudProviderType.None;
         }
 
+        /// <summary>
+        /// Checks whether DevicePairCommand can be executed or not.
+        /// </summary>
+        /// <returns>True if DevicePairCommand can be executed, false otherwise.</returns>
         private bool CanExecuteDevicePairCommand()
         {
             return PairCode.Length == 7 && DeviceName.Length > 0;
         }
 
+        /// <summary>
+        /// Handles execution of ChangePageCommand.
+        /// Changes page to the one indicated by parameter.
+        /// </summary>
+        /// <param name="pageType">Parameter indicating type of page.</param>
         private void ExecuteChangePageCommand(object pageType)
         {
             Page nextPage = (Page)Activator.CreateInstance((Type)pageType);
@@ -443,6 +603,11 @@ namespace AAA.ViewModels
             Application.Current.MainPage.Navigation.PushAsync(nextPage);
         }
 
+        /// <summary>
+        /// Handles execution of ChangePasswordCommand.
+        /// Calls method ChangePassword in order to change password.
+        /// Clears ChangePasswordModel property.
+        /// </summary>
         private async void ExecuteChangePasswordCommand()
         {
             if (await ChangePassword())
@@ -453,11 +618,20 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of CloudConnectCommand.
+        /// Calls GetConnectionToCloudProvider.
+        /// </summary>
         private async void ExecuteCloudConnectCommand()
         {
             await GetConnectionToCloudProvider();
         }
 
+        /// <summary>
+        /// Handles execution of CloudDisconnectCommand.
+        /// Calls DisconnectCloud method in order to disconnect selected cloud.
+        /// </summary>
+        /// <param name="item">Selected cloud.</param>
         private async void ExecuteCloudDisconnectCommand(object item)
         {
             if (item is VCCardListItem selectedCloud)
@@ -472,6 +646,11 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of ConfirmDropboxCommand.
+        /// Receives access token from Dropbox.
+        /// Calls CreateCloud method in order to connect with new cloud account.
+        /// </summary>
         private async void ExecuteConfirmDropboxCommand()
         {
             OAuth2Response accessToken = await DropboxOAuth2Helper.ProcessCodeFlowAsync(DropboxCode,
@@ -491,6 +670,10 @@ namespace AAA.ViewModels
             var result = await CreateCloud();
         }
 
+        /// <summary>
+        /// Handles execution of DevicePairCommand.
+        /// Calls PairDevice method in order to pair with a new DPF.
+        /// </summary>
         private async void ExecuteDevicePairCommand()
         {
             var result = await PairDevice();
@@ -503,6 +686,10 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of DeviceUnpairCommand.
+        /// Calls UnpairDevice method in order to unpair a DPF.
+        /// </summary>
         private async void ExecuteDeviceUnpairCommand()
         {
             if (await UnpairDevice())
@@ -514,6 +701,11 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of FolderAssignCommand.
+        /// Calls AssignFolder method in order to assign selected folder with a DPF.
+        /// </summary>
+        /// <param name="param">Selected folder.</param>
         private async void ExecuteFolderAssignCommand(object param)
         {
             if (param is VCListItem selectedFolder)
@@ -527,16 +719,29 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of GoBackPageCommand.
+        /// Changes page to the previous one.
+        /// </summary>
         private void ExecuteGoBackPageCommand()
         {
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        /// <summary>
+        /// Handles execution of GoToChooseCloudPageCommand.
+        /// Changes page to ChooseCloudPage.
+        /// </summary>
         private void ExecuteGoToChooseCloudPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new ChooseCloudPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of GoToCloudFoldersPage.
+        /// Changes page to CloudFoldersPage.
+        /// </summary>
+        /// <param name="param">Selected page.</param>
         private void ExecuteGoToCloudFoldersPage(object param)
         {
             if (param is VCListItem selectedCloud)
@@ -547,11 +752,21 @@ namespace AAA.ViewModels
                 GetSelectedCloudFolders();
             }
         }
+
+        /// <summary>
+        /// Handles execution of GoToCloudsListCommand.
+        /// Changes page to CloudsListPage.
+        /// </summary>
         private void ExecuteGoToCloudsListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new CloudsListPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of GoToDevicePageCommand.
+        /// Changes page to DevicePage.
+        /// </summary>
+        /// <param name="item">Selected device.</param>
         private void ExecuteGoToDevicePageCommand(object item)
         {
             if (item is VCListItem selectedDevice)
@@ -566,16 +781,29 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of GoToDevicesListPageCommand.
+        /// Changes page to DevicesListPage.
+        /// </summary>
         private void ExecuteGoToDevicesListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new DevicesListPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of GoToFoldersListPageCommand.
+        /// Changes page to FoldersListPage.
+        /// </summary>
         private void ExecuteGoToFoldersListPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new FoldersListPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of GoToMainPageCommand.
+        /// Calls LoginTask method in order to log in a user.
+        /// If succeeded, changes page to MainAppPage.
+        /// </summary>
         private async void ExecuteGoToMainPageCommand()
         {
             if (await LoginTask())
@@ -587,16 +815,30 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of GoToProfilePageCommand.
+        /// Changes page to ProfilePage.
+        /// </summary>
         private void ExecuteGoToProfilePageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new ProfilPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of GoToSignUpPageCommand.
+        /// Changes page to SignUpPage.
+        /// </summary>
         private void ExecuteGoToSignUpPageCommand()
         {
             Application.Current.MainPage.Navigation.PushAsync(new SignUpPage(this));
         }
 
+        /// <summary>
+        /// Handles execution of FolderUnassignCommand.
+        /// Calls UnassignFolderFromDevice method in order to unassign 
+        /// selected folder from a device.
+        /// </summary>
+        /// <param name="param">Selected folder.</param>
         private async void ExecuteFolderUnassignCommand(object param)
         {
             if (param is VCListItem selectedFolder)
@@ -610,12 +852,21 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Handles execution of RefreshCommand.
+        /// Calls GetDevices and GetClouds methods 
+        /// to refresh basic account's data.
+        /// </summary>
         private async void ExecuteRefreshCommand()
         {
             GetDevices();
             GetClouds();
         }
 
+        /// <summary>
+        /// Handles execution of SignUpCommand.
+        /// Calls AccountRegister method.
+        /// </summary>
         private async void ExecuteSignUpCommand()
         {
             await AccountRegister();
@@ -625,6 +876,10 @@ namespace AAA.ViewModels
 
         #region requests
 
+        /// <summary>
+        /// Sends request to register account.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> AccountRegister()
         {
             try
@@ -672,6 +927,11 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to assign folder to the account.
+        /// </summary>
+        /// <param name="selectedCloudFolder">Selected folder.</param>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> AssignFolder(SUniversalFolder selectedCloudFolder)
         {
             try
@@ -711,6 +971,10 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to change password.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> ChangePassword()
         {
             try
@@ -742,6 +1006,10 @@ namespace AAA.ViewModels
             return true;
         }
 
+        /// <summary>
+        /// Sends request to connect new cloud to the account.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> CreateCloud()
         {
             try
@@ -773,7 +1041,10 @@ namespace AAA.ViewModels
             return false;
         }
 
-
+        /// <summary>
+        /// Sends request to disconnect cloud from the account.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> DisconnectCloud()
         {
             try
@@ -810,6 +1081,9 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to get all connected clouds of the account.
+        /// </summary>
         private async void GetClouds()
         {
             try
@@ -838,6 +1112,9 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to get all paired devices of the account.
+        /// </summary>
         private async void GetDevices()
         {
             try
@@ -865,6 +1142,9 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to get folders of a selected cloud.
+        /// </summary>
         private async void GetSelectedCloudFolders()
         {
             try
@@ -896,6 +1176,9 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to get data about selected device.
+        /// </summary>
         private async void GetSelectedDevice()
         {
             try
@@ -928,6 +1211,10 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to log user in.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> LoginTask()
         {
             try
@@ -967,6 +1254,10 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to pair device with the account.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> PairDevice()
         {
             try
@@ -1005,7 +1296,10 @@ namespace AAA.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Sends request to unpair device from the account.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> UnpairDevice()
         {
             try
@@ -1043,6 +1337,11 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sends request to unassign folder from the account.
+        /// </summary>
+        /// <param name="folderToUnassign">Selected folder.</param>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> UnassignFolderFromDevice(SFolder folderToUnassign)
         {
             try
@@ -1083,6 +1382,10 @@ namespace AAA.ViewModels
 
         #region CloudProvidersConnection
 
+        /// <summary>
+        /// Checks to which cloud provider user wants to connect.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> GetConnectionToCloudProvider()
         {
             switch (NewCloudType)
@@ -1098,6 +1401,10 @@ namespace AAA.ViewModels
             }
         }
 
+        /// <summary>
+        /// Leads to web page where user connects with Dropbox.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> GetConnectionWithDropbox()
         {
             try
@@ -1108,6 +1415,7 @@ namespace AAA.ViewModels
                     Title = "Dropbox",
                 };
                 await Application.Current.MainPage.Navigation.PushAsync(tempPage);
+                return true;
             }
             catch (Exception e)
             {
@@ -1117,6 +1425,10 @@ namespace AAA.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Sends requests and processes responses from FlickrAPI to get access token.
+        /// </summary>
+        /// <returns>True if succeeded, false otherwise.</returns>
         private async Task<bool> GetConnectionWithFlickr()
         {
             _timeStamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -1162,6 +1474,12 @@ namespace AAA.ViewModels
             return true;
         }
 
+        /// <summary>
+        /// Sends requests and processes responses from FlickrAPI to get access token.
+        /// Calls CreateCloud method.
+        /// </summary>
+        /// <param name="sender">WebView instance.</param>
+        /// <param name="eventArgs">Arguments of the event.</param>
         private async void WebViewOnNavigated(object sender, WebNavigatedEventArgs eventArgs)
         {
             var accessToken = FlickrAPI.GetAuthorizationTokenFromUrl(eventArgs.Url);
@@ -1210,9 +1528,9 @@ namespace AAA.ViewModels
         #region other methods
 
         /// <summary>
-        /// Calls DependencyService to check whether the device is connected to the Internet.
+        /// Checks whether the user's token is valid.
         /// </summary>
-        /// <returns>True if the device is connected to the Internet, false otherwise.</returns>
+        /// <returns>True if the user's token is valid, false otherwise.</returns>
         private bool CheckIfAuthenticated(AuthorizationResponse response)
         {
             if (response == AuthorizationResponse.TokenExpired || response == AuthorizationResponse.InvalidToken)
@@ -1251,7 +1569,11 @@ namespace AAA.ViewModels
                 return;
             }
         }
-
+        
+        /// <summary>
+        /// Updates FoldersCollection property.
+        /// Updates NumberOfFolders property.
+        /// </summary>
         private void AssambleFoldersDtoToCollection()
         {
             FoldersCollection =
@@ -1260,6 +1582,12 @@ namespace AAA.ViewModels
             NumberOfFolders = FoldersCollection.Count;
         }
 
+        /// <summary>
+        /// Updates CloudsCollection property.
+        /// Updates CloudChooseCollection property.
+        /// Updates NumberOfClouds property.
+        /// Updates MainPageCards property.
+        /// </summary>
         private void AssambleCloudsDtoToCollection()
         {
             CloudsCollection =
@@ -1270,6 +1598,11 @@ namespace AAA.ViewModels
             MainPageCards[1].CardSubtext = "Connected clouds: " + NumberOfClouds;
         }
 
+        /// <summary>
+        /// Updates DevicesCollection property.
+        /// Updates NumberOfDevices property.
+        /// Updates MainPageCards property.
+        /// </summary>
         private void AssambleDevicesDtoToCollection()
         {
             DevicesCollection =
@@ -1278,6 +1611,9 @@ namespace AAA.ViewModels
             MainPageCards[0].CardSubtext = "Paired devices: " + NumberOfDevices;
         }
 
+        /// <summary>
+        /// Updates CloudFoldersCollection property.
+        /// </summary>
         private void AssambleCloudFoldersDtoToCollection()
         {
             CloudFoldersCollection =
